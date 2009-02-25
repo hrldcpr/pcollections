@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 
 /**
  * 
- * A map-backed immutable bag.
+ * A map-backed persistent bag.
  * <p>
  * If the backing map is thread-safe, then this implementation is thread-safe
  * (assuming Java's AbstractCollection is thread-safe), although its iterators

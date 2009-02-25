@@ -12,7 +12,7 @@ import java.util.Set;
 
 /**
  * 
- * An efficient immutable map from integer keys to non-null values.
+ * An efficient persistent map from integer keys to non-null values.
  * <p>
  * Iteration occurs in the integer order of the keys.
  * <p>

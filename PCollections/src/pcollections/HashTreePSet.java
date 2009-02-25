@@ -7,7 +7,7 @@ import java.util.Collection;
 
 /**
  *
- * A static convenience class for creating efficient immutable sets.
+ * A static convenience class for creating efficient persistent sets.
  * <p>
  * This class simply creates MapPSets backed by HashTreePMaps.
  * 

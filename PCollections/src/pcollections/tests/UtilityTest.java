@@ -86,8 +86,8 @@ public class UtilityTest extends TestCase {
 		assertEquals(m.get(1),"One");
 		
 		// last three have same hashCode:
-		Object[] keys = {1,2,0,3,/*ImmutableListSet.emptySet(),*/ConsPStack.empty()};
-		String[] values = {"one","two","","three",/*"emptySet",*/"emptyList"};
+		Object[] keys = {1,2,0,3,ConsPStack.empty()};
+		String[] values = {"one","two","","three","emptyList"};
 		
 		for(int i=0;i<keys.length;i++) {
 			m = m.plus(keys[i],values[i]);

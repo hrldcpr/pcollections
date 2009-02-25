@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * 
- * An immutable map from non-null keys of type K to non-null values of type V.
+ * An immutable, persistent map from non-null keys of type K to non-null values of type V.
  * 
  * @author harold
  *

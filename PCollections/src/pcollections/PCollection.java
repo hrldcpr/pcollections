@@ -4,7 +4,7 @@ import java.util.Collection;
 
 /**
  * 
- * A persistent and immutable collection of non-null elements of type E.
+ * An immutable, persistent collection of non-null elements of type E.
  * 
  * @author harold
  *

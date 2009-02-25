@@ -7,7 +7,7 @@ import java.util.Collection;
 
 /**
  *
- * A static convenience class for creating efficient immutable bags.
+ * A static convenience class for creating efficient persistent bags.
  * <p>
  * This class simply creates MapPBags backed by HashTreePMaps.
  * 

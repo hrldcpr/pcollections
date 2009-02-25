@@ -5,7 +5,7 @@ import java.util.Set;
 
 /**
  * 
- * An immutable set, containing no duplicate elements.
+ * An immutable, persistent set, containing no duplicate elements.
  * 
  * @author harold
  *

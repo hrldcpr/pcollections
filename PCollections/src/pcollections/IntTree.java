@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 
 /**
  * 
- * A non-public utility class for immutable balanced tree maps with integer keys.
+ * A non-public utility class for persistent balanced tree maps with integer keys.
  * <p>
  * To allow for efficiently increasing all keys above a certain value or decreasing
  * all keys below a certain value, the keys values are stored relative to their parent.

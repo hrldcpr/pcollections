@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 
 /**
  * 
- * An immutable vector of non-null elements.
+ * A persistent vector of non-null elements.
  * <p>
  * This implementation is backed by an IntTreePMap and
  * supports logarithmic-time querying, setting, insertion,
