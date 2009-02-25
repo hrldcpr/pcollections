@@ -4,7 +4,7 @@ import java.util.Collection;
 
 /**
  * 
- * An immutable list.
+ * An immutable, persistent list.
  * 
  * @author harold
  *

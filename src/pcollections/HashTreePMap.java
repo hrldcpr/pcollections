@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 
 /**
  *
- * A static convenience class for creating efficient immutable maps.
+ * A static convenience class for creating efficient persistent maps.
  * <p>
  * This class simply creates HashPMaps backed by IntTreePMaps.
  * 

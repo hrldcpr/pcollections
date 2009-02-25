@@ -12,7 +12,7 @@ import java.util.Set;
 
 /**
  * 
- * An immutable map from non-null keys to non-null values.
+ * A persistent map from non-null keys to non-null values.
  * <p>
  * This map uses a given integer map to map hashcodes to lists of elements
  * with the same hashcode. Thus if all elements have the same hashcode, performance

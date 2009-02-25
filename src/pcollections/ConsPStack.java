@@ -9,7 +9,7 @@ import java.util.ListIterator;
 
 /**
  * 
- * A simple immutable stack of non-null values.
+ * A simple persistent stack of non-null values.
  * <p>
  * This implementation is thread-safe (assuming Java's AbstractSequentialList is thread-safe),
  * although its iterators may not be.

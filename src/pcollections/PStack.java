@@ -4,7 +4,7 @@ import java.util.Collection;
 
 /**
  * 
- * An immutable stack.
+ * An immutable, persistent stack.
  * 
  * @author harold
  *

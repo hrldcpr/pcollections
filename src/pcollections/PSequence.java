@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * 
- * An immutable indexed collection.
+ * An immutable, persistent indexed collection.
  * 
  * @author harold
  *
