@@ -11,6 +11,10 @@ public class Empty {
 		return ConsPStack.empty();
 	}
 	
+	public static <E> PQueue<E> queue() {
+		return AmortizedPQueue.empty();
+	}
+	
 	public static <E> PVector<E> vector() {
 		return TreePVector.empty();
 	}
