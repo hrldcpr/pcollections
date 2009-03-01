@@ -4,6 +4,14 @@ import java.util.AbstractQueue;
 import java.util.Collection;
 import java.util.Iterator;
 
+/**
+ * 
+ * 
+ * 
+ * @author mtklein
+ *
+ * @param <E>
+ */
 public class AmortizedPQueue<E> extends AbstractQueue<E> implements PQueue<E> {
 
 	private static final AmortizedPQueue<Object> EMPTY = new AmortizedPQueue<Object>();
@@ -40,6 +48,7 @@ public class AmortizedPQueue<E> extends AbstractQueue<E> implements PQueue<E> {
 	}
 	
 	/* Worst-case O(n) */
+	@Override
 	public Iterator<E> iterator() {
 		return new Iterator<E>() {
 			private PQueue<E> queue = AmortizedPQueue.this;
@@ -60,6 +69,7 @@ public class AmortizedPQueue<E> extends AbstractQueue<E> implements PQueue<E> {
 	}
 
 	/* Worst-case O(1) */
+	@Override
 	public int size() {
 		return front.size() + back.size();
 	}

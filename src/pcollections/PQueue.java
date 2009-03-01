@@ -7,9 +7,10 @@ import java.util.Collection;
 import java.util.Queue;
 
 /**
- * @author mtklein
  *
- * A persistent Queue.
+ * A persistent queue.
+ * 
+ * @author mtklein
  */
 public interface PQueue<E> extends PCollection<E>, Queue<E> {
 	/* Guaranteed to stay as a PQueue, i.e. guaranteed-fast methods */
