@@ -6,7 +6,17 @@ package pcollections;
  * so you don't have to.
  */
 
-public class Empty {
+/**
+ * A static utility class for getting empty PCollections backed by the 'default'
+ * implementations.
+ * 
+ * @author mtklein
+ *
+ */
+public final class Empty {
+	//non-instantiable:
+	private Empty() {}
+	
 	public static <E> PStack<E> stack() {
 		return ConsPStack.empty();
 	}

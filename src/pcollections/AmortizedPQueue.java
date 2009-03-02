@@ -4,6 +4,9 @@ import java.util.AbstractQueue;
 import java.util.Collection;
 import java.util.Iterator;
 
+// TODO javadoc
+// TODO tests
+
 /**
  * 
  * 
@@ -21,8 +24,8 @@ public class AmortizedPQueue<E> extends AbstractQueue<E> implements PQueue<E> {
 		return (AmortizedPQueue<E>)EMPTY; 
 	}
 	
-	private PStack<E> front;
-	private PStack<E> back;
+	private final PStack<E> front;
+	private final PStack<E> back;
 	
 	private AmortizedPQueue() {
 		front = Empty.<E>stack();
@@ -76,6 +79,8 @@ public class AmortizedPQueue<E> extends AbstractQueue<E> implements PQueue<E> {
 	
 	/* Worst-case O(1) */
 	public E peek() {
+		if(size()==0)
+			return null;
 		return front.get(0);
 	}
 	
@@ -131,8 +136,7 @@ public class AmortizedPQueue<E> extends AbstractQueue<E> implements PQueue<E> {
 	public boolean offer(E o) {
 		// Not possible to modify a persistent queue, interface
 		// says return false if it's not added.
-		// TODO: consider throwing UnsupportedOperationException
-		return false;
+		throw new UnsupportedOperationException();
 	}
 
 	public E poll() {

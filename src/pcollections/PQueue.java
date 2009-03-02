@@ -13,8 +13,10 @@ import java.util.Queue;
  * @author mtklein
  */
 public interface PQueue<E> extends PCollection<E>, Queue<E> {
+	// TODO i think PQueue should extend PSequence,
+	// even though the methods will be inefficient -- H
+	
 	/* Guaranteed to stay as a PQueue, i.e. guaranteed-fast methods */
-	public E         peek();
 	public PQueue<E> minus();
 	public PQueue<E> plus(E e);
 	public PQueue<E> plusAll(Collection<? extends E> list);
