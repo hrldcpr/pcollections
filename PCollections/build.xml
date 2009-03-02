@@ -7,7 +7,7 @@
 		<tar compression="gzip" destfile="pcollections-src.tgz" basedir="src"/>
 	</target>
 	<target name="doc">
-		<delete dir="doc"/>
+		<!-- <delete dir="doc"/> -->
 		<javadoc sourcepath="src" excludepackagenames="**.tests" destdir="doc"/>
 		<copy file="pcollections.svg" todir="doc/pcollections/"/>
 		<tar compression="gzip" destfile="pcollections-doc.tgz" basedir="doc"/>
