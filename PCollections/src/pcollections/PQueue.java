@@ -25,4 +25,8 @@ public interface PQueue<E> extends PCollection<E>, Queue<E> {
 	/* May switch to other PCollection, i.e. may-be-slow methods */
 	public PCollection<E> minus(Object e);
 	public PCollection<E> minusAll(Collection<?> list);
+	
+	@Deprecated boolean offer(E o);
+	@Deprecated E poll();
+	@Deprecated E remove();
 }
