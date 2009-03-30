@@ -37,4 +37,9 @@ public interface PMap<K,V> extends Map<K,V> {
 	 * @return a map with the mappings of this but with no value for any element of keys
 	 */
 	public PMap<K,V> minusAll(Collection<?> keys);
+	
+	@Deprecated V put(K k, V v);
+	@Deprecated V remove(Object k);
+	@Deprecated void putAll(Map<? extends K, ? extends V> m);
+	@Deprecated void clear();
 }

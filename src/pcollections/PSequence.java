@@ -57,4 +57,9 @@ public interface PSequence<E> extends PCollection<E>, List<E> {
 
 	//@Override
 	public PSequence<E> subList(int start, int end);
+	
+	@Deprecated boolean addAll(int index, Collection<? extends E> c);
+	@Deprecated E set(int index, E element);
+	@Deprecated void add(int index, E element);
+	@Deprecated E remove(int index);
 }
