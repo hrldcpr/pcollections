@@ -12,7 +12,7 @@ import pcollections.PMap;
 
 import junit.framework.TestCase;
 
-public class HashTreePMapTest extends TestCase {
+public class HashPMapTest extends TestCase {
 
 	/**
 	 * Compares the behavior of java.util.HashMap to the behavior of HashTreePMap.
