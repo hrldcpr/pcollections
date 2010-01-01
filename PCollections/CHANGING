@@ -15,3 +15,6 @@ enable-auto-props = yes
 
 This is important because the website links to Javadoc within the SVN repository, and the links will all look
 like text (as opposed to rendered HTML) if the mime types are wrong.
+
+***Updating Version***
+This project uses Semantic Versioning. See src/VERSION.
