@@ -16,5 +16,7 @@ enable-auto-props = yes
 This is important because the website links to Javadoc within the SVN repository, and the links will all look
 like text (as opposed to rendered HTML) if the mime types are wrong.
 
-***Updating Version***
+***Releasing a New Version***
 This project uses Semantic Versioning. See src/VERSION.
+
+Run buld.xml and commit the new version. Then commit a tag at tags/vX.Y.Z/PCollections
