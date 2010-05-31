@@ -1,0 +1,7 @@
+This library uses Semantic Versioning.
+
+In short, this means that only major releases, e.g. 2.3.4 -> 3.0.0, may be backwards-incompatible.
+Minor releases, e.g. 1.0.1 -> 1.1.0, may change the API but must be backwards-compatible.
+Patch releases, e.g. 1.0.0 -> 1.0.1, must not change the API.
+
+See the full specification at http://semver.org/
