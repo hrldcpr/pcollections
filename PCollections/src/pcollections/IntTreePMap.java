@@ -72,11 +72,6 @@ public final class IntTreePMap<V> extends AbstractMap<Integer,V> implements PMap
 	private final IntTree<V> root;
 	// not externally instantiable (or subclassable):
 	private IntTreePMap(final IntTree<V> root) {
-		// TODO constructor should take hashCode?
-		// would require extra code in plus*() and minus*(),
-		// but probably won't impact performance at all,
-		// except for huge improvement in hashCode().
-		// yeah but who's gonna use this map anyway?
 		this.root = root; }
 	private IntTreePMap<V> withRoot(final IntTree<V> root) {
 		if(root==this.root) return this;
@@ -118,27 +113,12 @@ public final class IntTreePMap<V> extends AbstractMap<Integer,V> implements PMap
 					V value = get(((Entry<?,?>)e).getKey());
 					return value!=null && value.equals(((Entry<?,?>)e).getValue());
 				}
-				@Override
-				public int hashCode() { // same as Map
-					// this is not an infinite loop,
-					// since AbstractMap.hashCode() uses entrySet().iterator(),
-					// not entrySet().hashCode():
-					return IntTreePMap.this.hashCode(); }
 			};
 		return entrySet;
 	}
 
 	
 //// OVERRIDDEN METHODS FROM AbstractMap ////
-	// this cache variable is thread-safe, since assignment in Java is atomic:
-	private Integer hashCode = null;
-	@Override
-	public int hashCode() {
-		if(hashCode==null)
-			hashCode = super.hashCode(); // AbstractMap.hashCode(), uses entrySet()
-		return hashCode;
-	}
-	
 	@Override
 	public int size() {
 		return root.size(); }

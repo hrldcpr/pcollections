@@ -36,15 +36,15 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
 	 * 	i.e. backed by intMap.minusAll(intMap.keySet())
 	 */
 	public static <K,V> HashPMap<K,V> empty(final PMap<Integer,PSequence<Entry<K,V>>> intMap) {
-		return new HashPMap<K,V>(intMap.minusAll(intMap.keySet()), 0, 0); }
+		return new HashPMap<K,V>(intMap.minusAll(intMap.keySet()), 0); }
 	
 
 //// PRIVATE CONSTRUCTORS ////
 	private final PMap<Integer,PSequence<Entry<K,V>>> intMap;
-	private final int size, hashCode;
+	private final int size;
 	// not externally instantiable (or subclassable):
-	private HashPMap(final PMap<Integer,PSequence<Entry<K,V>>> intMap, final int size, final int hashCode) {
-		this.intMap = intMap; this.size = size; this.hashCode = hashCode; }
+	private HashPMap(final PMap<Integer,PSequence<Entry<K,V>>> intMap, final int size) {
+		this.intMap = intMap; this.size = size; }
 
 	
 //// REQUIRED METHODS FROM AbstractMap ////
@@ -63,9 +63,6 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
 					return new SequenceIterator<Entry<K,V>>(intMap.values().iterator()); }
 				// OVERRIDDEN METHODS OF AbstractSet //
 				@Override
-				public int hashCode() { // same as Map
-					return hashCode; }
-				@Override
 				public boolean contains(final Object e) {
 					if(!(e instanceof Entry))
 						return false;
@@ -78,9 +75,6 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
 
 	
 //// OVERRIDDEN METHODS FROM AbstractMap ////
-	@Override
-	public int hashCode() {
-		return hashCode; }
 	@Override
 	public int size() {
 		return size; }
@@ -116,12 +110,12 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
 	
 	public HashPMap<K,V> plus(final K key, final V value) {
 		PSequence<Entry<K,V>> entries = getEntries(key.hashCode());
-		int size0 = entries.size(), hashCode0 = hashCode(entries),
+		int size0 = entries.size(),
 			i = keyIndexIn(entries, key);
 		if(i!=-1) entries = entries.minus(i);
 		entries = entries.plus(new SimpleImmutableEntry<K,V>(key, value));
 		return new HashPMap<K,V>(intMap.plus(key.hashCode(), entries),
-				size-size0+entries.size(), hashCode-hashCode0+hashCode(entries));
+				size-size0+entries.size());
 	}
 
 	public HashPMap<K,V> minus(final Object key) {
@@ -129,14 +123,13 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
 		int i = keyIndexIn(entries, key);
 		if(i==-1) // key not in this
 			return this;
-		int hashCode0 = hashCode(entries);
 		entries = entries.minus(i);
 		if(entries.size()==0) // get rid of the entire hash entry
 			return new HashPMap<K,V>(intMap.minus(key.hashCode()),
-					size-1, hashCode-hashCode0);
+					size-1);
 		// otherwise replace hash entry with new smaller one:
 		return new HashPMap<K,V>(intMap.plus(key.hashCode(), entries),
-				size-1, hashCode-hashCode0+hashCode(entries));
+				size-1);
 	}
 	
 	
@@ -157,13 +150,6 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
 			i++;
 		}
 		return -1;
-	}
-	
-	private static <K,V> int hashCode(final PSequence<Entry<K,V>> entries) {
-		int hash = 0;
-		for(Entry<K,V> entry : entries)
-			hash += entry.hashCode();
-		return hash;
 	}
 	
 	static class SequenceIterator<E> implements Iterator<E> {

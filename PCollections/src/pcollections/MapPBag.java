@@ -26,15 +26,15 @@ public final class MapPBag<E> extends AbstractCollection<E> implements PBag<E> {
 	 * @return a PBag backed by an empty version of map, i.e. by map.minusAll(map.keySet())
 	 */
 	public static <E> MapPBag<E> empty(final PMap<E,Integer> map) {
-		return new MapPBag<E>(map.minusAll(map.keySet()), 0, 0); }
+		return new MapPBag<E>(map.minusAll(map.keySet()), 0); }
 	
 
 //// PRIVATE CONSTRUCTORS ////
 	private final PMap<E,Integer> map;
-	private final int size, hashCode;
+	private final int size;
 	// not instantiable (or subclassable):
-	private MapPBag(final PMap<E,Integer> map, final int size, final int hashCode) {
-		this.map = map; this.size = size; this.hashCode = hashCode; }
+	private MapPBag(final PMap<E,Integer> map, final int size) {
+		this.map = map; this.size = size; }
 
 
 //// REQUIRED METHODS FROM AbstractCollection ////
@@ -67,9 +67,14 @@ public final class MapPBag<E> extends AbstractCollection<E> implements PBag<E> {
 	@Override
 	public boolean contains(final Object e) {
 		return map.containsKey(e); }
+
 	@Override
 	public int hashCode() {
-		return hashCode; }
+		int hashCode = 0;
+		for(E e : this)
+			hashCode += e.hashCode();
+		return hashCode;
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -88,7 +93,7 @@ public final class MapPBag<E> extends AbstractCollection<E> implements PBag<E> {
 	
 //// IMPLEMENTED METHODS OF PSet ////
 	public MapPBag<E> plus(final E e) {
-		return new MapPBag<E>(map.plus(e, count(e)+1), size+1, hashCode+e.hashCode());
+		return new MapPBag<E>(map.plus(e, count(e)+1), size+1);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -97,9 +102,9 @@ public final class MapPBag<E> extends AbstractCollection<E> implements PBag<E> {
 		if(n==0)
 			return this;
 		if(n==1) // remove from map
-			return new MapPBag<E>(map.minus(e), size-1, hashCode-e.hashCode());
+			return new MapPBag<E>(map.minus(e), size-1);
 		// otherwise just decrement count:
-		return new MapPBag<E>(map.plus((E)e, n-1), size-1, hashCode-e.hashCode());
+		return new MapPBag<E>(map.plus((E)e, n-1), size-1);
 	}
 
 	public MapPBag<E> plusAll(final Collection<? extends E> list) {
@@ -111,7 +116,7 @@ public final class MapPBag<E> extends AbstractCollection<E> implements PBag<E> {
 	public MapPBag<E> minusAll(final Collection<?> list) {
 		// removes _all_ elements found in list, i.e. counts are irrelevant:
 		PMap<E,Integer> map = this.map.minusAll(list);
-		return new MapPBag<E>(map, size(map), hashCode(map)); // (completely recomputes size and hashCode)
+		return new MapPBag<E>(map, size(map)); // (completely recomputes size)
 	}
 
 	
@@ -130,12 +135,5 @@ public final class MapPBag<E> extends AbstractCollection<E> implements PBag<E> {
 		for(Integer n : map.values())
 			size += n;
 		return size;
-	}
-
-	private static int hashCode(final PMap<?,Integer> map) {
-		int hashCode = 0;
-		for(Entry<?,Integer> e : map.entrySet())
-			hashCode += e.getValue() * e.getKey().hashCode();
-		return hashCode;
 	}
 }

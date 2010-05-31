@@ -76,15 +76,6 @@ public class TreePVector<E> extends AbstractList<E> implements PVector<E> {
 	
 
 //// OVERRIDDEN METHODS FROM AbstractList ////
-	// this cache variable is thread-safe, since assignment in Java is atomic:
-	private Integer hashCode=null;
-	@Override
-	public int hashCode() {
-		if(hashCode==null)
-			hashCode = super.hashCode(); // AbstractList.hashCode(), uses iterator()
-		return hashCode;
-	}
-	
 	@Override
 	public Iterator<E> iterator() {
 		return map.values().iterator(); }

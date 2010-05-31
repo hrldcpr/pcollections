@@ -118,18 +118,6 @@ public final class ConsPStack<E> extends AbstractSequentialList<E> implements PS
 
 
 //// OVERRIDDEN METHODS FROM AbstractSequentialList ////
-	// the hashCode cache is thread-safe, since setting an object reference
-	// is atomic in Java.
-	// the worst thing that could happen is that each thread ends up computing the
-	// hash code exactly once, but that is quite unlikely (and still correct):
-	private Integer hashCode=null;
-	@Override
-	public int hashCode() {
-		if(hashCode==null)
-			hashCode = super.hashCode(); // AbstractList.hashCode(), uses iterator()
-		return hashCode;
-	}
-	
 	@Override
 	public ConsPStack<E> subList(final int start, final int end) {
 		if(start<0 || end>size || start>end)

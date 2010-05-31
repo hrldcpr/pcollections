@@ -26,7 +26,7 @@ public final class MapPSet<E> extends AbstractSet<E> implements PSet<E> {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <E> MapPSet<E> from(final PMap<E,?> map) {
-		return new MapPSet<E>((PMap<E,Object>)map, map.keySet().hashCode()); }
+		return new MapPSet<E>((PMap<E,Object>)map); }
 	
 	/**
 	 * @param <E>
@@ -49,10 +49,9 @@ public final class MapPSet<E> extends AbstractSet<E> implements PSet<E> {
 
 //// PRIVATE CONSTRUCTORS ////
 	private final PMap<E,Object> map;
-	private final int hashCode;
 	// not instantiable (or subclassable):
-	private MapPSet(final PMap<E,Object> map, final int hashCode) {
-		this.map = map; this.hashCode = hashCode; }
+	private MapPSet(final PMap<E,Object> map) {
+		this.map = map; }
 
 
 //// REQUIRED METHODS FROM AbstractSet ////
@@ -68,9 +67,6 @@ public final class MapPSet<E> extends AbstractSet<E> implements PSet<E> {
 	@Override
 	public boolean contains(final Object e) {
 		return map.containsKey(e); }
-	@Override
-	public int hashCode() {
-		return hashCode; }
 
 	
 //// IMPLEMENTED METHODS OF PSet ////
@@ -78,23 +74,23 @@ public final class MapPSet<E> extends AbstractSet<E> implements PSet<E> {
 	
 	public MapPSet<E> plus(final E e) {
 		if(contains(e)) return this;
-		return new MapPSet<E>(map.plus(e, In.IN), hashCode+e.hashCode());
+		return new MapPSet<E>(map.plus(e, In.IN));
 	}
 	
 	public MapPSet<E> minus(final Object e) {
 		if(!contains(e)) return this;
-		return new MapPSet<E>(map.minus(e), hashCode-e.hashCode());
+		return new MapPSet<E>(map.minus(e));
 	}
 
 	public MapPSet<E> plusAll(final Collection<? extends E> list) {
 		PMap<E,Object> map = this.map;
 		for(E e : list)
 			map = map.plus(e, In.IN);
-		return from(map); // (completely recomputes hashCode)
+		return from(map);
 	}
 	
 	public MapPSet<E> minusAll(final Collection<?> list) {
 		PMap<E,Object> map = this.map.minusAll(list);
-		return from(map); // (completely recomputes hashCode)
+		return from(map);
 	}
 }
