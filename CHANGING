@@ -1,0 +1,26 @@
+***Updating JavaDoc***
+If you re-generate the documentation, only commit it if you are sure that the MIME Types are set correctly.
+This is done by enabling SVN Auto-Properties, by editing your ~/.subversion/config file, such that it contains the following lines:
+
+enable-auto-props = yes
+[auto-props]
+*.txt = svn:mime-type=text/plain
+*.html = svn:mime-type=text/html
+*.css = svn:mime-type=text/css
+*.png = svn:mime-type=image/png
+*.jpg = svn:mime-type=image/jpeg
+*.svg = svn:mime-type=image/svg+xml
+*.gif = svn:mime-type=image/gif
+
+This is important because the website links to Javadoc within the SVN repository, and the links will all look like text (as opposed to rendered HTML) if the mime types are wrong.
+
+***Releasing a New Version***
+This project uses Semantic Versioning. See src/VERSION.
+
+To build the new artifacts:
+mvn source:jar javadoc:jar repository:bundle-create
+
+Commit the new version and commit a tag at tags/vX.Y.Z/
+
+For uploading to the Maven repo, see:
+http://nexus.sonatype.org/oss-repository-hosting.html
