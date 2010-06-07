@@ -17,8 +17,12 @@ This is important because the website links to Javadoc within the SVN repository
 ***Releasing a New Version***
 This project uses Semantic Versioning. See src/VERSION.
 
-To build the new artifacts:
+To build and commit the new artifacts: // TODO improve this...
+svn rm target/*
+svn ci
 mvn source:jar javadoc:jar verify repository:bundle-create
+svn add target/apidocs target/*.jar target/*.jar.asc
+svn ci
 
 Commit the new version and commit a tag at tags/vX.Y.Z/
 
