@@ -18,7 +18,7 @@ This is important because the website links to Javadoc within the SVN repository
 This project uses Semantic Versioning. See src/VERSION.
 
 To build the new artifacts:
-mvn source:jar javadoc:jar repository:bundle-create
+mvn source:jar javadoc:jar verify repository:bundle-create
 
 Commit the new version and commit a tag at tags/vX.Y.Z/
 
