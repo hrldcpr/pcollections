@@ -18,13 +18,13 @@ This is important because the website links to Javadoc within the SVN repository
 This project uses Semantic Versioning. See src/VERSION.
 
 To build and commit the new artifacts: // TODO improve this...
-svn rm target/*
-svn ci
+First, update the version number in pom.xml, then:
+svn ci # commit the update to trunk
 mvn source:jar javadoc:jar verify repository:bundle-create
 svn add target/apidocs target/*.jar target/*.jar.asc
-svn ci
-
-Commit the new version and commit a tag at tags/vX.Y.Z/
+svn cp -m "vX.Y.Z" . https://pcollections.googlecode.com/svn/tags/vX.Y.Z/
+mvn clean
+svn revert target # avoid committing artifacts to trunk
 
 For uploading to the Maven repo, see:
 http://nexus.sonatype.org/oss-repository-hosting.html
