@@ -271,7 +271,7 @@ class IntTree<V> {
 		
 		public Entry<Integer,V> next() {
 			IntTree<V> node = stack.get(0);
-			final Entry<Integer,V> result = new SimpleImmutableEntry<Integer,V>(key, node.value);
+			final Entry<Integer,V> result = new org.pcollections.SimpleImmutableEntry<Integer,V>(key, node.value);
 			
 			// find next node.
 			// we've already done everything smaller,
