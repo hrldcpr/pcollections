@@ -24,8 +24,8 @@ mvn source:jar javadoc:jar verify repository:bundle-create
 svn add target/apidocs target/*.jar target/*.jar.asc
 svn cp -m "vX.Y.Z" . https://pcollections.googlecode.com/svn/tags/vX.Y.Z/ # commit the tag
 Update links on the google code page, and upload the jars to the downloads section, then:
-mvn clean
-svn revert target # avoid committing artifacts to trunk
+mvn clean # avoid committing artifacts to trunk
+svn up # keep svn from being annoyed that target/ just disappeared
 
 For uploading to the Maven repo, see:
 http://nexus.sonatype.org/oss-repository-hosting.html
