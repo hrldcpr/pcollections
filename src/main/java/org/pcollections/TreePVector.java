@@ -135,6 +135,8 @@ public class TreePVector<E> extends AbstractList<E> implements PVector<E> {
 	}
 
 	public TreePVector<E> plusAll(int i, final Collection<? extends E> list) {
+		if(i<0 || i>size())
+			throw new IndexOutOfBoundsException();
 		if(list.size()==0)
 			return this;
 		IntTreePMap<E> map = this.map.withKeysChangedAbove(i, list.size());
@@ -144,8 +146,8 @@ public class TreePVector<E> extends AbstractList<E> implements PVector<E> {
 	}
 
 	public PVector<E> with(final int i, final E e) {
-		// TODO add OutOfBoundsExceptions ??
-		// or maybe get rid of them everywhere; they're not in my spec...
+		if(i<0 || i>=size())
+			throw new IndexOutOfBoundsException();
 		IntTreePMap<E> map = this.map.plus(i, e);
 		if(map==this.map) return this;
 		return new TreePVector<E>( map );

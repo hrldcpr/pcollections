@@ -22,7 +22,8 @@ First, update the version number in pom.xml, then:
 svn ci # commit the update to trunk
 mvn source:jar javadoc:jar verify repository:bundle-create
 svn add target/apidocs target/*.jar target/*.jar.asc
-svn cp -m "vX.Y.Z" . https://pcollections.googlecode.com/svn/tags/vX.Y.Z/
+svn cp -m "vX.Y.Z" . https://pcollections.googlecode.com/svn/tags/vX.Y.Z/ # commit the tag
+Update links on the google code page, and upload the jars to the downloads section, then:
 mvn clean
 svn revert target # avoid committing artifacts to trunk
 
