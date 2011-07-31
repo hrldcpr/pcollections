@@ -33,6 +33,10 @@ public final class Empty {
 		return HashTreePSet.empty();
 	}
 	
+	public static <E> POrderedSet<E> orderedSet() {
+		return OrderedPSet.empty();
+	}
+	
 	public static <E> PBag<E> bag() {
 		return HashTreePBag.empty();
 	}
