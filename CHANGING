@@ -29,3 +29,5 @@ svn up # keep svn from being annoyed that target/ just disappeared
 
 For uploading to the Maven repo, see:
 http://nexus.sonatype.org/oss-repository-hosting.html
+
+And don't forget to update the Maven coordinates on the google code page.
