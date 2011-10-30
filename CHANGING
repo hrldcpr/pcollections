@@ -15,19 +15,16 @@ enable-auto-props = yes
 This is important because the website links to Javadoc within the SVN repository, and the links will all look like text (as opposed to rendered HTML) if the mime types are wrong.
 
 ***Releasing a New Version***
-This project uses Semantic Versioning. See src/VERSION.
+This project uses Semantic Versioning. See VERSION.
 
-To build and commit the new artifacts: // TODO improve this...
-First, update the version number in pom.xml, then:
-svn ci # commit the update to trunk
-mvn source:jar javadoc:jar verify repository:bundle-create
-svn add target/apidocs target/*.jar target/*.jar.asc
-svn cp -m "vX.Y.Z" . https://pcollections.googlecode.com/svn/tags/vX.Y.Z/ # commit the tag
-Update links on the google code page, and upload the jars to the downloads section, then:
-mvn clean # avoid committing artifacts to trunk
-svn up # keep svn from being annoyed that target/ just disappeared
+To build and commit the new artifacts, first commit updated javadocs:
+// TODO improve this
+rm -r docs
+mvn clean javadoc:jar
+mv target/apidocs docs
+svn commit -m "javadoc"
 
-For uploading to the Maven repo, see:
+Then upload to the Maven repo, as per:
 http://nexus.sonatype.org/oss-repository-hosting.html
 
-And don't forget to update the Maven coordinates on the google code page.
+And finally, update the Maven coordinates on the google code page, and upload the new jars.
