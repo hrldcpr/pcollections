@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="pcollections : A Persistent Java Collections Library" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>pcollections</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/blackdrag/pcollections">View on GitHub</a>
+
+          <h1 id="project_title">pcollections</h1>
+          <h2 id="project_tagline">A Persistent Java Collections Library</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/blackdrag/pcollections/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/blackdrag/pcollections/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h3>
+<a name="overview" class="anchor" href="#overview"><span class="octicon octicon-link"></span></a>Overview</h3>
+
+<p>PCollections serves as a <a href="http://en.wikipedia.org/wiki/Persistent_data_structure">persistent</a> and immutable analogue of the <a href="http://java.sun.com/javase/6/docs/technotes/guides/collections/index.html">Java Collections Framework</a>. This includes <strong>efficient</strong>, <strong>thread-safe</strong>, <strong>generic</strong>, <strong>immutable</strong>, and <strong>persistent</strong> stacks, maps, vectors, sets, and bags, <strong>compatible</strong> with their Java Collections counterparts.</p>
+
+<p>Persistent and immutable datatypes are increasingly appreciated as a <strong>simple</strong>, <strong>design-friendly</strong>, <strong>concurrency-friendly</strong>, and sometimes more time- and space-efficient alternative to mutable datatypes.</p>
+
+<h3>
+<a name="persistent-versus-unmodifiable" class="anchor" href="#persistent-versus-unmodifiable"><span class="octicon octicon-link"></span></a>Persistent versus Unmodifiable</h3>
+
+<p>Note that these immutable collections are very different from the immutable collections returned by Java's <a href="http://java.sun.com/javase/6/docs/api/java/util/Collections.html#unmodifiableCollection(java.util.Collection)">Collections.unmodifiableCollection()</a> and similar methods. The difference is that Java's unmodifiable collections have no producers, whereas PCollections have very efficient producers. Thus if you have an unmodifiable Collection x and you want a new Collection x2 consisting of the elements of x in addition to some element e, you would have to do something like:</p>
+
+<div class="highlight highlight-Java"><pre><span class="n">Collection</span> <span class="n">x2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
+<span class="n">x2</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+</pre></div>
+
+<p>which involves copying all of x, using linear time and space. If, on the other hand, you have a PCollection y you can simply say:</p>
+
+<div class="highlight highlight-Java"><pre><span class="n">PCollection</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+</pre></div>
+
+<p>which still leaves y untouched but generally requires little or no copying, using time and space much more efficiently.</p>
+
+<h3>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h3>
+
+<p>PCollections are created using producers and static factory methods. Some example static factory methods are <a href="http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/HashTreePSet.html#empty()">HashTreePSet.empty()</a> which returns an empty <a href="http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/PSet.html">PSet</a>, while HashTreePSet.singleton(e) returns a PSet containing just the element e, and HashTreePSet.from(collection) returns a PSet containing the same elements as collection. See 'Example Code' below for an example of using producers.</p>
+
+<p>The same empty(), singleton(), and from() factory methods are found in each of the PCollections implementations, which currently include one concrete implementation for each abstract type:</p>
+
+<ul>
+<li>
+<a href="http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/HashTreePMap.html">HashTreePMap</a> provides a <a href="http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/PMap.html">PMap</a> implementation, analogous to Java's HashMap.</li>
+<li>
+<a href="http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/ConsPStack.html">ConsPStack</a> provides a <a href="http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/PStack.html">PStack</a> implementation, analogous to Java's LinkedList.</li>
+<li>
+<a href="http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/TreePVector.html">TreePVector</a> provides a <a href="http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/PVector.html">PVector</a> implementation, analogous to Java's ArrayList.</li>
+<li>
+<a href="http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/HashTreePSet.html">HashTreePSet</a> provides a <a href="http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/PSet.html">PSet</a> implementation, analogous to Java's HashSet.</li>
+<li>
+<a href="http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/HashTreePBag.html">HashTreePBag</a> provides a <a href="http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/PBag.html">PBag</a> implementation, which is unordered like a set but can contain duplicate elements. </li>
+</ul><p>PCollections are highly interoperable with Java Collections: every PCollection is a java.util.Collection, every PMap is a java.util.Map, every PSequence — including every PStack and PVector — is a java.util.List, and every PSet is a java.util.Set.</p>
+
+<p>PCollections uses <a href="http://semver.org/">Semantic Versioning</a>, which establishes a strong correspondence between API changes and version numbering.</p>
+
+<p>PCollections is in the <a href="http://search.maven.org/#search%7Cga%7C1%7Ca:%22pcollections%22">Maven Central repository</a>, under org.pcollections. Thus the Maven coordinates for PCollections are:</p>
+
+<p>org.pcollectionspcollections2.1.2</p>
+
+<h3>
+<a name="example-code" class="anchor" href="#example-code"><span class="octicon octicon-link"></span></a>Example Code</h3>
+
+<p>The following gives a very simple example of using PCollections, including the static factory method HashTreePSet.empty() and the producer plus(e):</p>
+
+<div class="highlight highlight-Java"><pre><span class="kn">import</span> <span class="nn">pcollections.*</span><span class="o">;</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Example</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">...</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">PSet</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">set</span> <span class="o">=</span> <span class="n">HashTreePSet</span><span class="o">.</span><span class="na">empty</span><span class="o">();</span>
+    <span class="n">set</span> <span class="o">=</span> <span class="n">set</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="s">"something"</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">set</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">set</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="s">"something else"</span><span class="o">));</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">set</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>Running this program gives the following output:</p>
+
+<pre><code>[something]
+
+[something else, something]
+
+[something]
+</code></pre>
+
+<h3>
+<a name="related-work" class="anchor" href="#related-work"><span class="octicon octicon-link"></span></a>Related Work</h3>
+
+<p><a href="http://clojure.googlecode.com/">Clojure</a> also provides persistent collections in Java, but for now they are less interoperable with Java Collections, and seem more designed to be used within the Clojure language itself. Both <a href="http://guava-libraries.googlecode.com/">Guava</a> and Java's <a href="http://java.sun.com/javase/6/docs/api/java/util/Collections.html">Collections</a> utility class provide immutable collections but they are not persistent, that is they do not provide efficient producers, so they are not nearly as useful. See <a href="#persistent-versus-unmodifiable">Persistent versus Unmodifiable</a> above. </p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">pcollections maintained by <a href="https://github.com/blackdrag">blackdrag</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
