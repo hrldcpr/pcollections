@@ -37,11 +37,13 @@ PCollections uses [Semantic Versioning](http://semver.org/), which establishes a
 
 PCollections is in the [Maven Central repository](http://search.maven.org/#search|ga|1|a:%22pcollections%22), under org.pcollections. Thus the Maven coordinates for PCollections are:
 
+```xml
 <dependency>
     <groupId>org.pcollections</groupId>
     <artifactId>pcollections</artifactId>
     <version>2.1.2</version>
 </dependency>
+```
 
 ###Example Code
 
