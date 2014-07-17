@@ -1,5 +1,6 @@
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Collection;
@@ -33,7 +34,9 @@ import java.util.Set;
  *
  * @param <V>
  */
-public final class IntTreePMap<V> extends AbstractMap<Integer,V> implements PMap<Integer,V> {
+public final class IntTreePMap<V> extends AbstractMap<Integer,V> implements PMap<Integer,V>, Serializable {
+	private static final long serialVersionUID = -777938930078650943L;
+
 //// STATIC FACTORY METHODS ////
 	private static final IntTreePMap<Object> EMPTY = new IntTreePMap<Object>(IntTree.EMPTYNODE);
 
@@ -93,7 +96,7 @@ public final class IntTreePMap<V> extends AbstractMap<Integer,V> implements PMap
 	
 //// REQUIRED METHODS FROM AbstractMap ////
 	// this cache variable is thread-safe, since assignment in Java is atomic:
-	private Set<Entry<Integer,V>> entrySet = null;
+	private transient Set<Entry<Integer,V>> entrySet = null;
 	@Override
 	public Set<Entry<Integer,V>> entrySet() {
 		if(entrySet==null)
@@ -159,5 +162,29 @@ public final class IntTreePMap<V> extends AbstractMap<Integer,V> implements PMap
 			if(key instanceof Integer)
 				root = root.minus((Integer)key);
 		return withRoot(root);
+	}
+
+	@Override
+	@Deprecated
+	public V put(Integer k, V v) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public V remove(Object k) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public void putAll(Map<? extends Integer, ? extends V> m) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public void clear() {
+		throw new UnsupportedOperationException();
 	}
 }

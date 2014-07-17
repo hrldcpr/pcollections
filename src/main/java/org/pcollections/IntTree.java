@@ -1,7 +1,9 @@
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 
 
 
@@ -31,7 +33,8 @@ import java.util.Map.Entry;
  *
  * @param <V>
  */
-class IntTree<V> {
+class IntTree<V> implements Serializable {
+	private static final long serialVersionUID = -2259355780038883299L;
 	// marker value:
 	static final IntTree<Object> EMPTYNODE = new IntTree<Object>();
 	
@@ -270,6 +273,9 @@ class IntTree<V> {
 			return stack.size()>0; }
 		
 		public Entry<Integer,V> next() {
+			if (stack.isEmpty())
+				throw new NoSuchElementException();
+			
 			IntTree<V> node = stack.get(0);
 			final Entry<Integer,V> result = new org.pcollections.SimpleImmutableEntry<Integer,V>(key, node.value);
 			

@@ -8,7 +8,7 @@
   <groupId>org.pcollections</groupId>
   <artifactId>pcollections</artifactId>
   <packaging>jar</packaging>
-  <version>2.1.3-SNAPSHOT</version>
+  <version>2.2.0-SNAPSHOT</version>
   <name>PCollections</name>
   <url>http://pcollections.org</url>
   <description>A Persistent Java Collections Library</description>
@@ -25,11 +25,16 @@
       <name>Harold Cooper</name>
       <email>hrldcpr@gmail.com</email>
     </developer>
+    <developer>
+      <id>yukoba</id>
+      <name>Yu Kobayashi</name>
+      <email>yukoba@accelart.jp</email>
+    </developer>
   </developers>
   <scm>
-    <connection>scm:svn:http://pcollections.googlecode.com/svn/trunk/</connection>
-    <developerConnection>scm:svn:https://pcollections.googlecode.com/svn/trunk/</developerConnection>
-    <url>http://pcollections.googlecode.com/svn/trunk/</url>
+    <connection>scm:git:https://github.com/blackdrag/pcollections.git</connection>
+    <developerConnection>scm:git:https://github.com/blackdrag/pcollections.git</developerConnection>
+    <url>https://github.com/blackdrag/pcollections/</url>
   </scm>
   <dependencies>
     <dependency>

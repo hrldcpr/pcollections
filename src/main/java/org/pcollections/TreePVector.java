@@ -1,8 +1,10 @@
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Map.Entry;
 
 
@@ -19,12 +21,14 @@ import java.util.Map.Entry;
  * although its iterators may not be.
  * 
  * @author harold
+ * @author Yu Kobayashi
  *
  * @param <E>
  */
-public class TreePVector<E> extends AbstractList<E> implements PVector<E> {
+public class TreePVector<E> extends AbstractList<E> implements PVector<E>, Serializable {
 //// STATIC FACTORY METHODS ////
-	private static final TreePVector<Object> EMPTY = new TreePVector<Object>(IntTreePMap.empty());
+	private static final TreePVector<Object> EMPTY = new TreePVector<Object>();
+	private static final long serialVersionUID = -6788530879100442978L;
 	
 	/**
 	 * @param <E>
@@ -58,6 +62,11 @@ public class TreePVector<E> extends AbstractList<E> implements PVector<E> {
 
 //// PRIVATE CONSTRUCTORS ////
 	private final IntTreePMap<E> map;
+	
+	private TreePVector() {
+		this(IntTreePMap.<E>empty());
+	}
+	
 	private TreePVector(final IntTreePMap<E> map) {
 		this.map = map; }
 	
@@ -76,9 +85,31 @@ public class TreePVector<E> extends AbstractList<E> implements PVector<E> {
 	
 
 //// OVERRIDDEN METHODS FROM AbstractList ////
+	/**
+	 * Complexity:<br>
+	 * <ul>
+	 * <li>Head only - O(log n)</li>
+	 * <li>Head to last - O(n log n)</li>
+	 * </ul>
+	 */
 	@Override
 	public Iterator<E> iterator() {
 		return map.values().iterator(); }
+	
+	/**
+	 * Complexity:<br>
+	 * <ul>
+	 * <li>Head only - O(n log n)</li>
+	 * <li>Head to last - O(n log n)</li>
+	 * <li>Last only - O(n log n)</li>
+	 * <li>Last to head - O(n log n)</li>
+	 * </ul>
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	public ListIterator<E> listIterator(int index) {
+		return new ArrayListIterator<E>((E[]) toArray(), index);
+	}
 
 	@Override
 	public TreePVector<E> subList(final int start, final int end) {
@@ -96,6 +127,9 @@ public class TreePVector<E> extends AbstractList<E> implements PVector<E> {
 		return this.minus(0).subList(start-1,end-1);
 	}
 	
+	public TreePVector<E> subList(int start) {
+		return subList(start, size());
+	}
 
 ////IMPLEMENTED METHODS OF PVector ////
 	public TreePVector<E> plus(final E e) {
@@ -109,8 +143,8 @@ public class TreePVector<E> extends AbstractList<E> implements PVector<E> {
 
 	public TreePVector<E> minus(final Object e) {
 		for(Entry<Integer,E> entry : map.entrySet())
-			if(entry.getValue().equals(e))
-				return minus((int)entry.getKey());
+			if(objectEquals(entry.getValue(), e))
+				return minus(entry.getKey().intValue());
 		return this;
 	}
 
@@ -145,11 +179,70 @@ public class TreePVector<E> extends AbstractList<E> implements PVector<E> {
 		return new TreePVector<E>( map );
 	}
 
-	public PVector<E> with(final int i, final E e) {
+	public TreePVector<E> with(final int i, final E e) {
 		if(i<0 || i>=size())
 			throw new IndexOutOfBoundsException();
 		IntTreePMap<E> map = this.map.plus(i, e);
 		if(map==this.map) return this;
 		return new TreePVector<E>( map );
 	}
+	
+	private static boolean objectEquals(Object a, Object b) {
+		return a == null ? b == null : a.equals(b);
+	}
+
+	@Override
+	@Deprecated
+	public boolean add(E e) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean remove(Object o) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean addAll(Collection<? extends E> c) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean addAll(int index, Collection<? extends E> c) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean removeAll(Collection<?> c) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean retainAll(Collection<?> c) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public void clear() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public void add(int index, E e) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public E remove(int index) {
+		throw new UnsupportedOperationException();
+	}
 }
+

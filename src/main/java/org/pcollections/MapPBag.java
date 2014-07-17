@@ -1,5 +1,6 @@
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.Iterator;
@@ -18,8 +19,33 @@ import java.util.Map.Entry;
  *
  * @param <E>
  */
-public final class MapPBag<E> extends AbstractCollection<E> implements PBag<E> {
+public final class MapPBag<E> extends AbstractCollection<E> implements PBag<E>, Serializable {
+	private static final MapPBag<Object> EMPTY = empty(HashPMap.<Object, Integer>empty());
+	private static final long serialVersionUID = 7567737490423868674L;
+
 //// STATIC FACTORY METHODS ////
+	/**
+	 * @return an empty bag
+	 */
+	@SuppressWarnings("unchecked")
+	public static <E> MapPBag<E> empty() {
+		return (MapPBag<E>) EMPTY;
+	}
+
+	/**
+	 * @return empty().plus(e)
+	 */
+	public static <E> MapPBag<E> singleton(E e) {
+		return MapPBag.<E>empty().plus(e);
+	}
+
+	/**
+	 * @return empty().plus(list)
+	 */
+	public static <E> MapPBag<E> from(Collection<? extends E> list) {
+		return MapPBag.<E>empty().plusAll(list);
+	}
+
 	/**
 	 * @param <E>
 	 * @param map
@@ -83,9 +109,7 @@ public final class MapPBag<E> extends AbstractCollection<E> implements PBag<E> {
 			return false;
 		if(!(that instanceof MapPBag)) {
 			// make that into a MapPBag:
-			// TODO this is INEFFICIENT
-			MapPBag<Object> empty = (MapPBag<Object>)this.minusAll(this);
-			that = empty.plusAll((PBag<?>)that);
+			that = MapPBag.empty().plusAll((PBag<?>) that);
 		}
 		return this.map.equals( ((MapPBag<?>)that).map );
 	}
@@ -135,5 +159,41 @@ public final class MapPBag<E> extends AbstractCollection<E> implements PBag<E> {
 		for(Integer n : map.values())
 			size += n;
 		return size;
+	}
+
+	@Override
+	@Deprecated
+	public boolean add(E e) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean remove(Object o) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean addAll(Collection<? extends E> c) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean removeAll(Collection<?> c) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean retainAll(Collection<?> c) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public void clear() {
+		throw new UnsupportedOperationException();
 	}
 }

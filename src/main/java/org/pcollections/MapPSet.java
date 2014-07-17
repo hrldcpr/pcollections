@@ -1,5 +1,6 @@
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Iterator;
@@ -17,8 +18,33 @@ import java.util.Iterator;
  *
  * @param <E>
  */
-public final class MapPSet<E> extends AbstractSet<E> implements PSet<E> {
+public final class MapPSet<E> extends AbstractSet<E> implements PSet<E>, Serializable {
+	private static final MapPSet<Object> EMPTY = from(HashPMap.empty());
+	private static final long serialVersionUID = -1344047864698590249L;
+
 //// STATIC FACTORY METHODS ////
+	/**
+	 * @return an empty set
+	 */
+	@SuppressWarnings("unchecked")
+	public static <E> MapPSet<E> empty() {
+		return (MapPSet<E>) EMPTY;
+	}
+
+	/**
+	 * @return empty().plus(e)
+	 */
+	public static <E> MapPSet<E> singleton(E e) {
+		return MapPSet.<E>empty().plus(e);
+	}
+
+	/**
+	 * @return empty().plus(list)
+	 */
+	public static <E> MapPSet<E> from(Collection<? extends E> list) {
+		return MapPSet.<E>empty().plusAll(list);
+	}
+
 	/**
 	 * @param <E>
 	 * @param map
@@ -92,5 +118,41 @@ public final class MapPSet<E> extends AbstractSet<E> implements PSet<E> {
 	public MapPSet<E> minusAll(final Collection<?> list) {
 		PMap<E,Object> map = this.map.minusAll(list);
 		return from(map);
+	}
+
+	@Override
+	@Deprecated
+	public boolean add(E e) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean remove(Object o) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean addAll(Collection<? extends E> c) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean removeAll(Collection<?> c) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean retainAll(Collection<?> c) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public void clear() {
+		throw new UnsupportedOperationException();
 	}
 }

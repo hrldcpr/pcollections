@@ -1,12 +1,14 @@
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class OrderedPSet<E> extends AbstractSet<E> implements POrderedSet<E> {
+public class OrderedPSet<E> extends AbstractSet<E> implements POrderedSet<E>, Serializable {
 	private static final OrderedPSet<Object> EMPTY = new OrderedPSet<Object>(
 			Empty.set(), Empty.vector());
+	private static final long serialVersionUID = -5920090981526873189L;
 
 	@SuppressWarnings("unchecked")
 	public static <E> OrderedPSet<E> empty() {
@@ -24,8 +26,8 @@ public class OrderedPSet<E> extends AbstractSet<E> implements POrderedSet<E> {
 		return OrderedPSet.<E> empty().plus(e);
 	}
 
-	private PSet<E> contents;
-	private PVector<E> order;
+	private final PSet<E> contents;
+	private final PVector<E> order;
 
 	private OrderedPSet(PSet<E> c, PVector<E> o) {
 		contents = c;
@@ -84,5 +86,47 @@ public class OrderedPSet<E> extends AbstractSet<E> implements POrderedSet<E> {
 		if (!contents.contains(o))
 			return -1;
 		return order.indexOf(o);
+	}
+
+	public int lastIndexOf(Object o) {
+		if (!contents.contains(o))
+			return -1;
+		return order.lastIndexOf(o);
+	}
+
+	@Override
+	@Deprecated
+	public boolean add(E e) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean remove(Object o) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean addAll(Collection<? extends E> c) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean removeAll(Collection<?> c) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean retainAll(Collection<?> c) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public void clear() {
+		throw new UnsupportedOperationException();
 	}
 }

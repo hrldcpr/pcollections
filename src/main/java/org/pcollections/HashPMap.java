@@ -1,5 +1,6 @@
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Collection;
@@ -26,8 +27,33 @@ import java.util.Set;
  * @param <K>
  * @param <V>
  */
-public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
+public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V>, Serializable {
+	private static final HashPMap<Object, Object> EMPTY = HashPMap.empty(IntTreePMap.<PSequence<Entry<Object, Object>>>empty());
+	private static final long serialVersionUID = -3538508895284495077L;
+
 //// STATIC FACTORY METHODS ////
+	/**
+	 * @return an empty map
+	 */
+	@SuppressWarnings("unchecked")
+	public static <K, V> HashPMap<K, V> empty() {
+		return (HashPMap<K, V>) EMPTY;
+	}
+
+	/**
+	 * @return empty().plus(key, value)
+	 */
+	public static <K, V> HashPMap<K, V> singleton(K key, V value) {
+		return HashPMap.<K, V>empty().plus(key, value);
+	}
+
+	/**
+	 * @return empty().plus(map)
+	 */
+	public static <K, V> HashPMap<K, V> from(Map<? extends K, ? extends V> map) {
+		return HashPMap.<K, V>empty().plusAll(map);
+	}
+
 	/**
 	 * @param <K>
 	 * @param <V>
@@ -171,5 +197,34 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
 
 		public void remove() {
 			throw new UnsupportedOperationException(); }
+	}
+
+	@Deprecated
+	public V putAt(K key, V v) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public V put(K k, V v) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public V remove(Object k) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public void putAll(Map<? extends K, ? extends V> m) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public void clear() {
+		throw new UnsupportedOperationException();
 	}
 }

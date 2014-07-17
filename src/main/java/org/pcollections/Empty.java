@@ -21,6 +21,10 @@ public final class Empty {
 		return ConsPStack.empty();
 	}
 	
+	public static <E> PDeque<E> deque() {
+		return AmortizedPDeque.empty();
+	}
+	
 	public static <E> PQueue<E> queue() {
 		return AmortizedPQueue.empty();
 	}

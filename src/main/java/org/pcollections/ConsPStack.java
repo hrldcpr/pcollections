@@ -1,9 +1,11 @@
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.AbstractSequentialList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 
 
@@ -18,7 +20,9 @@ import java.util.ListIterator;
  *
  * @param <E>
  */
-public final class ConsPStack<E> extends AbstractSequentialList<E> implements PStack<E> {
+public final class ConsPStack<E> extends AbstractSequentialList<E> implements PStack<E>, Serializable {
+	private static final long serialVersionUID = -7306791346408620911L;
+	
 //// STATIC FACTORY METHODS ////
 	private static final ConsPStack<Object> EMPTY = new ConsPStack<Object>();
 	
@@ -80,39 +84,58 @@ public final class ConsPStack<E> extends AbstractSequentialList<E> implements PS
 	public int size() {
 		return size; }
 	
+	public E get(int i) {
+		if (i < 0 || i >= size)
+			throw new IndexOutOfBoundsException();
+
+		return subList(i).first;
+	}
+
+	/**
+	 * Complexity:<br>
+	 * <ul>
+	 * <li>Head only - O(n)</li>
+	 * <li>Head to last - O(n)</li>
+	 * <li>Last only - O(n)</li>
+	 * <li>Last to head - O(n)</li>
+	 * </ul>
+	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	public ListIterator<E> listIterator(final int index) {
-		if(index<0 || index>size) throw new IndexOutOfBoundsException();
-		
-		return new ListIterator<E>() {
-			int i = index;
-			ConsPStack<E> next = subList(index);
+		return new ArrayListIterator<E>((E[]) toArray(), index);
+	}
+
+	/**
+	 * Complexity:<br>
+	 * <ul>
+	 * <li>Head only - O(1)</li>
+	 * <li>Head to last - O(n)</li>
+	 * </ul>
+	 */
+	@Override
+	public Iterator<E> iterator() {
+		return new Iterator<E>() {
+			int idx = 0;
+			ConsPStack<E> next = ConsPStack.this;
 
 			public boolean hasNext() {
-				return next.size>0; }
-			public boolean hasPrevious() {
-				return i>0; }
-			public int nextIndex() {
-				return index; }
-			public int previousIndex() {
-				return index-1; }
+				return idx < size;
+			}
+
 			public E next() {
+				if (idx >= size)
+					throw new NoSuchElementException();
+				idx++;
+
 				E e = next.first;
 				next = next.rest;
 				return e;
 			}
-			public E previous() {
-				System.err.println("ConsPStack.listIterator().previous() is inefficient, don't use it!");
-				next = subList(index-1); // go from beginning...
-				return next.first;
-			}
 
-			public void add(final E o) {
-				throw new UnsupportedOperationException(); }
 			public void remove() {
-				throw new UnsupportedOperationException(); }
-			public void set(final E o) {
-				throw new UnsupportedOperationException(); }
+				throw new UnsupportedOperationException();
+			}
 		};
 	}
 
@@ -165,7 +188,7 @@ public final class ConsPStack<E> extends AbstractSequentialList<E> implements PS
 	public ConsPStack<E> minus(final Object e) {
 		if(size==0)
 			return this;
-		if(first.equals(e)) // found it
+		if(objectEquals(first, e)) // found it
 			return rest; // don't recurse (only remove one)
 		// otherwise keep looking:
 		ConsPStack<E> newRest = rest.minus(e);
@@ -192,7 +215,7 @@ public final class ConsPStack<E> extends AbstractSequentialList<E> implements PS
 		if(i<0 || i>=size)
 			throw new IndexOutOfBoundsException();
 		if(i==0) {
-			if(first.equals(e)) return this;
+			if(objectEquals(first, e)) return this;
 			return new ConsPStack<E>(e, rest);
 		}
 		ConsPStack<E> newRest = rest.with(i-1, e);
@@ -206,5 +229,63 @@ public final class ConsPStack<E> extends AbstractSequentialList<E> implements PS
 		if(start==0)
 			return this;
 		return rest.subList(start-1);
+	}
+
+	private static boolean objectEquals(Object a, Object b) {
+		return a == null ? b == null : a.equals(b);
+	}
+
+	@Override
+	@Deprecated
+	public boolean add(E e) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean remove(Object o) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean addAll(Collection<? extends E> c) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean addAll(int index, Collection<? extends E> c) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean removeAll(Collection<?> c) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public boolean retainAll(Collection<?> c) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public void clear() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public void add(int index, E e) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	@Deprecated
+	public E remove(int index) {
+		throw new UnsupportedOperationException();
 	}
 }
