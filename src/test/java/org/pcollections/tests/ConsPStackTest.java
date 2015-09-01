@@ -3,6 +3,7 @@ package org.pcollections.tests;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.Arrays;
 
 import org.pcollections.ConsPStack;
 import org.pcollections.PStack;
@@ -91,6 +92,22 @@ public class ConsPStackTest extends TestCase {
 					ConsPStack.singleton(10).plusAll(1,UtilityTest.reverse(pstack)).minus(0));
 		}
 	}
+
+    /** Make sure the right element is removed */
+    public void testMinusInt() {
+	// First, let's try a list with distinct elements
+	PStack<String> pstack = ConsPStack.<String>empty().plus("C").plus("B").plus("A");
+	assertEquals(Arrays.asList("A", "B", "C"), pstack);
+	assertEquals(Arrays.asList("B", "C"), pstack.minus(0));
+	assertEquals(Arrays.asList("A", "B"), pstack.minus(2));
+
+	//Now, let's try duplicates
+	pstack = pstack.plus("B");
+	assertEquals(Arrays.asList("B", "A", "B", "C"), pstack);
+	assertEquals(Arrays.asList("A", "B", "C"), pstack.minus(0));
+	assertEquals(Arrays.asList("B", "A", "C"), pstack.minus(2));
+    }
+
 
 	public void testSubListIntInt() {
 		// TODO
