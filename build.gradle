@@ -1,0 +1,20 @@
+apply plugin: 'java'
+
+group = 'org.pcollections'
+version = '2.1.3-SNAPSHOT'
+
+description = """PCollections"""
+
+buildscript {
+   repositories {
+      jcenter()
+   }
+}
+
+repositories {
+     jcenter()
+}
+
+dependencies {
+  testCompile group: 'junit', name: 'junit', version:'3.8.1'
+}
