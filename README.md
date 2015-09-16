@@ -68,6 +68,14 @@ Running this program gives the following output:
 
 [something]
 ```
+
+###Building form source
+For building the project from source [clone the repository](https://github.com/pcollections/pcollections.git) and then execute
+```
+ ./gradlew build
+```
+This will compile all files, execute the tests and create a jar in ./build/libs
+
 ###Related Work
 
 [Clojure](http://clojure.googlecode.com/) also provides persistent collections in Java, but for now they are less interoperable with Java Collections, and seem more designed to be used within the Clojure language itself. Both [Guava](http://guava-libraries.googlecode.com/) and Java's [Collections](http://java.sun.com/javase/6/docs/api/java/util/Collections.html) utility class provide immutable collections but they are not persistent, that is they do not provide efficient producers, so they are not nearly as useful. See [Persistent versus Unmodifiable](#persistent-versus-unmodifiable) above. 
