@@ -174,7 +174,11 @@ public final class ConsPStack<E> extends AbstractSequentialList<E> implements PS
 	}
 
 	public ConsPStack<E> minus(final int i) {
-		return minus(get(i));
+		if (i < 0 || i >= size)
+			throw new IndexOutOfBoundsException("Index: " + i + "; size: " + size);
+		else if (i == 0)
+			return rest;
+		else return new ConsPStack<E>(first, rest.minus(i-1));
 	}
 
 	public ConsPStack<E> minusAll(final Collection<?> list) {
