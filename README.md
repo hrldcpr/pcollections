@@ -74,7 +74,11 @@ For building the project from source [clone the repository](https://github.com/p
 ```
  ./gradlew build
 ```
-This will compile all files, execute the tests and create a jar in ./build/libs
+This will compile all files, execute the tests and create a jar in ./build/libs. usefull targets are:
+* jar - to create the jar
+* clean - to clean all build files, including the jar
+* test - to build the project and run the test files
+* compileJava - to only compile the Java files
 
 ###Related Work
 
