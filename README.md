@@ -3,6 +3,9 @@ PCollections
 
 A Persistent Java Collections Library
 
+[![Maven Central](https://img.shields.io/maven-central/v/org.pcollections/pcollections.svg)](https://maven-badges.herokuapp.com/maven-central/org.pcollections/pcollections/)
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/org.pcollections/pcollections/badge.svg)](http://www.javadoc.io/doc/org.pcollections/pcollections)
+
 ###Overview
 
 PCollections serves as a [persistent](http://en.wikipedia.org/wiki/Persistent_data_structure) and immutable analogue of the [Java Collections Framework](http://java.sun.com/javase/6/docs/technotes/guides/collections/index.html). This includes **efficient**, **thread-safe**, **generic**, **immutable**, and **persistent** stacks, maps, vectors, sets, and bags, **compatible** with their Java Collections counterparts.
