@@ -1,5 +1,6 @@
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -22,7 +23,7 @@ import java.util.Map.Entry;
  *
  * @param <E>
  */
-public class TreePVector<E> extends AbstractList<E> implements PVector<E> {
+public class TreePVector<E> extends AbstractList<E> implements PVector<E>, Serializable {
 //// STATIC FACTORY METHODS ////
 	private static final TreePVector<Object> EMPTY = new TreePVector<Object>(IntTreePMap.empty());
 	

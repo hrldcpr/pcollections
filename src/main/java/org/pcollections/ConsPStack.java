@@ -1,5 +1,6 @@
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.AbstractSequentialList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -18,7 +19,7 @@ import java.util.ListIterator;
  *
  * @param <E>
  */
-public final class ConsPStack<E> extends AbstractSequentialList<E> implements PStack<E> {
+public final class ConsPStack<E> extends AbstractSequentialList<E> implements PStack<E>, Serializable {
 //// STATIC FACTORY METHODS ////
 	private static final ConsPStack<Object> EMPTY = new ConsPStack<Object>();
 	

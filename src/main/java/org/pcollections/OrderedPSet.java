@@ -1,10 +1,11 @@
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class OrderedPSet<E> extends AbstractSet<E> implements POrderedSet<E> {
+public class OrderedPSet<E> extends AbstractSet<E> implements POrderedSet<E>, Serializable {
 	private static final OrderedPSet<Object> EMPTY = new OrderedPSet<Object>(
 			Empty.set(), Empty.vector());
 

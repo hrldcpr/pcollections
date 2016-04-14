@@ -1,5 +1,6 @@
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Collection;
@@ -33,7 +34,7 @@ import java.util.Set;
  *
  * @param <V>
  */
-public final class IntTreePMap<V> extends AbstractMap<Integer,V> implements PMap<Integer,V> {
+public final class IntTreePMap<V> extends AbstractMap<Integer,V> implements PMap<Integer,V>, Serializable {
 //// STATIC FACTORY METHODS ////
 	private static final IntTreePMap<Object> EMPTY = new IntTreePMap<Object>(IntTree.EMPTYNODE);
 
