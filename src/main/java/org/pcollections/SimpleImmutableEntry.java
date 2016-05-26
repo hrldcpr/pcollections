@@ -103,7 +103,7 @@ import java.util.Map.Entry;
 		if (!(o instanceof Map.Entry))
 			return false;
 		Map.Entry<?,?> e = (Map.Entry<?,?>)o;
-		return eq(key, e.getKey()) && eq(value, e.getValue());
+		return Objects.equals(key, e.getKey()) && Objects.equals(value, e.getValue());
 	}
 
 	/**
@@ -138,11 +138,4 @@ import java.util.Map.Entry;
 		return key + "=" + value;
 	}
 
-    /**
-     * Utility method for SimpleEntry and SimpleImmutableEntry.
-     * Test for equality, checking for nulls.
-     */
-    private static boolean eq(Object o1, Object o2) {
-        return o1 == null ? o2 == null : o1.equals(o2);
-    }
 }
