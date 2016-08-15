@@ -3,6 +3,7 @@ package org.pcollections;
 import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 
 
@@ -43,25 +44,27 @@ public final class MapPBag<E> extends AbstractCollection<E> implements PBag<E> {
 		return size; }
 	@Override
 	public Iterator<E> iterator() {
-		final Iterator<Entry<E,Integer>> i = map.entrySet().iterator();
-		return new Iterator<E>() {
-			private E e; private int n=0;
-			public boolean hasNext() {
-				return n>0 || i.hasNext(); }
-			public E next() {
-				if(n==0) { // finished with current element
-					Entry<E,Integer> entry = i.next();
-					e = entry.getKey();
-					n = entry.getValue();
-				}
-				n--;
-				return e;
-			}
-			public void remove() {
-				throw new UnsupportedOperationException(); }
-		};
+		return new Itr();
 	}
-	
+
+	private class Itr implements Iterator<E> {
+		private final Iterator<Entry<E, Integer>> i = map.entrySet().iterator();
+		private E e;
+		private int n;
+		public boolean hasNext() {
+			return n>0 || i.hasNext(); }
+		public E next() {
+			if(n==0) { // finished with current element
+				Entry<E,Integer> entry = i.next();
+				e = entry.getKey();
+				n = entry.getValue();
+			}
+			n--;
+			return e;
+		}
+		public void remove() {
+			throw new UnsupportedOperationException(); }
+	}
 
 //// OVERRIDDEN METHODS OF AbstractCollection ////
 	@Override

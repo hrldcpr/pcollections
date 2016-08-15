@@ -84,38 +84,46 @@ public final class ConsPStack<E> extends AbstractSequentialList<E> implements PS
 	public ListIterator<E> listIterator(final int index) {
 		if(index<0 || index>size) throw new IndexOutOfBoundsException();
 		
-		return new ListIterator<E>() {
-			int i = index;
-			ConsPStack<E> next = subList(index);
-
-			public boolean hasNext() {
-				return next.size>0; }
-			public boolean hasPrevious() {
-				return i>0; }
-			public int nextIndex() {
-				return index; }
-			public int previousIndex() {
-				return index-1; }
-			public E next() {
-				E e = next.first;
-				next = next.rest;
-				return e;
-			}
-			public E previous() {
-				System.err.println("ConsPStack.listIterator().previous() is inefficient, don't use it!");
-				next = subList(index-1); // go from beginning...
-				return next.first;
-			}
-
-			public void add(final E o) {
-				throw new UnsupportedOperationException(); }
-			public void remove() {
-				throw new UnsupportedOperationException(); }
-			public void set(final E o) {
-				throw new UnsupportedOperationException(); }
-		};
+		return new Itr(index);
 	}
 
+	private class Itr implements ListIterator<E> {
+		private final int index;
+		int i;
+		ConsPStack<E> next;
+
+		Itr(int index) {
+			this.index = index;
+			i = index;
+			next = subList(index);
+		}
+
+		public boolean hasNext() {
+			return next.size>0; }
+		public boolean hasPrevious() {
+			return i>0; }
+		public int nextIndex() {
+			return index; }
+		public int previousIndex() {
+			return index -1; }
+		public E next() {
+			E e = next.first;
+			next = next.rest;
+			return e;
+		}
+		public E previous() {
+			System.err.println("ConsPStack.listIterator().previous() is inefficient, don't use it!");
+			next = subList(index -1); // go from beginning...
+			return next.first;
+		}
+
+		public void add(final E o) {
+			throw new UnsupportedOperationException(); }
+		public void remove() {
+			throw new UnsupportedOperationException(); }
+		public void set(final E o) {
+			throw new UnsupportedOperationException(); }
+	}
 
 //// OVERRIDDEN METHODS FROM AbstractSequentialList ////
 	@Override

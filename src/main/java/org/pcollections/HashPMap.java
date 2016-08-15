@@ -54,27 +54,28 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
 	@Override
 	public Set<Entry<K,V>> entrySet() {
 		if(entrySet==null)
-			entrySet = new AbstractSet<Entry<K,V>>() {
-				// REQUIRED METHODS OF AbstractSet // 
-				@Override
-				public int size() {
-					return size; }		
-				@Override
-				public Iterator<Entry<K,V>> iterator() {
-					return new SequenceIterator<Entry<K,V>>(intMap.values().iterator()); }
-				// OVERRIDDEN METHODS OF AbstractSet //
-				@Override
-				public boolean contains(final Object e) {
-					if(!(e instanceof Entry))
-						return false;
-					V value = get(((Entry<?,?>)e).getKey());
-					return value!=null && value.equals(((Entry<?,?>)e).getValue());
-				}
-			};
+			entrySet = new EntrySet();
 		return entrySet;
 	}
 
-	
+	private class EntrySet extends AbstractSet<Entry<K,V>> {
+		// REQUIRED METHODS OF AbstractSet //
+		@Override
+		public int size() {
+			return size; }
+		@Override
+		public Iterator<Entry<K,V>> iterator() {
+			return new SequenceIterator<Entry<K,V>>(intMap.values().iterator()); }
+		// OVERRIDDEN METHODS OF AbstractSet //
+		@Override
+		public boolean contains(final Object e) {
+			if(!(e instanceof Map.Entry))
+				return false;
+			V value = get(((Entry<?,?>)e).getKey());
+			return value!=null && value.equals(((Entry<?,?>)e).getValue());
+		}
+	}
+
 //// OVERRIDDEN METHODS FROM AbstractMap ////
 	@Override
 	public int size() {

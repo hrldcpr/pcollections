@@ -53,22 +53,29 @@ public class AmortizedPQueue<E> extends AbstractQueue<E> implements PQueue<E> {
 	/* Worst-case O(n) */
 	@Override
 	public Iterator<E> iterator() {
-		return new Iterator<E>() {
-			private PQueue<E> queue = AmortizedPQueue.this;
-			public boolean hasNext() {
-				return queue.size() > 0;
-			}
+		return new Itr<E>(this);
+	}
 
-			public E next() {
-				E e = queue.peek();
-				queue = queue.minus();
-				return e;
-			}
+	private static class Itr<E> implements Iterator<E> {
+		private AmortizedPQueue<E> queue;
 
-			public void remove() {
-				throw new UnsupportedOperationException();
-			}
-		};
+		Itr(AmortizedPQueue<E> queue) {
+			this.queue = queue;
+		}
+
+		public boolean hasNext() {
+			return queue.size() > 0;
+		}
+
+		public E next() {
+			E e = queue.peek();
+			queue = queue.minus();
+			return e;
+		}
+
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
 	}
 
 	/* Worst-case O(1) */

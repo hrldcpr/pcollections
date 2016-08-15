@@ -97,27 +97,28 @@ public final class IntTreePMap<V> extends AbstractMap<Integer,V> implements PMap
 	@Override
 	public Set<Entry<Integer,V>> entrySet() {
 		if(entrySet==null)
-			entrySet = new AbstractSet<Entry<Integer,V>>() {
-				// REQUIRED METHODS OF AbstractSet // 
-				@Override
-				public int size() { // same as Map
-					return IntTreePMap.this.size(); }
-				@Override
-				public Iterator<Entry<Integer,V>> iterator() {
-					return root.iterator(); }
-				// OVERRIDDEN METHODS OF AbstractSet //
-				@Override
-				public boolean contains(final Object e) {
-					if(!(e instanceof Entry))
-						return false;
-					V value = get(((Entry<?,?>)e).getKey());
-					return value!=null && value.equals(((Entry<?,?>)e).getValue());
-				}
-			};
+			entrySet = new EntrySet();
 		return entrySet;
 	}
 
-	
+	private class EntrySet extends AbstractSet<Entry<Integer,V>> {
+		// REQUIRED METHODS OF AbstractSet //
+		@Override
+		public int size() { // same as Map
+			return IntTreePMap.this.size(); }
+		@Override
+		public Iterator<Entry<Integer,V>> iterator() {
+			return root.iterator(); }
+		// OVERRIDDEN METHODS OF AbstractSet //
+		@Override
+		public boolean contains(final Object e) {
+			if(!(e instanceof Map.Entry))
+				return false;
+			V value = get(((Entry<?,?>)e).getKey());
+			return value!=null && value.equals(((Entry<?,?>)e).getValue());
+		}
+	}
+
 //// OVERRIDDEN METHODS FROM AbstractMap ////
 	@Override
 	public int size() {
