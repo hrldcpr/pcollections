@@ -60,7 +60,7 @@ public final class ConsPStack<E> extends AbstractSequentialList<E> implements PS
 
 	
 //// PRIVATE CONSTRUCTORS ////
-	private final E first; private final ConsPStack<E> rest;
+	final E first; final ConsPStack<E> rest;
 	private final int size;
 	// not externally instantiable (or subclassable):
 	private ConsPStack() { // EMPTY constructor
