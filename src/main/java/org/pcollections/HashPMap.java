@@ -35,15 +35,16 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
 	 * @return a map backed by an empty version of intMap,
 	 * 	i.e. backed by intMap.minusAll(intMap.keySet())
 	 */
+	@SuppressWarnings("unchecked")
 	public static <K,V> HashPMap<K,V> empty(final PMap<Integer,PSequence<Entry<K,V>>> intMap) {
-		return new HashPMap<K,V>(intMap.minusAll(intMap.keySet()), 0); }
+		return new HashPMap<K,V>((PMap) intMap.minusAll(intMap.keySet()), 0); }
 	
 
 //// PRIVATE CONSTRUCTORS ////
-	private final PMap<Integer,PSequence<Entry<K,V>>> intMap;
+	private final PMap<Integer,ConsPStack<Entry<K,V>>> intMap;
 	private final int size;
 	// not externally instantiable (or subclassable):
-	private HashPMap(final PMap<Integer,PSequence<Entry<K,V>>> intMap, final int size) {
+	private HashPMap(final PMap<Integer,ConsPStack<Entry<K,V>>> intMap, final int size) {
 		this.intMap = intMap; this.size = size; }
 
 	
@@ -109,7 +110,7 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
 	}
 	
 	public HashPMap<K,V> plus(final K key, final V value) {
-		PSequence<Entry<K,V>> entries = getEntries(key.hashCode());
+		ConsPStack<Entry<K,V>> entries = getEntries(key.hashCode());
 		int size0 = entries.size(),
 			i = keyIndexIn(entries, key);
 		if(i!=-1) entries = entries.minus(i);
@@ -119,7 +120,7 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
 	}
 
 	public HashPMap<K,V> minus(final Object key) {
-		PSequence<Entry<K,V>> entries = getEntries(key.hashCode());
+		ConsPStack<Entry<K,V>> entries = getEntries(key.hashCode());
 		int i = keyIndexIn(entries, key);
 		if(i==-1) // key not in this
 			return this;
@@ -134,8 +135,8 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
 	
 	
 //// PRIVATE UTILITIES ////
-	private PSequence<Entry<K,V>> getEntries(final int hash) {
-		PSequence<Entry<K,V>> entries = intMap.get(hash);
+	private ConsPStack<Entry<K,V>> getEntries(final int hash) {
+		ConsPStack<Entry<K,V>> entries = intMap.get(hash);
 		if(entries==null) return ConsPStack.empty();
 		return entries;
 	}
@@ -152,10 +153,10 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
 		return -1;
 	}
 	
-	static class SequenceIterator<E> implements Iterator<E> {
-		private final Iterator<PSequence<E>> i;
+	private static class SequenceIterator<E> implements Iterator<E> {
+		private final Iterator<ConsPStack<E>> i;
 		private PSequence<E> seq = ConsPStack.empty();
-		SequenceIterator(Iterator<PSequence<E>> i) {
+		SequenceIterator(Iterator<ConsPStack<E>> i) {
 			this.i = i; }
 
 		public boolean hasNext() {
