@@ -1,5 +1,6 @@
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Iterator;
@@ -17,7 +18,7 @@ import java.util.Iterator;
  *
  * @param <E>
  */
-public final class MapPSet<E> extends AbstractSet<E> implements PSet<E> {
+public final class MapPSet<E> extends AbstractSet<E> implements PSet<E>, Serializable {
 //// STATIC FACTORY METHODS ////
 	/**
 	 * @param <E>
