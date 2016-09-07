@@ -12,7 +12,7 @@ import java.util.Set;
 
 /**
  * 
- * A persistent map from non-null keys to non-null values.
+ * A persistent hash map.
  * <p>
  * This map uses a given integer map to map hashcodes to lists of elements
  * with the same hashcode. Thus if all elements have the same hashcode, performance
@@ -66,8 +66,11 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
 				public boolean contains(final Object e) {
 					if(!(e instanceof Entry))
 						return false;
-					V value = get(((Entry<?,?>)e).getKey());
-					return value!=null && value.equals(((Entry<?,?>)e).getValue());
+					Entry<?,?> entry = (Entry<?, ?>) e;
+					V value = get(entry.getKey());
+					return value != null
+							? value.equals(entry.getValue())
+							: entry.getValue() == null && containsKey(entry.getKey());
 				}
 			};
 		return entrySet;
@@ -81,13 +84,13 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
 
 	@Override
 	public boolean containsKey(final Object key) {
-		return keyIndexIn(getEntries(key.hashCode()), key) != -1; }
+		return keyIndexIn(getEntries(Objects.hashCode(key)), key) != -1; }
 	
 	@Override
 	public V get(final Object key) {
-		PSequence<Entry<K,V>> entries = getEntries(key.hashCode());
+		PSequence<Entry<K,V>> entries = getEntries(Objects.hashCode(key));
 		for(Entry<K,V> entry : entries)
-			if(entry.getKey().equals(key))
+			if(Objects.equals(entry.getKey(), key))
 				return entry.getValue();
 		return null;
 	}
@@ -109,26 +112,26 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
 	}
 	
 	public HashPMap<K,V> plus(final K key, final V value) {
-		PSequence<Entry<K,V>> entries = getEntries(key.hashCode());
+		PSequence<Entry<K,V>> entries = getEntries(Objects.hashCode(key));
 		int size0 = entries.size(),
 			i = keyIndexIn(entries, key);
 		if(i!=-1) entries = entries.minus(i);
 		entries = entries.plus(new org.pcollections.SimpleImmutableEntry<K,V>(key, value));
-		return new HashPMap<K,V>(intMap.plus(key.hashCode(), entries),
+		return new HashPMap<K,V>(intMap.plus(Objects.hashCode(key), entries),
 				size-size0+entries.size());
 	}
 
 	public HashPMap<K,V> minus(final Object key) {
-		PSequence<Entry<K,V>> entries = getEntries(key.hashCode());
+		PSequence<Entry<K,V>> entries = getEntries(Objects.hashCode(key));
 		int i = keyIndexIn(entries, key);
 		if(i==-1) // key not in this
 			return this;
 		entries = entries.minus(i);
 		if(entries.size()==0) // get rid of the entire hash entry
-			return new HashPMap<K,V>(intMap.minus(key.hashCode()),
+			return new HashPMap<K,V>(intMap.minus(Objects.hashCode(key)),
 					size-1);
 		// otherwise replace hash entry with new smaller one:
-		return new HashPMap<K,V>(intMap.plus(key.hashCode(), entries),
+		return new HashPMap<K,V>(intMap.plus(Objects.hashCode(key), entries),
 				size-1);
 	}
 	
@@ -145,13 +148,14 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
 	private static <K,V> int keyIndexIn(final PSequence<Entry<K,V>> entries, final Object key) {
 		int i=0;
 		for(Entry<K,V> entry : entries) {
-			if(entry.getKey().equals(key))
+			if(Objects.equals(entry.getKey(), key))
 				return i;
 			i++;
 		}
 		return -1;
 	}
-	
+
+
 	static class SequenceIterator<E> implements Iterator<E> {
 		private final Iterator<PSequence<E>> i;
 		private PSequence<E> seq = ConsPStack.empty();

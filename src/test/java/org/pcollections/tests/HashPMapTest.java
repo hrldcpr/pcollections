@@ -24,7 +24,8 @@ public class HashPMapTest extends TestCase {
 		Random r = new Random();
 		for(int i=0;i<10000;i++) {
 			if(pmap.size()==0 || r.nextBoolean()) { // add
-				int k = r.nextInt(), v = r.nextInt();
+				Integer k = r.nextInt(100) < 1 ? null : r.nextInt(),
+						v = r.nextInt(100) < 1 ? null : r.nextInt();
 
 				assertEquals(map.containsKey(k), pmap.containsKey(k));
 				assertEquals(map.get(k), pmap.get(k));
@@ -34,7 +35,7 @@ public class HashPMapTest extends TestCase {
 			} else { // remove a random key
 				int j = r.nextInt(pmap.size());
 				for(Entry<Integer,Integer> e : pmap.entrySet()) {
-					int k = e.getKey();
+					Integer k = e.getKey();
 
 					assertTrue(map.containsKey(k));
 					assertTrue(pmap.containsKey(k));

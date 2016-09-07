@@ -1,7 +1,6 @@
 package org.pcollections.tests;
 
-import java.util.Iterator;
-import java.util.Random;
+import java.util.*;
 
 import junit.framework.TestCase;
 
@@ -57,5 +56,16 @@ public class OrderedPSetTest extends TestCase {
 		}
 
 		assertEquals(s, os);
+	}
+
+	public void testAllowsNulls() {
+		POrderedSet<Long> s = Empty.orderedSet();
+		s = s.plus(1L).plus(2L).plus(null).plusAll(Arrays.asList(2L, 1L, null));
+
+		List<Long> expectedOrdered = Arrays.asList(1L, 2L, null);
+		Set<Long> expected = new LinkedHashSet<Long>(expectedOrdered);
+
+		UtilityTest.assertEqualsAndHash(expected, s);
+		UtilityTest.assertEqualsAndHash(expectedOrdered, new ArrayList<Long>(s));
 	}
 }

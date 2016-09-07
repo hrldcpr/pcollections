@@ -72,7 +72,7 @@ public final class MapPBag<E> extends AbstractCollection<E> implements PBag<E> {
 	public int hashCode() {
 		int hashCode = 0;
 		for(E e : this)
-			hashCode += e.hashCode();
+			hashCode += Objects.hashCode(e);
 		return hashCode;
 	}
 	
