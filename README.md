@@ -5,6 +5,7 @@ A Persistent Java Collections Library
 
 [![Maven Central](https://img.shields.io/maven-central/v/org.pcollections/pcollections.svg)](https://maven-badges.herokuapp.com/maven-central/org.pcollections/pcollections/)
 [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/org.pcollections/pcollections/badge.svg)](http://www.javadoc.io/doc/org.pcollections/pcollections)
+<a href="http://www.methodscount.com/?lib=org.pcollections%3Apcollections%3A2.1.2"><img src="https://img.shields.io/badge/Methods and size-427 | 40 KB-e91e63.svg"/></a>
 
 ###Overview
 
@@ -13,21 +14,21 @@ PCollections serves as a [persistent](http://en.wikipedia.org/wiki/Persistent_da
 Persistent and immutable datatypes are increasingly appreciated as a **simple**, **design-friendly**, **concurrency-friendly**, and sometimes more time- and space-efficient alternative to mutable datatypes.
 ###Persistent versus Unmodifiable
 
-Note that these immutable collections are very different from the immutable collections returned by Java's [Collections.unmodifiableCollection()](http://java.sun.com/javase/6/docs/api/java/util/Collections.html#unmodifiableCollection(java.util.Collection)) and similar methods. The difference is that Java's unmodifiable collections have no producers, whereas PCollections have very efficient producers. Thus if you have an unmodifiable Collection x and you want a new Collection x2 consisting of the elements of x in addition to some element e, you would have to do something like:
+Note that these immutable collections are very different from the immutable collections returned by Java's [Collections.unmodifiableCollection()](http://java.sun.com/javase/6/docs/api/java/util/Collections.html#unmodifiableCollection(java.util.Collection)) and similar methods. The difference is that Java's unmodifiable collections have no producers, whereas PCollections have very efficient producers. Thus if you have an unmodifiable Collection `x` and you want a new Collection `x2` consisting of the elements of `x` in addition to some element `e`, you would have to do something like:
 ```Java
 Collection x2 = new HashSet(x);
 x2.add(e);
 ```
-which involves copying all of x, using linear time and space. If, on the other hand, you have a PCollection y you can simply say:
+which involves copying all of `x`, using linear time and space. If, on the other hand, you have a PCollection `y` you can simply say:
 ```Java
 PCollection y2 = y.plus(e);
 ```
-which still leaves y untouched but generally requires little or no copying, using time and space much more efficiently.
+which still leaves `y` untouched but generally requires little or no copying, using time and space much more efficiently.
 ###Usage
 
 PCollections are created using producers and static factory methods. Some example static factory methods are [HashTreePSet.empty()](http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/HashTreePSet.html#empty()) which returns an empty [PSet](http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/PSet.html), while HashTreePSet.singleton(e) returns a PSet containing just the element e, and HashTreePSet.from(collection) returns a PSet containing the same elements as collection. See 'Example Code' below for an example of using producers.
 
-The same empty(), singleton(), and from() factory methods are found in each of the PCollections implementations, which currently include one concrete implementation for each abstract type:
+The same `empty()`, `singleton()`, and `from()` factory methods are found in each of the PCollections implementations, which currently include one concrete implementation for each abstract type:
 * [HashTreePMap](http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/HashTreePMap.html) provides a [PMap](http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/PMap.html) implementation, analogous to Java's HashMap.
 * [ConsPStack](http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/ConsPStack.html) provides a [PStack](http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/PStack.html) implementation, analogous to Java's LinkedList.
 * [TreePVector](http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/TreePVector.html) provides a [PVector](http://pcollections.googlecode.com/svn/trunk/docs/org/pcollections/PVector.html) implementation, analogous to Java's ArrayList.
@@ -46,6 +47,18 @@ PCollections is in the [Maven Central repository](http://search.maven.org/#searc
     <artifactId>pcollections</artifactId>
     <version>2.1.2</version>
 </dependency>
+```
+
+or Gradle:
+```groovy
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.pcollections:pcollections:2.1.2'
+}
 ```
 
 ###Example Code
