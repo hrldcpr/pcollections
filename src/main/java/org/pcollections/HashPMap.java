@@ -147,12 +147,13 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
 
 	
 //// PRIVATE STATIC UTILITIES ////
-	private static <K,V> int keyIndexIn(final ConsPStack<Entry<K,V>> entries, final Object key) {
+	private static <K,V> int keyIndexIn(ConsPStack<Entry<K,V>> entries, final Object key) {
 		int i=0;
 		while(entries != null && !entries.isEmpty()) {
 			Entry<K,V> entry = entries.first;
 			if(entry.getKey().equals(key))
 				return i;
+			entries = entries.rest;
 			i++;
 		}
 		return -1;
