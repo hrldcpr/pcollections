@@ -14,22 +14,22 @@ Persistent and immutable datatypes are increasingly appreciated as a **simple**,
 
 ### Persistent versus Unmodifiable
 
-Note that these immutable collections are very different from the immutable collections returned by Java's [Collections.unmodifiableCollection()](https://java.sun.com/javase/6/docs/api/java/util/Collections.html#unmodifiableCollection(java.util.Collection)) and similar methods. The difference is that Java's unmodifiable collections have no producers, whereas PCollections have very efficient producers. Thus if you have an unmodifiable Collection x and you want a new Collection x2 consisting of the elements of x in addition to some element e, you would have to do something like:
+Note that these immutable collections are very different from the immutable collections returned by Java's [Collections.unmodifiableCollection()](http://java.sun.com/javase/6/docs/api/java/util/Collections.html#unmodifiableCollection(java.util.Collection)) and similar methods. The difference is that Java's unmodifiable collections have no producers, whereas PCollections have very efficient producers. Thus if you have an unmodifiable Collection `x` and you want a new Collection `x2` consisting of the elements of `x` in addition to some element `e`, you would have to do something like:
 ```Java
 Collection x2 = new HashSet(x);
 x2.add(e);
 ```
-which involves copying all of x, using linear time and space. If, on the other hand, you have a PCollection y you can simply say:
+which involves copying all of `x`, using linear time and space. If, on the other hand, you have a PCollection `y` you can simply say:
 ```Java
 PCollection y2 = y.plus(e);
 ```
-which still leaves y untouched but generally requires little or no copying, using time and space much more efficiently.
+which still leaves `y` untouched but generally requires little or no copying, using time and space much more efficiently.
 
 ### Usage
 
 PCollections are created using producers and static factory methods. Some example static factory methods are [HashTreePSet.empty()](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/HashTreePSet.html#empty()) which returns an empty [PSet](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/PSet.html), while HashTreePSet.singleton(e) returns a PSet containing just the element e, and HashTreePSet.from(collection) returns a PSet containing the same elements as collection. See 'Example Code' below for an example of using producers.
 
-The same empty(), singleton(), and from() factory methods are found in each of the PCollections implementations, which currently include one concrete implementation for each abstract type:
+The same `empty()`, `singleton()`, and `from()` factory methods are found in each of the PCollections implementations, which currently include one concrete implementation for each abstract type:
 * [HashTreePMap](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/HashTreePMap.html) provides a [PMap](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/PMap.html) implementation, analogous to Java's HashMap.
 * [ConsPStack](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/ConsPStack.html) provides a [PStack](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/PStack.html) implementation, analogous to Java's LinkedList.
 * [TreePVector](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/TreePVector.html) provides a [PVector](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/PVector.html) implementation, analogous to Java's ArrayList.
@@ -48,6 +48,11 @@ PCollections is in the [Maven Central repository](https://search.maven.org/#sear
     <artifactId>pcollections</artifactId>
     <version>2.1.2</version>
 </dependency>
+```
+
+or Gradle:
+```groovy
+compile 'org.pcollections:pcollections:2.1.2'
 ```
 
 ### Example Code
