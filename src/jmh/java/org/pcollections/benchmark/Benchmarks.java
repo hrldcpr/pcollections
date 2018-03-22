@@ -14,15 +14,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import org.pcollections.*;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.*;
 
-import static org.pcollections.tests.Benchmarks.CollectionType.*;
-import static org.pcollections.tests.Benchmarks.BaseListType.*;
+import static org.pcollections.benchmark.Benchmarks.CollectionType.*;
+import static org.pcollections.benchmark.Benchmarks.BaseListType.*;
 
 @State(Scope.Thread)
 @Fork(2)
