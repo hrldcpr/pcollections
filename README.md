@@ -11,6 +11,7 @@ A Persistent Java Collections Library
 PCollections serves as a [persistent](https://en.wikipedia.org/wiki/Persistent_data_structure) and immutable analogue of the [Java Collections Framework](https://java.sun.com/javase/6/docs/technotes/guides/collections/index.html). This includes **efficient**, **thread-safe**, **generic**, **immutable**, and **persistent** stacks, maps, vectors, sets, and bags, **compatible** with their Java Collections counterparts.
 
 Persistent and immutable datatypes are increasingly appreciated as a **simple**, **design-friendly**, **concurrency-friendly**, and sometimes more time- and space-efficient alternative to mutable datatypes.
+
 ### Persistent versus Unmodifiable
 
 Note that these immutable collections are very different from the immutable collections returned by Java's [Collections.unmodifiableCollection()](https://java.sun.com/javase/6/docs/api/java/util/Collections.html#unmodifiableCollection(java.util.Collection)) and similar methods. The difference is that Java's unmodifiable collections have no producers, whereas PCollections have very efficient producers. Thus if you have an unmodifiable Collection x and you want a new Collection x2 consisting of the elements of x in addition to some element e, you would have to do something like:
@@ -23,6 +24,7 @@ which involves copying all of x, using linear time and space. If, on the other h
 PCollection y2 = y.plus(e);
 ```
 which still leaves y untouched but generally requires little or no copying, using time and space much more efficiently.
+
 ### Usage
 
 PCollections are created using producers and static factory methods. Some example static factory methods are [HashTreePSet.empty()](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/HashTreePSet.html#empty()) which returns an empty [PSet](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/PSet.html), while HashTreePSet.singleton(e) returns a PSet containing just the element e, and HashTreePSet.from(collection) returns a PSet containing the same elements as collection. See 'Example Code' below for an example of using producers.
@@ -85,4 +87,4 @@ This will compile all files, execute the tests and create a jar in ./build/libs.
 
 ### Related Work
 
-[Clojure](https://clojure.googlecode.com/) also provides persistent collections in Java, but for now they are less interoperable with Java Collections, and seem more designed to be used within the Clojure language itself. Both [Guava](https://guava-libraries.googlecode.com/) and Java's [Collections](https://java.sun.com/javase/6/docs/api/java/util/Collections.html) utility class provide immutable collections but they are not persistent, that is they do not provide efficient producers, so they are not nearly as useful. See [Persistent versus Unmodifiable](#persistent-versus-unmodifiable) above.
+[Clojure](https://clojure.org/) also provides persistent collections in Java, but for now they are less interoperable with Java Collections, and seem more designed to be used within the Clojure language itself. Both [Guava](https://github.com/google/guava) and Java's [Collections](https://java.sun.com/javase/6/docs/api/java/util/Collections.html) utility class provide immutable collections but they are not persistent, that is they do not provide efficient producers, so they are not nearly as useful. See [Persistent versus Unmodifiable](#persistent-versus-unmodifiable) above.
