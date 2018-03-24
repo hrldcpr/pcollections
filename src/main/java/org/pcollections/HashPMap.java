@@ -6,6 +6,7 @@
 
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Collection;
@@ -32,7 +33,7 @@ import java.util.Set;
  * @param <K>
  * @param <V>
  */
-public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V> {
+public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V>, Serializable {
 //// STATIC FACTORY METHODS ////
 	/**
 	 * @param <K>
