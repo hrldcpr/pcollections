@@ -84,7 +84,7 @@ Running this program gives the following output:
 ```
 
 ### Building form source
-Tp build the project from source [clone the repository](https://github.com/pcollections/pcollections.git) and then run `./gradlew`
+To build the project from source [clone the repository](https://github.com/pcollections/pcollections.git) and then run `./gradlew`
 
 ### Related Work
 
