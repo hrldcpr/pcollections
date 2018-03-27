@@ -8,13 +8,13 @@ A Persistent Java Collections Library
 
 ### Overview
 
-PCollections serves as a [persistent](https://en.wikipedia.org/wiki/Persistent_data_structure) and immutable analogue of the [Java Collections Framework](https://java.sun.com/javase/6/docs/technotes/guides/collections/index.html). This includes **efficient**, **thread-safe**, **generic**, **immutable**, and **persistent** stacks, maps, vectors, sets, and bags, **compatible** with their Java Collections counterparts.
+PCollections serves as a [persistent](https://en.wikipedia.org/wiki/Persistent_data_structure) and immutable analogue of the [Java Collections Framework](https://docs.oracle.com/javase/8/docs/technotes/guides/collections/index.html). This includes **efficient**, **thread-safe**, **generic**, **immutable**, and **persistent** stacks, maps, vectors, sets, and bags, **compatible** with their Java Collections counterparts.
 
 Persistent and immutable datatypes are increasingly appreciated as a **simple**, **design-friendly**, **concurrency-friendly**, and sometimes more time- and space-efficient alternative to mutable datatypes.
 
 ### Persistent versus Unmodifiable
 
-Note that these immutable collections are very different from the immutable collections returned by Java's [Collections.unmodifiableCollection()](http://java.sun.com/javase/6/docs/api/java/util/Collections.html#unmodifiableCollection(java.util.Collection)) and similar methods. The difference is that Java's unmodifiable collections have no producers, whereas PCollections have very efficient producers. Thus if you have an unmodifiable Collection `x` and you want a new Collection `x2` consisting of the elements of `x` in addition to some element `e`, you would have to do something like:
+Note that these immutable collections are very different from the immutable collections returned by Java's [Collections.unmodifiableCollection()](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html#unmodifiableCollection-java.util.Collection-) and similar methods. The difference is that Java's unmodifiable collections have no producers, whereas PCollections have very efficient producers. Thus if you have an unmodifiable Collection `x` and you want a new Collection `x2` consisting of the elements of `x` in addition to some element `e`, you would have to do something like:
 ```Java
 Collection x2 = new HashSet(x);
 x2.add(e);
@@ -46,20 +46,21 @@ PCollections is in the [Maven Central repository](https://search.maven.org/#sear
 <dependency>
     <groupId>org.pcollections</groupId>
     <artifactId>pcollections</artifactId>
-    <version>2.1.2</version>
+    <version>2.1.3</version>
 </dependency>
 ```
 
 or Gradle:
 ```groovy
-compile 'org.pcollections:pcollections:2.1.2'
+compile 'org.pcollections:pcollections:2.1.3'
 ```
 
 ### Example Code
 
 The following gives a very simple example of using PCollections, including the static factory method HashTreePSet.empty() and the producer plus(e):
 ```Java
-import pcollections.*;
+import org.pcollections.*;
+
 public class Example {
   public static void main(String... args) {
     PSet<String> set = HashTreePSet.empty();
@@ -92,4 +93,4 @@ This will compile all files, execute the tests and create a jar in ./build/libs.
 
 ### Related Work
 
-[Clojure](https://clojure.org/) also provides persistent collections in Java, but for now they are less interoperable with Java Collections, and seem more designed to be used within the Clojure language itself. Both [Guava](https://github.com/google/guava) and Java's [Collections](https://java.sun.com/javase/6/docs/api/java/util/Collections.html) utility class provide immutable collections but they are not persistent, that is they do not provide efficient producers, so they are not nearly as useful. See [Persistent versus Unmodifiable](#persistent-versus-unmodifiable) above.
+[Clojure](https://clojure.org/) also provides persistent collections in Java, but for now they are less interoperable with Java Collections, and seem more designed to be used within the Clojure language itself. Both [Guava](https://github.com/google/guava) and Java's [Collections](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html) utility class provide immutable collections but they are not persistent, that is they do not provide efficient producers, so they are not nearly as useful. See [Persistent versus Unmodifiable](#persistent-versus-unmodifiable) above.
