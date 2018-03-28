@@ -4,7 +4,7 @@
 
   <groupId>org.pcollections</groupId>
   <artifactId>pcollections</artifactId>
-  <version>3.0.1-SNAPSHOT</version>
+  <version>3.0.1</version>
   <packaging>jar</packaging>
 
   <name>PCollections</name>
