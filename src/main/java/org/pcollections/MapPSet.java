@@ -6,6 +6,7 @@
 
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Iterator;
@@ -23,7 +24,10 @@ import java.util.Iterator;
  *
  * @param <E>
  */
-public final class MapPSet<E> extends AbstractSet<E> implements PSet<E> {
+public final class MapPSet<E> extends AbstractSet<E> implements PSet<E>, Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 //// STATIC FACTORY METHODS ////
 	/**
 	 * @param <E>

@@ -6,6 +6,7 @@
 
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.Iterator;
@@ -24,7 +25,10 @@ import java.util.Map.Entry;
  *
  * @param <E>
  */
-public final class MapPBag<E> extends AbstractCollection<E> implements PBag<E> {
+public final class MapPBag<E> extends AbstractCollection<E> implements PBag<E>, Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 //// STATIC FACTORY METHODS ////
 	/**
 	 * @param <E>
