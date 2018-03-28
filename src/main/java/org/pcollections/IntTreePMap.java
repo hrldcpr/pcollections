@@ -41,6 +41,9 @@ import java.util.Set;
  * @param <V>
  */
 public final class IntTreePMap<V> extends AbstractMap<Integer,V> implements PMap<Integer,V>, Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 //// STATIC FACTORY METHODS ////
 	private static final IntTreePMap<Object> EMPTY = new IntTreePMap<Object>(IntTree.EMPTYNODE);
 

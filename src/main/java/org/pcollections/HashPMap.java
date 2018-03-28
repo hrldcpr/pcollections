@@ -34,6 +34,9 @@ import java.util.Set;
  * @param <V>
  */
 public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V>, Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 //// STATIC FACTORY METHODS ////
 	/**
 	 * @param <K>

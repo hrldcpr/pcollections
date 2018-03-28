@@ -26,6 +26,9 @@ import java.util.ListIterator;
  * @param <E>
  */
 public final class ConsPStack<E> extends AbstractSequentialList<E> implements PStack<E>, Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 //// STATIC FACTORY METHODS ////
 	private static final ConsPStack<Object> EMPTY = new ConsPStack<Object>();
 	

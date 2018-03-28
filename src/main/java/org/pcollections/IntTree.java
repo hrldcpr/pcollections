@@ -39,6 +39,9 @@ import java.util.Map.Entry;
  * @param <V>
  */
 class IntTree<V> implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	// marker value:
 	static final IntTree<Object> EMPTYNODE = new IntTree<Object>();
 	

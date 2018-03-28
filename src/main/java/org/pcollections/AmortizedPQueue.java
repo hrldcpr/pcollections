@@ -6,6 +6,7 @@
 
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.AbstractQueue;
 import java.util.Collection;
 import java.util.Iterator;
@@ -21,7 +22,9 @@ import java.util.Iterator;
  *
  * @param <E>
  */
-public class AmortizedPQueue<E> extends AbstractQueue<E> implements PQueue<E> {
+public class AmortizedPQueue<E> extends AbstractQueue<E> implements PQueue<E>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private static final AmortizedPQueue<Object> EMPTY = new AmortizedPQueue<Object>();
 
