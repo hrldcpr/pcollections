@@ -1,5 +1,5 @@
 /*
-  * Copyright (c) 2008 Harold Cooper. All rights reserved.  
+  * Copyright (c) 2008 Harold Cooper. All rights reserved.
   * Licensed under the MIT License.
   * See LICENSE file in the project root for full license information.
 */
@@ -18,7 +18,7 @@ import java.util.Set;
 
 
 /**
- * 
+ *
  * A persistent map from non-null keys to non-null values.
  * <p>
  * This map uses a given integer map to map hashcodes to lists of elements
@@ -27,7 +27,7 @@ import java.util.Set;
  * <p>
  * This implementation is thread-safe (assuming Java's AbstractMap and AbstractSet are thread-safe),
  * although its iterators may not be.
- * 
+ *
  * @author harold
  *
  * @param <K>
@@ -47,7 +47,7 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V>, 
 	 */
 	public static <K,V> HashPMap<K,V> empty(final PMap<Integer,PSequence<Entry<K,V>>> intMap) {
 		return new HashPMap<K,V>(intMap.minusAll(intMap.keySet()), 0); }
-	
+
 
 //// PRIVATE CONSTRUCTORS ////
 	private final PMap<Integer,PSequence<Entry<K,V>>> intMap;
@@ -56,7 +56,7 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V>, 
 	private HashPMap(final PMap<Integer,PSequence<Entry<K,V>>> intMap, final int size) {
 		this.intMap = intMap; this.size = size; }
 
-	
+
 //// REQUIRED METHODS FROM AbstractMap ////
 	// this cache variable is thread-safe since assignment in Java is atomic:
 	private Set<Entry<K,V>> entrySet = null;
@@ -64,10 +64,10 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V>, 
 	public Set<Entry<K,V>> entrySet() {
 		if(entrySet==null)
 			entrySet = new AbstractSet<Entry<K,V>>() {
-				// REQUIRED METHODS OF AbstractSet // 
+				// REQUIRED METHODS OF AbstractSet //
 				@Override
 				public int size() {
-					return size; }		
+					return size; }
 				@Override
 				public Iterator<Entry<K,V>> iterator() {
 					return new SequenceIterator<Entry<K,V>>(intMap.values().iterator()); }
@@ -83,7 +83,7 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V>, 
 		return entrySet;
 	}
 
-	
+
 //// OVERRIDDEN METHODS FROM AbstractMap ////
 	@Override
 	public int size() {
@@ -92,7 +92,7 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V>, 
 	@Override
 	public boolean containsKey(final Object key) {
 		return keyIndexIn(getEntries(key.hashCode()), key) != -1; }
-	
+
 	@Override
 	public V get(final Object key) {
 		PSequence<Entry<K,V>> entries = getEntries(key.hashCode());
@@ -102,7 +102,7 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V>, 
 		return null;
 	}
 
-	
+
 //// IMPLEMENTED METHODS OF PMap////
 	public HashPMap<K,V> plusAll(final Map<? extends K, ? extends V> map) {
 		HashPMap<K,V> result = this;
@@ -117,13 +117,13 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V>, 
 			result = result.minus(key);
 		return result;
 	}
-	
+
 	public HashPMap<K,V> plus(final K key, final V value) {
 		PSequence<Entry<K,V>> entries = getEntries(key.hashCode());
 		int size0 = entries.size(),
 			i = keyIndexIn(entries, key);
 		if(i!=-1) entries = entries.minus(i);
-		entries = entries.plus(new org.pcollections.SimpleImmutableEntry<K,V>(key, value));
+		entries = entries.plus(new SimpleImmutableEntry<K,V>(key, value));
 		return new HashPMap<K,V>(intMap.plus(key.hashCode(), entries),
 				size-size0+entries.size());
 	}
@@ -141,8 +141,8 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V>, 
 		return new HashPMap<K,V>(intMap.plus(key.hashCode(), entries),
 				size-1);
 	}
-	
-	
+
+
 //// PRIVATE UTILITIES ////
 	private PSequence<Entry<K,V>> getEntries(final int hash) {
 		PSequence<Entry<K,V>> entries = intMap.get(hash);
@@ -150,7 +150,7 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V>, 
 		return entries;
 	}
 
-	
+
 //// PRIVATE STATIC UTILITIES ////
 	private static <K,V> int keyIndexIn(final PSequence<Entry<K,V>> entries, final Object key) {
 		int i=0;
@@ -161,7 +161,7 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V>, 
 		}
 		return -1;
 	}
-	
+
 	static class SequenceIterator<E> implements Iterator<E> {
 		private final Iterator<PSequence<E>> i;
 		private PSequence<E> seq = ConsPStack.empty();
