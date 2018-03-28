@@ -60,7 +60,7 @@
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
-      <artifactId>assertj-cor</artifactId>
+      <artifactId>assertj-core</artifactId>
       <version>3.9.1</version>
       <scope>test</scope>
     </dependency>
