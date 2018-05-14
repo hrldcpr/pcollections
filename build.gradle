@@ -17,8 +17,13 @@ defaultTasks 'build'
 group = 'org.pcollections'
 version = '3.0.3-SNAPSHOT'
 
-sourceCompatibility = '1.6'
-targetCompatibility = '1.6'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+compileJava {
+    sourceCompatibility = '1.6'
+    targetCompatibility = '1.6'
+}
 
 description = """PCollections"""
 
