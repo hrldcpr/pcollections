@@ -11,4 +11,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - This changelog!
 ### Changed
 - Compatibility with Java 1.6+, and Android [[#67](https://github.com/hrldcpr/pcollections/pull/67) by [@guenhter](https://github.com/guenhter)]
-- Use Gradle 4.7 /by [[#66](https://github.com/hrldcpr/pcollections/pull/66) [@guenhter](https://github.com/guenhter)]
+- Use Gradle 4.7 /by [[#66](https://github.com/hrldcpr/pcollections/pull/66) by [@guenhter](https://github.com/guenhter)]
