@@ -1,13 +1,21 @@
+/*
+  * Copyright (c) 2008 Harold Cooper. All rights reserved.
+  * Licensed under the MIT License.
+  * See LICENSE file in the project root for full license information.
+*/
+
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.Iterator;
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Map.Entry;
 
 
 
 
 /**
- * 
+ *
  * A non-public utility class for persistent balanced tree maps with integer keys.
  * <p>
  * To allow for efficiently increasing all keys above a certain value or decreasing
@@ -26,15 +34,18 @@ import java.util.Map.Entry;
  * <p>
  * J. Nievergelt and E.M. Reingold, "Binary search trees of bounded balance",
  * SIAM journal of computing 2(1), March 1973.
- * 
+ *
  * @author harold
  *
  * @param <V>
  */
-class IntTree<V> {
+class IntTree<V> implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	// marker value:
 	static final IntTree<Object> EMPTYNODE = new IntTree<Object>();
-	
+
 	private final long key; // we use longs so relative keys can express all ints
 		// (e.g. if this has key -10 and right has 'absolute' key MAXINT,
 		// then its relative key is MAXINT+10 which overflows)
@@ -47,7 +58,7 @@ class IntTree<V> {
 		if(EMPTYNODE!=null)
 			throw new RuntimeException("empty constructor should only be used once");
 		size = 0;
-		
+
 		key=0; value=null; left=null; right=null;
 	}
 	private IntTree(final long key, final V value, final IntTree<V> left, final IntTree<V> right) {
@@ -55,14 +66,14 @@ class IntTree<V> {
 		this.left = left; this.right = right;
 		size = 1 + left.size + right.size;
 	}
-	
+
 	private IntTree<V> withKey(final long newKey) {
 		if(size==0 || newKey==key) return this;
 		return new IntTree<V>(newKey, value, left, right); }
-	
+
 	Iterator<Entry<Integer,V>> iterator() {
 		return new EntryIterator<V>(this); }
-	
+
 	int size() {
 		return size; }
 
@@ -76,7 +87,7 @@ class IntTree<V> {
 		// otherwise key==this.key:
 		return true;
 	}
-	
+
 	V get(final long key) {
 		if(size==0)
 			return null;
@@ -118,11 +129,11 @@ class IntTree<V> {
 			return left.withKey(left.key+this.key);
 
 		// otherwise replace this with the next key (i.e. the smallest key to the right):
-		
+
 		// TODO have minNode() instead of minKey to avoid having to call get()
 		// TODO get node from larger subtree, i.e. if left.size>right.size use left.maxNode()
 		// TODO have faster minusMin() instead of just using minus()
-		
+
 		long newKey = right.minKey() + this.key;
 			//(right.minKey() is relative to this; adding this.key makes it 'absolute'
 			//	where 'absolute' really means relative to the parent of this)
@@ -135,17 +146,17 @@ class IntTree<V> {
 		newRight = newRight.withKey( (newRight.key+this.key) - newKey );
 		// left is definitely not empty:
 		IntTree<V> newLeft = left.withKey( (left.key+this.key) - newKey );
-		
+
 		return rebalanced(newKey, newValue, newLeft, newRight);
 	}
-	
+
 	/**
 	 * Changes every key k>=key to k+delta.
-	 * 
+	 *
 	 * This method will create an _invalid_ tree if delta<0
 	 * and the distance between the smallest k>=key in this
 	 * and the largest j<key in this is |delta| or less.
-	 * 
+	 *
 	 * In other words, this method must not result in any change
 	 * in the order of the keys in this, since the tree structure is
 	 * not being changed at all.
@@ -165,14 +176,14 @@ class IntTree<V> {
 		if(newRight==right) return this;
 		return new IntTree<V>(this.key, value, left, newRight);
 	}
-	
+
 	/**
 	 * Changes every key k<key to k+delta.
-	 * 
+	 *
 	 * This method will create an _invalid_ tree if delta>0
 	 * and the distance between the largest k<key in this
 	 * and the smallest j>=key in this is delta or less.
-	 * 
+	 *
 	 * In other words, this method must not result in any overlap or change
 	 * in the order of the keys in this, since the tree _structure_ is
 	 * not being changed at all.
@@ -192,7 +203,7 @@ class IntTree<V> {
 		if(newLeft==left) return this;
 		return new IntTree<V>(this.key, value, newLeft, right);
 	}
-	
+
 	// min key in this:
 	private long minKey() {
 		if(left.size==0)
@@ -256,30 +267,30 @@ class IntTree<V> {
 		return new IntTree<V>(key, value, left, right);
 	}
 
-	
-////entrySet().iterator() IMPLEMENTATION ////	
+
+////entrySet().iterator() IMPLEMENTATION ////
 	// TODO make this a ListIterator?
 	private static final class EntryIterator<V> implements Iterator<Entry<Integer,V>> {
 		private PStack<IntTree<V>> stack = ConsPStack.empty(); //path of nonempty nodes
 		private int key = 0; // note we use _int_ here since this is a truly absolute key
-		
+
 		EntryIterator(final IntTree<V> root) {
 			gotoMinOf(root); }
-		
+
 		public boolean hasNext() {
 			return stack.size()>0; }
-		
+
 		public Entry<Integer,V> next() {
 			IntTree<V> node = stack.get(0);
-			final Entry<Integer,V> result = new org.pcollections.SimpleImmutableEntry<Integer,V>(key, node.value);
-			
+			final Entry<Integer,V> result = new SimpleImmutableEntry<Integer,V>(key, node.value);
+
 			// find next node.
 			// we've already done everything smaller,
 			// so try least larger node:
-			
+
 			if(node.right.size>0) // we can descend to the right
 				gotoMinOf(node.right);
-			
+
 			else // can't descend to the right -- try ascending to the right
 				while (true) { // find current node's least larger ancestor, if any
 					key -= node.key; // revert to parent's key
@@ -290,7 +301,7 @@ class IntTree<V> {
 					// otherwise parent was smaller -- try its parent:
 					node = stack.get(0);
 				}
-			
+
 			return result;
 		}
 

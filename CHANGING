@@ -1,30 +1,17 @@
-***Updating JavaDoc***
-If you re-generate the documentation, only commit it if you are sure that the MIME Types are set correctly.
-This is done by enabling SVN Auto-Properties, by editing your ~/.subversion/config file, such that it contains the following lines:
+To release, remove -SNAPSHOT from the version in pom.xml and build.gradle and commit with a tag.
 
-enable-auto-props = yes
-[auto-props]
-*.txt = svn:mime-type=text/plain
-*.html = svn:mime-type=text/html
-*.css = svn:mime-type=text/css
-*.png = svn:mime-type=image/png
-*.jpg = svn:mime-type=image/jpeg
-*.svg = svn:mime-type=image/svg+xml
-*.gif = svn:mime-type=image/gif
+Then:
 
-This is important because the website links to Javadoc within the SVN repository, and the links will all look like text (as opposed to rendered HTML) if the mime types are wrong.
+    mvn package
+    mvn source:jar
+    mvn javadoc:jar -DadditionalJOption=-Xdoclint:none
+    cp pom.xml target/pcollections-<VERSION>.pom
+    cd target
+    bash -c 'for f in pcollections-<VERSION>*; do gpg -ab $f; done'
+    jar cvf bundle.jar pcollections-<VERSION>*
 
-***Releasing a New Version***
-This project uses Semantic Versioning. See VERSION.
+Then follow the instructions at http://central.sonatype.org/pages/manual-staging-bundle-creation-and-deployment.html
 
-To build and commit the new artifacts, first commit updated javadocs:
-// TODO improve this
-rm -r docs
-mvn clean javadoc:jar
-mv target/apidocs docs
-svn commit -m "javadoc"
+Finally, increment the version in build.gradle and pom.xml and add back -SNAPSHOT, and commit.
 
-Then upload to the Maven repo, as per:
-http://nexus.sonatype.org/oss-repository-hosting.html
-
-And finally, update the Maven coordinates on the google code page, and upload the new jars.
+Finally finally, once the new version is available in Maven Central (takes a few hours), update the version in the Maven and Gradle snippets in the README.

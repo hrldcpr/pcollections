@@ -1,10 +1,20 @@
+/*
+  * Copyright (c) 2008 Harold Cooper. All rights reserved.  
+  * Licensed under the MIT License.
+  * See LICENSE file in the project root for full license information.
+*/
+
 package org.pcollections;
 
+import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class OrderedPSet<E> extends AbstractSet<E> implements POrderedSet<E> {
+public class OrderedPSet<E> extends AbstractSet<E> implements POrderedSet<E>, Serializable {
+
+    private static final long serialVersionUID = 1L;
+
 	private static final OrderedPSet<Object> EMPTY = new OrderedPSet<Object>(
 			Empty.set(), Empty.vector());
 
