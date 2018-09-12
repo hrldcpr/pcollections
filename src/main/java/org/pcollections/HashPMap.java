@@ -59,7 +59,7 @@ public final class HashPMap<K,V> extends AbstractMap<K,V> implements PMap<K,V>, 
 
 //// REQUIRED METHODS FROM AbstractMap ////
 	// this cache variable is thread-safe since assignment in Java is atomic:
-	private Set<Entry<K,V>> entrySet = null;
+	private transient Set<Entry<K,V>> entrySet = null;
 	@Override
 	public Set<Entry<K,V>> entrySet() {
 		if(entrySet==null)

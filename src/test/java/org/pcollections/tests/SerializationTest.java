@@ -40,6 +40,16 @@ public class SerializationTest extends TestCase {
         assertEquals(initialHashPMap, deserializedHashPMap);
     }
 
+    public void testSerializationForHashPMapWithEntrySet() {
+        /* regression test because entry set cache is unserializable, but wasn't marked as transient */
+        final HashPMap<String, Long> initialHashPMap = HashTreePMap.<String, Long> empty()
+                .plus("key001", 23L)
+                .plus("key002", 29L)
+                .plus("key003", 31L);
+        initialHashPMap.entrySet();
+        serializeToByteArray(initialHashPMap); // used to throw an exception
+    }
+
     public void testSerializationForAmortizedPQueue() {
         final AmortizedPQueue<String> initialPQueue = AmortizedPQueue.<String> empty()
                 .plus(ELEMENT1)
