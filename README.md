@@ -50,13 +50,13 @@ PCollections is in the [Maven Central repository](https://search.maven.org/#sear
 <dependency>
     <groupId>org.pcollections</groupId>
     <artifactId>pcollections</artifactId>
-    <version>3.0.2</version>
+    <version>3.0.3</version>
 </dependency>
 ```
 
 or Gradle:
 ```groovy
-compile 'org.pcollections:pcollections:3.0.2'
+compile 'org.pcollections:pcollections:3.0.3'
 ```
 
 ### Example Code
@@ -69,7 +69,7 @@ public class Example {
   public static void main(String... args) {
     PSet<String> set = HashTreePSet.empty();
     set = set.plus("something");
-    
+
     System.out.println(set);
     System.out.println(set.plus("something else"));
     System.out.println(set);
