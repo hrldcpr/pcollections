@@ -14,4 +14,4 @@ Then follow the instructions at http://central.sonatype.org/pages/manual-staging
 
 Finally, increment the version in build.gradle and pom.xml and add back -SNAPSHOT, and commit.
 
-Finally finally, once the new version is available in Maven Central (takes a few hours), update the version in the Maven and Gradle snippets in the README.
+Finally finally, once the new version is available in Maven Central (takes a few hours), update the version in the Maven and Gradle snippets in the README and update CHANGELOG.md.
