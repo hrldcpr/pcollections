@@ -1,5 +1,5 @@
 /*
-  * Copyright (c) 2008 Harold Cooper. All rights reserved.  
+  * Copyright (c) 2008 Harold Cooper. All rights reserved.
   * Licensed under the MIT License.
   * See LICENSE file in the project root for full license information.
 */
@@ -15,7 +15,7 @@ import java.util.Map.Entry;
 
 
 /**
- * 
+ *
  * A persistent vector of non-null elements.
  * <p>
  * This implementation is backed by an IntTreePMap and
@@ -24,18 +24,18 @@ import java.util.Map.Entry;
  * <p>
  * This implementation is thread-safe (assuming Java's AbstractList is thread-safe)
  * although its iterators may not be.
- * 
+ *
  * @author harold
  *
  * @param <E>
  */
 public class TreePVector<E> extends AbstractList<E> implements PVector<E>, Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 //// STATIC FACTORY METHODS ////
 	private static final TreePVector<Object> EMPTY = new TreePVector<Object>(IntTreePMap.empty());
-	
+
 	/**
 	 * @param <E>
 	 * @return an empty vector
@@ -43,7 +43,7 @@ public class TreePVector<E> extends AbstractList<E> implements PVector<E>, Seria
 	@SuppressWarnings("unchecked")
 	public static <E> TreePVector<E> empty() {
 		return (TreePVector<E>)EMPTY; }
-	
+
 	/**
 	 * @param <E>
 	 * @param e
@@ -51,7 +51,7 @@ public class TreePVector<E> extends AbstractList<E> implements PVector<E>, Seria
 	 */
 	public static <E> TreePVector<E> singleton(final E e) {
 		return TreePVector.<E>empty().plus(e); }
-	
+
 	/**
 	 * @param <E>
 	 * @param list
@@ -70,20 +70,20 @@ public class TreePVector<E> extends AbstractList<E> implements PVector<E>, Seria
 	private final IntTreePMap<E> map;
 	private TreePVector(final IntTreePMap<E> map) {
 		this.map = map; }
-	
+
 
 //// REQUIRED METHODS FROM AbstractList ////
 	@Override
 	public int size() {
 		return map.size(); }
-	
+
 	@Override
 	public E get(final int index) {
 		if(index<0 || index>=size())
 			throw new IndexOutOfBoundsException();
 		return map.get(index);
 	}
-	
+
 
 //// OVERRIDDEN METHODS FROM AbstractList ////
 	@Override
@@ -91,21 +91,27 @@ public class TreePVector<E> extends AbstractList<E> implements PVector<E>, Seria
 		return map.values().iterator(); }
 
 	@Override
-	public TreePVector<E> subList(final int start, final int end) {
-		final int size = size();
+	public TreePVector<E> subList(int start, int end) {
+		int size = size();
 		if(start<0 || end>size || start>end)
 			throw new IndexOutOfBoundsException();
 		if(start==end)
 			return empty();
-		if(start==0) {
-			if(end==size) return this;
-			// remove from end:
-			return this.minus(size-1).subList(start, end);
+
+		TreePVector<E> v = this;
+		while (end < size) {  // remove from end
+			v = v.minus(size - 1);
+			size--;
 		}
-		// remove from start:
-		return this.minus(0).subList(start-1,end-1);
+		while (start > 0) {  // remove from start
+			v = v.minus(0);
+			size--;
+			start--;
+			end--;
+		}
+		return v;
 	}
-	
+
 
 ////IMPLEMENTED METHODS OF PVector ////
 	public TreePVector<E> plus(final E e) {

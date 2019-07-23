@@ -1,5 +1,5 @@
 /*
-  * Copyright (c) 2008 Harold Cooper. All rights reserved.  
+  * Copyright (c) 2008 Harold Cooper. All rights reserved.
   * Licensed under the MIT License.
   * See LICENSE file in the project root for full license information.
 */
@@ -15,12 +15,12 @@ import java.util.ListIterator;
 
 
 /**
- * 
+ *
  * A simple persistent stack of non-null values.
  * <p>
  * This implementation is thread-safe (assuming Java's AbstractSequentialList is thread-safe),
  * although its iterators may not be.
- * 
+ *
  * @author harold
  *
  * @param <E>
@@ -31,7 +31,7 @@ public final class ConsPStack<E> extends AbstractSequentialList<E> implements PS
 
 //// STATIC FACTORY METHODS ////
 	private static final ConsPStack<Object> EMPTY = new ConsPStack<Object>();
-	
+
 	/**
 	 * @param <E>
 	 * @return an empty stack
@@ -39,7 +39,7 @@ public final class ConsPStack<E> extends AbstractSequentialList<E> implements PS
 	@SuppressWarnings("unchecked")
 	public static <E> ConsPStack<E> empty() {
 		return (ConsPStack<E>)EMPTY; }
-	
+
 	/**
 	 * @param <E>
 	 * @param e
@@ -47,7 +47,7 @@ public final class ConsPStack<E> extends AbstractSequentialList<E> implements PS
 	 */
 	public static <E> ConsPStack<E> singleton(final E e) {
 		return ConsPStack.<E>empty().plus(e); }
-	
+
 	/**
 	 * @param <E>
 	 * @param list
@@ -61,14 +61,14 @@ public final class ConsPStack<E> extends AbstractSequentialList<E> implements PS
 									// (i.e. we can't mess someone else up by adding the wrong type to it)
 		return ConsPStack.<E>from(list.iterator());
 	}
-	
+
 	private static <E> ConsPStack<E> from(final Iterator<? extends E> i) {
 		if(!i.hasNext()) return empty();
 		E e = i.next();
 		return ConsPStack.<E>from(i).plus(e);
 	}
 
-	
+
 //// PRIVATE CONSTRUCTORS ////
 	private final E first; private final ConsPStack<E> rest;
 	private final int size;
@@ -80,20 +80,20 @@ public final class ConsPStack<E> extends AbstractSequentialList<E> implements PS
 	}
 	private ConsPStack(final E first, final ConsPStack<E> rest) {
 		this.first = first; this.rest = rest;
-		
+
 		size = 1 + rest.size;
 	}
-	
-	
+
+
 //// REQUIRED METHODS FROM AbstractSequentialList ////
 	@Override
 	public int size() {
 		return size; }
-	
+
 	@Override
 	public ListIterator<E> listIterator(final int index) {
 		if(index<0 || index>size) throw new IndexOutOfBoundsException();
-		
+
 		return new ListIterator<E>() {
 			int i = index;
 			ConsPStack<E> next = subList(index);
@@ -132,22 +132,28 @@ public final class ConsPStack<E> extends AbstractSequentialList<E> implements PS
 	public ConsPStack<E> subList(final int start, final int end) {
 		if(start<0 || end>size || start>end)
 			throw new IndexOutOfBoundsException();
-		if(end==size) // want a substack
-			return subList(start); // this is faster
-		if(start==end) // want nothing
+		if(start==end)
 			return empty();
-		if(start==0) // want the current element
-			return new ConsPStack<E>(first, rest.subList(0, end-1));
-		// otherwise, don't want the current element:
-		return rest.subList(start-1, end-1);
+		if (start > 0)  // remove from beginning
+			return subList(start).subList(0, end - start);
+		if (end == size)
+			return this;
+
+		// remove from end (by popping off until end, and then pushing back on)
+		ConsPStack<E> reversed = empty();
+		for (final E e : this) {
+			if (reversed.size == end) break;
+			reversed = reversed.plus(e);
+		}
+		return this.<E>empty().plusAll(reversed);  // plusAll reverses again
 	}
-	
-	
+
+
 //// IMPLEMENTED METHODS OF PStack ////
 	public ConsPStack<E> plus(final E e) {
 		return new ConsPStack<E>(e, this);
 	}
-	
+
 	public ConsPStack<E> plusAll(final Collection<? extends E> list) {
 		ConsPStack<E> result = this;
 		for(E e : list)
@@ -171,7 +177,7 @@ public final class ConsPStack<E> extends AbstractSequentialList<E> implements PS
 			return plusAll(list);
 		return new ConsPStack<E>(first, rest.plusAll(i-1, list));
 	}
-	
+
 	public ConsPStack<E> minus(final Object e) {
 		if(size==0)
 			return this;
@@ -201,7 +207,7 @@ public final class ConsPStack<E> extends AbstractSequentialList<E> implements PS
 		if(newRest==rest) return this;
 		return new ConsPStack<E>(first, newRest);
 	}
-	
+
 	public ConsPStack<E> with(final int i, final E e) {
 		if(i<0 || i>=size)
 			throw new IndexOutOfBoundsException();
@@ -214,11 +220,15 @@ public final class ConsPStack<E> extends AbstractSequentialList<E> implements PS
 		return new ConsPStack<E>(first, newRest);
 	}
 
-	public ConsPStack<E> subList(final int start) {
+	public ConsPStack<E> subList(int start) {
 		if(start<0 || start>size)
 			throw new IndexOutOfBoundsException();
-		if(start==0)
-			return this;
-		return rest.subList(start-1);
+
+		ConsPStack<E> s = this;
+		while (start > 0) {
+				s = s.rest;
+				start--;
+		}
+		return s;
 	}
 }
