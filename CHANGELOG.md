@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.4] - 2019-07-24
+### Fixed
+- Stack overflows for large stacks and vectors when calling `ConsPStack.subList()` and `TreePVector.subList()` [[#74](https://github.com/hrldcpr/pcollections/issues/74) reported by [@Groostav](https://github.com/Groostav)]
+
 ## [3.0.3] - 2018-09-12
 ### Fixed
 - HashPMap serialization no longer breaks after `.entrySet()` has been called [[#71](https://github.com/hrldcpr/pcollections/issues/71) reported by [@Noctune](https://github.com/Noctune)]
