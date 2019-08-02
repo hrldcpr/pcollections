@@ -1,53 +1,47 @@
 /*
-  * Copyright (c) 2008 Harold Cooper. All rights reserved.  
-  * Licensed under the MIT License.
-  * See LICENSE file in the project root for full license information.
-*/
+ * Copyright (c) 2008 Harold Cooper. All rights reserved.
+ * Licensed under the MIT License.
+ * See LICENSE file in the project root for full license information.
+ */
 
 package org.pcollections;
 
 import java.util.Collection;
 
 /**
- * 
  * An immutable, persistent list.
- * 
- * @author harold
  *
+ * @author harold
  * @param <E>
  */
 public interface PVector<E> extends PSequence<E> {
-	
-	/**
-	 * Returns a vector consisting of the elements of this with e appended.
-	 */
-	//@Override
-	public PVector<E> plus(E e);
-	
-	/**
-	 * Returns a vector consisting of the elements of this with list appended.
-	 */
-	//@Override
-	public PVector<E> plusAll(Collection<? extends E> list);
-	
-	//@Override
-	public PVector<E> with(int i, E e);
-	
-	//@Override
-	public PVector<E> plus(int i, E e);
 
-	//@Override
-	public PVector<E> plusAll(int i, Collection<? extends E> list);
-	
-	//@Override
-	public PVector<E> minus(Object e);
-	
-	//@Override
-	public PVector<E> minusAll(Collection<?> list);
+  /** Returns a vector consisting of the elements of this with e appended. */
+  // @Override
+  public PVector<E> plus(E e);
 
-	//@Override
-	public PVector<E> minus(int i);
+  /** Returns a vector consisting of the elements of this with list appended. */
+  // @Override
+  public PVector<E> plusAll(Collection<? extends E> list);
 
-	//@Override
-	public PVector<E> subList(int start, int end);
+  // @Override
+  public PVector<E> with(int i, E e);
+
+  // @Override
+  public PVector<E> plus(int i, E e);
+
+  // @Override
+  public PVector<E> plusAll(int i, Collection<? extends E> list);
+
+  // @Override
+  public PVector<E> minus(Object e);
+
+  // @Override
+  public PVector<E> minusAll(Collection<?> list);
+
+  // @Override
+  public PVector<E> minus(int i);
+
+  // @Override
+  public PVector<E> subList(int start, int end);
 }

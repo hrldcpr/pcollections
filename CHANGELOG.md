@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Reformat with [google-java-format](https://github.com/google/google-java-format)
 
 ## [3.0.4] - 2019-07-24
 ### Fixed
