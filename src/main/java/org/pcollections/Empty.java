@@ -1,8 +1,8 @@
 /*
-  * Copyright (c) 2008 Harold Cooper. All rights reserved.  
-  * Licensed under the MIT License.
-  * See LICENSE file in the project root for full license information.
-*/
+ * Copyright (c) 2008 Harold Cooper. All rights reserved.
+ * Licensed under the MIT License.
+ * See LICENSE file in the project root for full license information.
+ */
 
 package org.pcollections;
 
@@ -13,41 +13,39 @@ package org.pcollections;
  */
 
 /**
- * A static utility class for getting empty PCollections backed by the 'default'
- * implementations.
- * 
- * @author mtklein
+ * A static utility class for getting empty PCollections backed by the 'default' implementations.
  *
+ * @author mtklein
  */
 public final class Empty {
-	//non-instantiable:
-	private Empty() {}
-	
-	public static <E> PStack<E> stack() {
-		return ConsPStack.empty();
-	}
-	
-	public static <E> PQueue<E> queue() {
-		return AmortizedPQueue.empty();
-	}
-	
-	public static <E> PVector<E> vector() {
-		return TreePVector.empty();
-	}
-	
-	public static <E> PSet<E> set() {
-		return HashTreePSet.empty();
-	}
-	
-	public static <E> POrderedSet<E> orderedSet() {
-		return OrderedPSet.empty();
-	}
-	
-	public static <E> PBag<E> bag() {
-		return HashTreePBag.empty();
-	}
-	
-	public static <K,V> PMap<K,V> map() {
-		return HashTreePMap.empty();
-	}
+  // non-instantiable:
+  private Empty() {}
+
+  public static <E> PStack<E> stack() {
+    return ConsPStack.empty();
+  }
+
+  public static <E> PQueue<E> queue() {
+    return AmortizedPQueue.empty();
+  }
+
+  public static <E> PVector<E> vector() {
+    return TreePVector.empty();
+  }
+
+  public static <E> PSet<E> set() {
+    return HashTreePSet.empty();
+  }
+
+  public static <E> POrderedSet<E> orderedSet() {
+    return OrderedPSet.empty();
+  }
+
+  public static <E> PBag<E> bag() {
+    return HashTreePBag.empty();
+  }
+
+  public static <K, V> PMap<K, V> map() {
+    return HashTreePMap.empty();
+  }
 }
