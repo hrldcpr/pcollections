@@ -88,6 +88,20 @@ public final class IntTreePMap<V> extends AbstractMap<Integer, V>
   }
 
   //// UNINHERITED METHODS OF IntTreePMap ////
+  /**
+   * @param <V>
+   * @param start
+   * @param end
+   * @return this map but with all keys start<=k<end removed
+   */
+  public IntTreePMap<V> minusRange(final int start, final int end) {
+    IntTree<V> root = this.root;
+    for (int i = start; i < end; i++) {
+      root = root.minus(i);
+    }
+    return withRoot(root);
+  }
+
   IntTreePMap<V> withKeysChangedAbove(final int key, final int delta) {
     // TODO check preconditions of changeKeysAbove()
     // TODO make public?

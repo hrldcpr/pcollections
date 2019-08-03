@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
+- Faster `TreePVector.subList()` makes fewer calls to `TreePVector()`, `IntTreePMap()`, and `IntTreePMap.withKeysChangedAbove()` suggested by [@Groostav](https://github.com/Groostav)] in [[#74](https://github.com/hrldcpr/pcollections/issues/74)
 - Reformat with [google-java-format](https://github.com/google/google-java-format)
 
 ## [3.0.4] - 2019-07-24

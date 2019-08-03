@@ -90,22 +90,14 @@ public class TreePVector<E> extends AbstractList<E> implements PVector<E>, Seria
 
   @Override
   public TreePVector<E> subList(int start, int end) {
-    int size = size();
+    final int size = size();
     if (start < 0 || end > size || start > end) throw new IndexOutOfBoundsException();
+    if (start == 0 && end == size) return this;
     if (start == end) return empty();
 
-    TreePVector<E> v = this;
-    while (end < size) { // remove from end
-      v = v.minus(size - 1);
-      size--;
-    }
-    while (start > 0) { // remove from start
-      v = v.minus(0);
-      size--;
-      start--;
-      end--;
-    }
-    return v;
+    // remove from end, then remove before start:
+    return new TreePVector<E>(
+        this.map.minusRange(end, size).minusRange(0, start).withKeysChangedAbove(start, -start));
   }
 
   //// IMPLEMENTED METHODS OF PVector ////
