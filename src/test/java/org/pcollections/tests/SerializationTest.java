@@ -143,6 +143,24 @@ public class SerializationTest extends TestCase {
     assertTrue(deserializedMapPSet.minus(ELEMENT1).minus(ELEMENT2).minus(ELEMENT3).isEmpty());
   }
 
+  public void testSerializationForEmptyMapPSet() {
+    final MapPSet<String> initialMapPSet = HashTreePSet.<String>empty();
+    final byte[] serializedMapPSet = serializeToByteArray(initialMapPSet);
+
+    assertNotNull(serializedMapPSet);
+    assertTrue(serializedMapPSet.length > 0);
+
+    @SuppressWarnings("unchecked")
+    final MapPSet<String> deserializedMapPSet =
+        deserializeFromByteArray(serializedMapPSet, MapPSet.class);
+
+    assertNotNull(deserializedMapPSet);
+    assertEquals(0, deserializedMapPSet.size());
+    assertNotSame(initialMapPSet, deserializedMapPSet);
+
+    assertTrue(deserializedMapPSet.isEmpty());
+  }
+
   public void testSerializationForOrderedPSet() {
     final OrderedPSet<String> initialOrderedPSet =
         OrderedPSet.from(Arrays.asList(ELEMENT1, ELEMENT2, ELEMENT3));
@@ -183,6 +201,22 @@ public class SerializationTest extends TestCase {
     assertEquals(0, deserializedTreePVector.indexOf(ELEMENT1));
     assertEquals(1, deserializedTreePVector.indexOf(ELEMENT2));
     assertEquals(2, deserializedTreePVector.indexOf(ELEMENT3));
+  }
+
+  public void testSerializationForEmptyTreePVector() {
+    final TreePVector<String> initialTreePVector = TreePVector.from(Arrays.<String>asList());
+    final byte[] serializedTreePVector = serializeToByteArray(initialTreePVector);
+
+    assertNotNull(serializedTreePVector);
+    assertTrue(serializedTreePVector.length > 0);
+
+    @SuppressWarnings("unchecked")
+    final TreePVector<String> deserializedTreePVector =
+        deserializeFromByteArray(serializedTreePVector, TreePVector.class);
+
+    assertNotNull(deserializedTreePVector);
+    assertEquals(0, deserializedTreePVector.size());
+    assertNotSame(initialTreePVector, deserializedTreePVector);
   }
 
   private static <SERIALIZABLE extends Serializable> byte[] serializeToByteArray(

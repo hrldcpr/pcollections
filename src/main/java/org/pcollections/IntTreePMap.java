@@ -116,7 +116,7 @@ public final class IntTreePMap<V> extends AbstractMap<Integer, V>
 
   //// REQUIRED METHODS FROM AbstractMap ////
   // this cache variable is thread-safe, since assignment in Java is atomic:
-  private Set<Entry<Integer, V>> entrySet = null;
+  private transient Set<Entry<Integer, V>> entrySet = null;
 
   @Override
   public Set<Entry<Integer, V>> entrySet() {
