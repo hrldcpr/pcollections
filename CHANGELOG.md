@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [3.1.1] - 2019-12-11
 ### Fixed
 - Serialization crash for `IntTreePMap` and associated classes such as `HashTreePSet` and `TreePVector` [[#79](https://github.com/hrldcpr/pcollections/issues/79) reported by [@Maaartinus](https://github.com/Maaartinus)]
 
