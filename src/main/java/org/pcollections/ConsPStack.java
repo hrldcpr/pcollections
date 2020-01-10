@@ -147,8 +147,7 @@ public final class ConsPStack<E> extends AbstractSequentialList<E>
   public ConsPStack<E> subList(final int start, final int end) {
     if (start < 0 || end > size || start > end) throw new IndexOutOfBoundsException();
     if (start == end) return empty();
-    if (start > 0) // remove from beginning
-    return subList(start).subList(0, end - start);
+    if (start > 0) return subList(start).subList(0, end - start); // remove from beginning
     if (end == size) return this;
 
     // remove from end (by popping off until end, and then pushing back on)
@@ -173,8 +172,7 @@ public final class ConsPStack<E> extends AbstractSequentialList<E>
 
   public ConsPStack<E> plus(final int i, final E e) {
     if (i < 0 || i > size) throw new IndexOutOfBoundsException();
-    if (i == 0) // insert at beginning
-    return plus(e);
+    if (i == 0) return plus(e); // insert at beginning
     return new ConsPStack<E>(first, rest.plus(i - 1, e));
   }
 
@@ -187,8 +185,7 @@ public final class ConsPStack<E> extends AbstractSequentialList<E>
 
   public ConsPStack<E> minus(final Object e) {
     if (size == 0) return this;
-    if (first.equals(e)) // found it
-    return rest; // don't recurse (only remove one)
+    if (first.equals(e)) return rest; // found it. don't recurse (only remove one)
     // otherwise keep looking:
     ConsPStack<E> newRest = rest.minus(e);
     if (newRest == rest) return this;
@@ -203,8 +200,8 @@ public final class ConsPStack<E> extends AbstractSequentialList<E>
 
   public ConsPStack<E> minusAll(final Collection<?> list) {
     if (size == 0) return this;
-    if (list.contains(first)) // get rid of current element
-    return rest.minusAll(list); // recursively delete all
+    if (list.contains(first))
+      return rest.minusAll(list); // get rid of current element. recursively delete all
     // either way keep looking:
     ConsPStack<E> newRest = rest.minusAll(list);
     if (newRest == rest) return this;
