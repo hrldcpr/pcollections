@@ -1,4 +1,7 @@
-To release, run `java -jar google-java-format-1.7-all-deps.jar -i src/**.java`, remove -SNAPSHOT from the version in pom.xml and build.gradle, and commit with a tag.
+To release:
+- run `java -jar google-java-format-1.7-all-deps.jar -i src/**.java`
+- remove -SNAPSHOT from the version in pom.xml and build.gradle
+- commit with a tag
 
 Then:
 
