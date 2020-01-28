@@ -215,13 +215,17 @@ public final class ConsPStack<E> extends AbstractSequentialList<E>
   }
 
   public ConsPStack<E> minusAll(final Collection<?> list) {
-    if (size == 0) return this;
-    if (list.contains(first))
-      return rest.minusAll(list); // get rid of current element. recursively delete all
-    // either way keep looking:
-    ConsPStack<E> newRest = rest.minusAll(list);
-    if (newRest == rest) return this;
-    return new ConsPStack<E>(first, newRest);
+    // TODO wrap list in a Set to speed up contains()?
+    if (list.isEmpty()) return this;
+    ConsPStack<E> reversed = empty();
+    ConsPStack<E> suffix = this;
+    while (suffix.size > 0) {
+      final E next = suffix.first;
+      suffix = suffix.rest;
+      if (list.contains(next)) continue;
+      reversed = reversed.plus(next);
+    }
+    return suffix.plusAll(reversed); // plusAll reverses again
   }
 
   public ConsPStack<E> with(final int i, final E e) {
