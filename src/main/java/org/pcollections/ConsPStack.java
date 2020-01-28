@@ -230,13 +230,15 @@ public final class ConsPStack<E> extends AbstractSequentialList<E>
 
   public ConsPStack<E> with(final int i, final E e) {
     if (i < 0 || i >= size) throw new IndexOutOfBoundsException();
-    if (i == 0) {
-      if (first.equals(e)) return this;
-      return new ConsPStack<E>(e, rest);
+    ConsPStack<E> reversed = empty();
+    ConsPStack<E> suffix = this;
+    while (true) {
+      final E next = suffix.first;
+      suffix = suffix.rest;
+      if (reversed.size == i) break;
+      reversed = reversed.plus(next);
     }
-    ConsPStack<E> newRest = rest.with(i - 1, e);
-    if (newRest == rest) return this;
-    return new ConsPStack<E>(first, newRest);
+    return suffix.plus(e).plusAll(reversed); // plusAll reverses again
   }
 
   public ConsPStack<E> subList(int start) {
