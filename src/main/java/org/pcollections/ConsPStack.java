@@ -172,6 +172,11 @@ public final class ConsPStack<E> extends AbstractSequentialList<E>
   }
 
   public ConsPStack<E> plus(final int i, final E e) {
+    return plusAll(i, singleton(e));
+  }
+
+  public ConsPStack<E> plusAll(final int i, final Collection<? extends E> list) {
+    // TODO inefficient if list.isEmpty()
     if (i < 0 || i > size) throw new IndexOutOfBoundsException();
     ConsPStack<E> reversed = empty();
     ConsPStack<E> suffix = this;
@@ -179,14 +184,7 @@ public final class ConsPStack<E> extends AbstractSequentialList<E>
       reversed = reversed.plus(suffix.first);
       suffix = suffix.rest;
     }
-    return suffix.plus(e).plusAll(reversed); // plusAll reverses again
-  }
-
-  public ConsPStack<E> plusAll(final int i, final Collection<? extends E> list) {
-    // TODO inefficient if list.isEmpty()
-    if (i < 0 || i > size) throw new IndexOutOfBoundsException();
-    if (i == 0) return plusAll(list);
-    return new ConsPStack<E>(first, rest.plusAll(i - 1, list));
+    return suffix.plusAll(list).plusAll(reversed); // plusAll reverses again
   }
 
   public ConsPStack<E> minus(final Object e) {
