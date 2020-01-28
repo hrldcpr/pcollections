@@ -193,7 +193,9 @@ public final class ConsPStack<E> extends AbstractSequentialList<E>
     while (suffix.size > 0) {
       final E next = suffix.first;
       suffix = suffix.rest;
-      if (next.equals(e)) break;
+      if (next.equals(e)) {
+        break; // as specified in PCollection.minus(e), only remove first occurrence
+      }
       reversed = reversed.plus(next);
     }
     return suffix.plusAll(reversed); // plusAll reverses again
