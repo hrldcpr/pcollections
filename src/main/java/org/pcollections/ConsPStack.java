@@ -188,12 +188,15 @@ public final class ConsPStack<E> extends AbstractSequentialList<E>
   }
 
   public ConsPStack<E> minus(final Object e) {
-    if (size == 0) return this;
-    if (first.equals(e)) return rest; // found it. don't recurse (only remove one)
-    // otherwise keep looking:
-    ConsPStack<E> newRest = rest.minus(e);
-    if (newRest == rest) return this;
-    return new ConsPStack<E>(first, newRest);
+    ConsPStack<E> reversed = empty();
+    ConsPStack<E> suffix = this;
+    while (suffix.size > 0) {
+      final E next = suffix.first;
+      suffix = suffix.rest;
+      if (next.equals(e)) break;
+      reversed = reversed.plus(next);
+    }
+    return suffix.plusAll(reversed); // plusAll reverses again
   }
 
   public ConsPStack<E> minus(final int i) {
