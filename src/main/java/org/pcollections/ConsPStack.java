@@ -109,22 +109,23 @@ public final class ConsPStack<E> extends AbstractSequentialList<E>
       }
 
       public int nextIndex() {
-        return index;
+        return i;
       }
 
       public int previousIndex() {
-        return index - 1;
+        return i - 1;
       }
 
       public E next() {
         E e = next.first;
         next = next.rest;
+        i++;
         return e;
       }
 
       public E previous() {
         System.err.println("ConsPStack.listIterator().previous() is inefficient, don't use it!");
-        next = subList(index - 1); // go from beginning...
+        next = subList(--i); // go from beginning...
         return next.first;
       }
 

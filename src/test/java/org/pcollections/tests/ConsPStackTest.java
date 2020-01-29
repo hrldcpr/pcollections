@@ -9,6 +9,7 @@ package org.pcollections.tests;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
 import junit.framework.TestCase;
 import org.pcollections.ConsPStack;
@@ -89,6 +90,11 @@ public class ConsPStackTest extends TestCase {
 
       int end = r.nextInt(pstack.size() + 1), start = r.nextInt(end + 1);
       UtilityTest.assertEqualsAndHash(pstack.subList(start, end), list.subList(start, end));
+
+      if (!pstack.isEmpty()) {
+        final Integer x = pstack.get(r.nextInt(pstack.size()));
+        assertEquals(pstack.indexOf(x), list.indexOf(x));
+      }
     }
   }
 
@@ -105,6 +111,24 @@ public class ConsPStackTest extends TestCase {
     assertEquals(Arrays.asList("B", "A", "B", "C"), pstack);
     assertEquals(Arrays.asList("A", "B", "C"), pstack.minus(0));
     assertEquals(Arrays.asList("B", "A", "C"), pstack.minus(2));
+  }
+
+  public void testListIterator() {
+    PStack<Integer> s = ConsPStack.empty();
+    for (int i = 0; i < 1000; i++) {
+      s = s.plus(i);
+    }
+
+    int i = 0;
+    ListIterator<Integer> it = s.listIterator();
+    for (final Integer x : s) {
+      final int j = it.nextIndex();
+      final Integer y = it.next();
+      assertEquals(x, y);
+      assertEquals(i, j);
+      assertEquals(i, it.previousIndex());
+      i++;
+    }
   }
 
   public void testSubListStackOverflowRegression() {
