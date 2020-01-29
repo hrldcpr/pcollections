@@ -172,52 +172,64 @@ public final class ConsPStack<E> extends AbstractSequentialList<E>
   }
 
   public ConsPStack<E> plus(final int i, final E e) {
-    if (i < 0 || i > size) throw new IndexOutOfBoundsException();
-    if (i == 0) return plus(e); // insert at beginning
-    return new ConsPStack<E>(first, rest.plus(i - 1, e));
+    return plusAll(i, singleton(e));
   }
 
   public ConsPStack<E> plusAll(final int i, final Collection<? extends E> list) {
-    // TODO inefficient if list.isEmpty()
     if (i < 0 || i > size) throw new IndexOutOfBoundsException();
-    if (i == 0) return plusAll(list);
-    return new ConsPStack<E>(first, rest.plusAll(i - 1, list));
+    if (list.isEmpty()) return this;
+
+    ConsPStack<E> reversed = empty();
+    ConsPStack<E> suffix = this;
+    while (reversed.size < i) {
+      reversed = reversed.plus(suffix.first);
+      suffix = suffix.rest;
+    }
+    return suffix.plusAll(list).plusAll(reversed); // plusAll reverses again
   }
 
   public ConsPStack<E> minus(final Object e) {
-    if (size == 0) return this;
-    if (first.equals(e)) return rest; // found it. don't recurse (only remove one)
-    // otherwise keep looking:
-    ConsPStack<E> newRest = rest.minus(e);
-    if (newRest == rest) return this;
-    return new ConsPStack<E>(first, newRest);
+    final int i = indexOf(e);
+    if (i == -1) return this;
+    return minus(i);
   }
 
   public ConsPStack<E> minus(final int i) {
     if (i < 0 || i >= size) throw new IndexOutOfBoundsException("Index: " + i + "; size: " + size);
-    else if (i == 0) return rest;
-    else return new ConsPStack<E>(first, rest.minus(i - 1));
+
+    ConsPStack<E> reversed = empty();
+    ConsPStack<E> suffix = this;
+    while (reversed.size <= i) {
+      reversed = reversed.plus(suffix.first);
+      suffix = suffix.rest;
+    }
+    return suffix.plusAll(reversed.rest); // plusAll reverses again
   }
 
   public ConsPStack<E> minusAll(final Collection<?> list) {
-    if (size == 0) return this;
-    if (list.contains(first))
-      return rest.minusAll(list); // get rid of current element. recursively delete all
-    // either way keep looking:
-    ConsPStack<E> newRest = rest.minusAll(list);
-    if (newRest == rest) return this;
-    return new ConsPStack<E>(first, newRest);
+    // TODO wrap list in a Set to speed up contains()?
+    // TODO re-use existing suffix stack after the last removed element
+    if (list.isEmpty()) return this;
+
+    ConsPStack<E> reversed = empty();
+    ConsPStack<E> suffix = this;
+    while (suffix.size > 0) {
+      if (!list.contains(suffix.first)) reversed = reversed.plus(suffix.first);
+      suffix = suffix.rest;
+    }
+    return suffix.plusAll(reversed); // plusAll reverses again
   }
 
   public ConsPStack<E> with(final int i, final E e) {
     if (i < 0 || i >= size) throw new IndexOutOfBoundsException();
-    if (i == 0) {
-      if (first.equals(e)) return this;
-      return new ConsPStack<E>(e, rest);
+
+    ConsPStack<E> reversed = empty();
+    ConsPStack<E> suffix = this;
+    while (reversed.size <= i) {
+      reversed = reversed.plus(suffix.first);
+      suffix = suffix.rest;
     }
-    ConsPStack<E> newRest = rest.with(i - 1, e);
-    if (newRest == rest) return this;
-    return new ConsPStack<E>(first, newRest);
+    return suffix.plus(e).plusAll(reversed.rest); // plusAll reverses again
   }
 
   public ConsPStack<E> subList(int start) {

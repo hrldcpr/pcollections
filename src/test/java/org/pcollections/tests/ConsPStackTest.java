@@ -146,4 +146,65 @@ public class ConsPStackTest extends TestCase {
     PStack<Integer> t = s.subList(9000, 11000);
     assertEquals(t.size(), 11000 - 9000);
   }
+
+  public void testPlusStackOverflowRegression() {
+    PStack<Integer> s = ConsPStack.empty();
+    for (int i = 0; i < 20000; i++) {
+      s = s.plus(i);
+    }
+
+    PStack<Integer> t = s.plus(10000, 1234);
+    assertEquals(t.size(), s.size() + 1);
+  }
+
+  public void testPlusAllStackOverflowRegression() {
+    PStack<Integer> s = ConsPStack.empty();
+    for (int i = 0; i < 20000; i++) {
+      s = s.plus(i);
+    }
+
+    PStack<Integer> t = s.plusAll(10000, s);
+    assertEquals(t.size(), 2 * s.size());
+  }
+
+  public void testMinusStackOverflowRegression() {
+    PStack<String> s = ConsPStack.empty();
+    for (int i = 0; i < 20000; i++) {
+      s = s.plus(Integer.toString(i));
+    }
+
+    PStack<String> t = s.minus("10000");
+    assertEquals(t.size(), s.size() - 1);
+  }
+
+  public void testMinusIndexStackOverflowRegression() {
+    PStack<String> s = ConsPStack.empty();
+    for (int i = 0; i < 20000; i++) {
+      s = s.plus(Integer.toString(i));
+    }
+
+    // unlike the other tests, this one wasn't failing at 10,000, no idea why...
+    PStack<String> t = s.minus(19000);
+    assertEquals(t.size(), s.size() - 1);
+  }
+
+  public void testMinusAllStackOverflowRegression() {
+    PStack<Integer> s = ConsPStack.empty();
+    for (int i = 0; i < 20000; i++) {
+      s = s.plus(i);
+    }
+
+    PStack<Integer> t = s.minusAll(s);
+    assertTrue(t.isEmpty());
+  }
+
+  public void testWithStackOverflowRegression() {
+    PStack<Integer> s = ConsPStack.empty();
+    for (int i = 0; i < 20000; i++) {
+      s = s.plus(i);
+    }
+
+    PStack<Integer> t = s.with(10000, 1234);
+    assertEquals(t.size(), s.size());
+  }
 }
