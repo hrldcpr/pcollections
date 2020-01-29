@@ -208,14 +208,20 @@ public final class ConsPStack<E> extends AbstractSequentialList<E>
 
   public ConsPStack<E> minusAll(final Collection<?> list) {
     // TODO wrap list in a Set to speed up contains()?
-    // TODO re-use existing suffix stack after the last removed element
     if (list.isEmpty()) return this;
 
-    ConsPStack<E> reversed = empty();
-    ConsPStack<E> suffix = this;
-    while (suffix.size > 0) {
-      if (!list.contains(suffix.first)) reversed = reversed.plus(suffix.first);
-      suffix = suffix.rest;
+    ConsPStack<E> kept = empty();
+    ConsPStack<E> searching = this;
+    ConsPStack<E> reversed = kept;
+    ConsPStack<E> suffix = searching;
+    while (searching.size > 0) {
+      final E e = searching.first;
+      searching = searching.rest;
+      if (list.contains(e)) {
+        // checkpoint only when we actually remove something, so we can reuse existing suffix stack
+        reversed = kept;
+        suffix = searching;
+      } else kept = kept.plus(e);
     }
     return suffix.plusAll(reversed); // plusAll reverses again
   }
