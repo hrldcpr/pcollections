@@ -9,7 +9,7 @@
 
   <name>PCollections</name>
   <description>A Persistent Java Collections Library</description>
-  <url>https://pcollections.org</url>
+  <url>https://github.com/hrldcpr/pcollections</url>
 
   <licenses>
     <license>
