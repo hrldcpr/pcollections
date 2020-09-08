@@ -82,6 +82,11 @@ public class HashPMapTest extends TestCase {
     for (@SuppressWarnings("unused") Object e : empty.entrySet()) fail();
   }
 
+  public void testIterator() {
+    UtilityTest.iteratorExceptions(HashTreePMap.empty().entrySet().iterator());
+    UtilityTest.iteratorExceptions(HashTreePMap.singleton(10, "test").entrySet().iterator());
+  }
+
   public void testSingleton() {
     UtilityTest.assertEqualsAndHash(
         HashTreePMap.empty().plus(10, "test"), HashTreePMap.singleton(10, "test"));

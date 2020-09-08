@@ -13,6 +13,7 @@ import java.util.ListIterator;
 import java.util.Random;
 import junit.framework.TestCase;
 import org.pcollections.ConsPStack;
+import org.pcollections.Empty;
 import org.pcollections.PStack;
 
 public class ConsPStackTest extends TestCase {
@@ -111,6 +112,11 @@ public class ConsPStackTest extends TestCase {
     assertEquals(Arrays.asList("B", "A", "B", "C"), pstack);
     assertEquals(Arrays.asList("A", "B", "C"), pstack.minus(0));
     assertEquals(Arrays.asList("B", "A", "C"), pstack.minus(2));
+  }
+
+  public void testIterator() {
+    UtilityTest.iteratorExceptions(Empty.stack().iterator());
+    UtilityTest.iteratorExceptions(Empty.stack().plus(1).iterator());
   }
 
   public void testListIterator() {

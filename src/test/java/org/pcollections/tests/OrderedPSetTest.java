@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.Random;
 import junit.framework.TestCase;
 import org.pcollections.Empty;
+import org.pcollections.OrderedPSet;
 import org.pcollections.POrderedSet;
 import org.pcollections.PSet;
 
@@ -60,5 +61,10 @@ public class OrderedPSetTest extends TestCase {
     }
 
     assertEquals(s, os);
+  }
+
+  public void testIterator() {
+    UtilityTest.iteratorExceptions(Empty.orderedSet().iterator());
+    UtilityTest.iteratorExceptions(OrderedPSet.singleton(10).iterator());
   }
 }

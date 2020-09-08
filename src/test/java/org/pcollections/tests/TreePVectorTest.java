@@ -89,6 +89,11 @@ public class TreePVectorTest extends TestCase {
     }
   }
 
+  public void testIterator() {
+    UtilityTest.iteratorExceptions(TreePVector.empty().iterator());
+    UtilityTest.iteratorExceptions(TreePVector.singleton(10).iterator());
+  }
+
   public void testSubListStackOverflowRegression() {
     PVector<Integer> v = TreePVector.empty();
     for (int i = 0; i < 20000; i++) {
