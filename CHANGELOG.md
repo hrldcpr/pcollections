@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Empty Iterator.next() throws `NoSuchElementException` [[#46](https://github.com/hrldcpr/pcollections/pull/46) by [@ilya-g](https://github.com/ilya-g)]
 
 ## [3.1.3] - 2020-01-28
 ### Fixed
