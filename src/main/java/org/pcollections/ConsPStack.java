@@ -11,6 +11,7 @@ import java.util.AbstractSequentialList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 /**
  * A simple persistent stack of non-null values.
@@ -118,6 +119,9 @@ public final class ConsPStack<E> extends AbstractSequentialList<E>
 
       public E next() {
         E e = next.first;
+        if (e == null && !hasNext()) {
+          throw new NoSuchElementException();
+        }
         next = next.rest;
         i++;
         return e;
@@ -125,6 +129,9 @@ public final class ConsPStack<E> extends AbstractSequentialList<E>
 
       public E previous() {
         System.err.println("ConsPStack.listIterator().previous() is inefficient, don't use it!");
+        if (!hasPrevious()) {
+          throw new NoSuchElementException();
+        }
         next = subList(--i); // go from beginning...
         return next.first;
       }

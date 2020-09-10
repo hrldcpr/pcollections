@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 
 /**
  * A non-public utility class for persistent balanced tree maps with integer keys.
@@ -262,6 +263,10 @@ class IntTree<V> implements Serializable {
     }
 
     public Entry<Integer, V> next() {
+      if (stack.isEmpty()) {
+        throw new NoSuchElementException();
+      }
+
       IntTree<V> node = stack.get(0);
       final Entry<Integer, V> result = new SimpleImmutableEntry<Integer, V>(key, node.value);
 

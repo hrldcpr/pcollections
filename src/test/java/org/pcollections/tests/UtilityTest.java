@@ -8,7 +8,9 @@ package org.pcollections.tests;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import junit.framework.TestCase;
 import org.pcollections.*;
@@ -152,6 +154,19 @@ public class UtilityTest extends TestCase {
 
       pseq = pseq.plus(r.nextInt());
     }
+  }
+
+  static void iteratorExceptions(Iterator<?> iterator) {
+    while (iterator.hasNext()) {
+      iterator.next();
+    }
+    try {
+      iterator.next();
+    } catch (NoSuchElementException e) {
+      // expected
+      return;
+    }
+    fail("Expected exception to be thrown");
   }
 
   static void assertEqualsAndHash(String s, Object a, Object b) {
