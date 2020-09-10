@@ -10,8 +10,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.NoSuchElementException;
+import java.util.Random;
 import junit.framework.TestCase;
 import org.pcollections.*;
 
@@ -162,8 +162,7 @@ public class UtilityTest extends TestCase {
     }
     try {
       iterator.next();
-    }
-    catch (NoSuchElementException e) {
+    } catch (NoSuchElementException e) {
       // expected
       return;
     }
