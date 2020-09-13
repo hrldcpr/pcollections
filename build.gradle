@@ -37,3 +37,23 @@ dependencies {
 test {
     useJUnitPlatform() // Use JUnit 5
 }
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+javadoc {
+    // can remove this once we fix the deprecation warnings - https://github.com/hrldcpr/pcollections/issues/62
+    options.addBooleanOption('Xdoclint:none', true)
+}
