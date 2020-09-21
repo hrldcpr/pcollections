@@ -1,5 +1,5 @@
 First time setup:
-- create a `gradle.properties` a la https://central.sonatype.org/pages/gradle.html
+- create a `gradle.properties` a la https://central.sonatype.org/pages/gradle.html#credentials
 
 To release:
 - run `java -jar google-java-format-1.7-all-deps.jar -i src/**.java`
