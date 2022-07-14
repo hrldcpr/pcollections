@@ -14,7 +14,7 @@ Persistent and immutable datatypes are increasingly appreciated as a **simple**,
 
 ### Persistent versus Unmodifiable
 
-Note that these immutable collections are very different from the immutable collections returned by Java's [Collections.unmodifiableCollection()](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html#unmodifiableCollection-java.util.Collection-) and similar methods. The difference is that Java's unmodifiable collections have no producers, whereas PCollections have very efficient producers.
+Note that these immutable collections are very different from the immutable collections returned by Java's [Collections.unmodifiableCollection()](https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/Collections.html#unmodifiableCollection(java.util.Collection)) and similar methods. The difference is that Java's unmodifiable collections have no producers, whereas PCollections have very efficient producers.
 
 Thus if you have an unmodifiable Collection `x` and you want a new Collection `x2` consisting of the elements of `x` in addition to some element `e`, you would have to do something like:
 ```Java
@@ -44,7 +44,7 @@ PCollections are highly interoperable with Java Collections: every PCollection i
 
 PCollections uses [Semantic Versioning](https://semver.org/), which establishes a strong correspondence between API changes and version numbering.
 
-PCollections is in the [Maven Central repository](https://search.maven.org/#search|ga|1|a:%22pcollections%22), under org.pcollections. Thus the Maven coordinates for PCollections are:
+PCollections is in the [Maven Central repository](https://search.maven.org/search?q=g:org.pcollections), under org.pcollections. Thus the Maven coordinates for PCollections are:
 
 ```xml
 <dependency>
