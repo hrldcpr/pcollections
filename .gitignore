@@ -6,3 +6,7 @@ target/
 .idea
 .gradle
 *.iml
+/.classpath
+/.project
+/.settings/
+/bin/
