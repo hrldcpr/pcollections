@@ -19,7 +19,7 @@ import java.util.Objects;
  * functionality as is needed to support implementations of {@link PSortedMap} and
  * {@link PSortedSet}, namely {@link TreePMap} and {@link TreePSet}. Each instance of this class is
  * both a (sub)tree (with a host of methods for examining and manipulating that tree) and the
- * node at the root of that (sub)tree (implementing {@link Map.Entry&lt;K, V>} and providing methods
+ * node at the root of that (sub)tree (implementing {@link Map.Entry&lt;K, V&gt;} and providing methods
  * {@link #getKey()} and {@link #getValue()} to retrieve the mapping at the node). Method Javadoc
  * refers to 'this node' or 'this tree' as appropriate.</p>
  *
