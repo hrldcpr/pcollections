@@ -91,7 +91,7 @@ public final class IntTreePMap<V> extends AbstractMap<Integer, V>
   /**
    * @param start
    * @param end
-   * @return this map but with all keys start<=k<end removed
+   * @return this map but with all keys start&le;k&lt;end removed
    */
   public IntTreePMap<V> minusRange(final int start, final int end) {
     IntTree<V> root = this.root;
