@@ -14,14 +14,13 @@ import java.util.function.Predicate;
  * A subclass of AbstractSet that overrides the various mutator methods to mark them as deprecated
  * and unconditionally throw UnsupportedOperationException.
  *
- * @param <E>  the type of elements maintained by this set
- *
+ * @param <E> the type of elements maintained by this set
  * @author Ran Ari-Gur
  * @since 3.2.0
  */
 public abstract class AbstractUnmodifiableSet<E> extends AbstractSet<E> {
   /**
-   * @throws UnsupportedOperationException  always
+   * @throws UnsupportedOperationException always
    * @deprecated Unsupported operation.
    */
   @Deprecated
@@ -31,7 +30,7 @@ public abstract class AbstractUnmodifiableSet<E> extends AbstractSet<E> {
   }
 
   /**
-   * @throws UnsupportedOperationException  always
+   * @throws UnsupportedOperationException always
    * @deprecated Unsupported operation.
    */
   @Deprecated
@@ -41,7 +40,7 @@ public abstract class AbstractUnmodifiableSet<E> extends AbstractSet<E> {
   }
 
   /**
-   * @throws UnsupportedOperationException  always
+   * @throws UnsupportedOperationException always
    * @deprecated Unsupported operation.
    */
   @Deprecated
@@ -51,7 +50,7 @@ public abstract class AbstractUnmodifiableSet<E> extends AbstractSet<E> {
   }
 
   /**
-   * @throws UnsupportedOperationException  always
+   * @throws UnsupportedOperationException always
    * @deprecated Unsupported operation.
    */
   @Deprecated
@@ -61,7 +60,7 @@ public abstract class AbstractUnmodifiableSet<E> extends AbstractSet<E> {
   }
 
   /**
-   * @throws UnsupportedOperationException  always
+   * @throws UnsupportedOperationException always
    * @deprecated Unsupported operation.
    */
   @Deprecated
@@ -71,7 +70,7 @@ public abstract class AbstractUnmodifiableSet<E> extends AbstractSet<E> {
   }
 
   /**
-   * @throws UnsupportedOperationException  always
+   * @throws UnsupportedOperationException always
    * @deprecated Unsupported operation.
    */
   @Deprecated
@@ -81,7 +80,7 @@ public abstract class AbstractUnmodifiableSet<E> extends AbstractSet<E> {
   }
 
   /**
-   * @throws UnsupportedOperationException  always
+   * @throws UnsupportedOperationException always
    * @deprecated Unsupported operation.
    */
   @Deprecated

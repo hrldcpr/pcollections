@@ -18,25 +18,23 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
- * <p>An implementation of {@link PSortedSet} based on a self-balancing binary search tree.</p>
+ * An implementation of {@link PSortedSet} based on a self-balancing binary search tree.
  *
  * <p>Instances of this class are obtained via any of various static factory methods and static
  * collector methods. These methods come in pairs, with one version that accepts an explicit
- * comparator to use and one version that uses the natural ordering of the elements.</p>
+ * comparator to use and one version that uses the natural ordering of the elements.
  *
  * <p>All operations are guaranteed to complete within O(log n) time, except for plusAll and
  * minusAll, whose time cost is equivalent to the corresponding sequence of calls to plus or minus.
  * A complete iteration pass completes in O(n) time. A few operations -- namely comparator,
- * descendingSet, isEmpty, and size -- complete in O(1) time.</p>
+ * descendingSet, isEmpty, and size -- complete in O(1) time.
  *
- * @param <E>  the type of elements maintained by this set
- *
+ * @param <E> the type of elements maintained by this set
  * @author Ran Ari-Gur
  * @since 3.2.0
  */
 public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
-    implements PSortedSet<E>, Serializable
-{
+    implements PSortedSet<E>, Serializable {
   private static final long serialVersionUID = 1L;
 
   private final KVTree<E, ?> tree;
@@ -50,8 +48,7 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
   TreePSet(
       final KVTree<E, ?> tree,
       final Comparator<? super E> ltrComparator,
-      final boolean isLeftToRight
-  ) {
+      final boolean isLeftToRight) {
     complainIfNull(tree, "tree is null");
     complainIfNull(ltrComparator, "comparator is null");
 
@@ -63,8 +60,8 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
   /**
    * Returns an empty TreePSet using the natural ordering.
    *
-   * @param <E>  the type of elements to be maintained by the set
-   * @return  an empty TreePSet using the natural ordering
+   * @param <E> the type of elements to be maintained by the set
+   * @return an empty TreePSet using the natural ordering
    */
   public static <E extends Comparable<? super E>> TreePSet<E> empty() {
     return TreePSet.empty(Comparator.naturalOrder());
@@ -73,10 +70,10 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
   /**
    * Returns an empty TreePSet using the specified comparator.
    *
-   * @param <E>  the type of elements to be maintained by the set
-   * @param comparator  the comparator according to which elements should be ordered
-   * @return  an empty TreePSet using the specified comparator
-   * @throws NullPointerException  if comparator is null
+   * @param <E> the type of elements to be maintained by the set
+   * @param comparator the comparator according to which elements should be ordered
+   * @return an empty TreePSet using the specified comparator
+   * @throws NullPointerException if comparator is null
    */
   public static <E> TreePSet<E> empty(final Comparator<? super E> comparator) {
     return new TreePSet<E>(KVTree.empty(), comparator, true);
@@ -85,32 +82,28 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
   /**
    * Returns a TreePSet with the specified elements, using their natural ordering.
    *
-   * @param <E>  the type of elements to be maintained by the set
-   * @param list  the elements to include
-   * @return  a TreePSet containing the elements of list and using the natural ordering
-   * @throws NullPointerException  if list is null or contains null
+   * @param <E> the type of elements to be maintained by the set
+   * @param list the elements to include
+   * @return a TreePSet containing the elements of list and using the natural ordering
+   * @throws NullPointerException if list is null or contains null
    */
   public static <E extends Comparable<? super E>> TreePSet<E> from(
-      final Collection<? extends E> list
-  ) {
+      final Collection<? extends E> list) {
     return TreePSet.from(Comparator.naturalOrder(), list);
   }
 
   /**
    * Returns a TreePSet with the specified comparator and elements.
    *
-   * @param <E>  the type of elements to be maintained by the set
-   * @param comparator  the comparator to use
-   * @param list
-   *          the collection of elements to include; may include duplicates, but the returned
-   *          TreePSet will not
-   * @return  a TreePSet with the specified comparator and elements
-   * @throws NullPointerException  if the comparator is null or the collection is or contains null
+   * @param <E> the type of elements to be maintained by the set
+   * @param comparator the comparator to use
+   * @param list the collection of elements to include; may include duplicates, but the returned
+   *     TreePSet will not
+   * @return a TreePSet with the specified comparator and elements
+   * @throws NullPointerException if the comparator is null or the collection is or contains null
    */
   public static <E> TreePSet<E> from(
-      final Comparator<? super E> comparator,
-      final Collection<? extends E> list
-  ) {
+      final Comparator<? super E> comparator, final Collection<? extends E> list) {
     return TreePSet.<E>empty(comparator).plusAll(list);
   }
 
@@ -119,10 +112,10 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
    * essentially equivalent to {@code TreePSet.from(set.comparator(), set)}, except that it
    * gracefully handles a null comparator, and is much more efficient.
    *
-   * @param <E>  the type of elements to be maintained by the set
-   * @param set  the set whose elements and ordering to use
-   * @return  a TreePSet with the same elements and ordering as the specified set
-   * @throws NullPointerException  if the specified set is or contains null
+   * @param <E> the type of elements to be maintained by the set
+   * @param set the set whose elements and ordering to use
+   * @return a TreePSet with the same elements and ordering as the specified set
+   * @throws NullPointerException if the specified set is or contains null
    */
   public static <E> TreePSet<E> fromSortedSet(final SortedSet<E> set) {
     complainIfNull(set, "set is null");
@@ -151,12 +144,12 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
   /**
    * Returns a TreePSet with the specified elements, using their natural ordering.
    *
-   * @param <E>  the type of elements to be maintained by the set
-   * @param elements
-   *          the elements to include; may include duplicates, but the returned TreePSet will not
-   * @return  a TreePSet containing the specified elements and using their natural ordering
-   * @throws NullPointerException
-   *          if any of the specified elements is null, or if the varargs array-ref is itself null
+   * @param <E> the type of elements to be maintained by the set
+   * @param elements the elements to include; may include duplicates, but the returned TreePSet will
+   *     not
+   * @return a TreePSet containing the specified elements and using their natural ordering
+   * @throws NullPointerException if any of the specified elements is null, or if the varargs
+   *     array-ref is itself null
    */
   @SafeVarargs
   public static <E extends Comparable<? super E>> TreePSet<E> of(final E... elements) {
@@ -166,14 +159,13 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
   /**
    * Returns a TreePSet with the specified comparator and elements.
    *
-   * @param <E>  the type of elements to be maintained by the set
-   * @param comparator  the comparator to use
-   * @param elements
-   *          the elements to include; may include duplicates, but the returned TreePSet will not
-   * @return  a TreePSet containing the specified elements and using the specified comparator
-   * @throws NullPointerException
-   *          if the specified comparator is null, or if any of the specified elements is null, or
-   *          if the varargs array-ref is itself null
+   * @param <E> the type of elements to be maintained by the set
+   * @param comparator the comparator to use
+   * @param elements the elements to include; may include duplicates, but the returned TreePSet will
+   *     not
+   * @return a TreePSet containing the specified elements and using the specified comparator
+   * @throws NullPointerException if the specified comparator is null, or if any of the specified
+   *     elements is null, or if the varargs array-ref is itself null
    */
   @SafeVarargs
   public static <E> TreePSet<E> of(final Comparator<? super E> comparator, final E... elements) {
@@ -183,10 +175,10 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
   /**
    * Returns a TreePSet with a single element, using the natural ordering.
    *
-   * @param <E>  the type of elements to be maintained by the set
-   * @param e  the element
-   * @return  a TreePSet containing the specified element and using the natural ordering
-   * @throws NullPointerException  if the specified element is null
+   * @param <E> the type of elements to be maintained by the set
+   * @param e the element
+   * @return a TreePSet containing the specified element and using the natural ordering
+   * @throws NullPointerException if the specified element is null
    */
   public static <E extends Comparable<? super E>> TreePSet<E> singleton(final E e) {
     return TreePSet.singleton(Comparator.naturalOrder(), e);
@@ -195,11 +187,11 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
   /**
    * Returns a TreePSet with a single element, using the specified comparator.
    *
-   * @param <E>  the type of elements to be maintained by the set
-   * @param comparator  the comparator according to which elements should be ordered
-   * @param e  the element
-   * @return  a TreePSet containing the specified element and using the specified comparator
-   * @throws NullPointerException  if either the comparator or the element is null
+   * @param <E> the type of elements to be maintained by the set
+   * @param comparator the comparator according to which elements should be ordered
+   * @param e the element
+   * @return a TreePSet containing the specified element and using the specified comparator
+   * @throws NullPointerException if either the comparator or the element is null
    */
   public static <E> TreePSet<E> singleton(final Comparator<? super E> comparator, final E e) {
     return TreePSet.<E>empty(comparator).plus(e);
@@ -209,9 +201,9 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
    * Returns a collector that gathers a stream into a TreePSet with the elements of that stream,
    * using their natural ordering.
    *
-   * @param <E>  the type of elements to be maintained by the set
+   * @param <E> the type of elements to be maintained by the set
    * @return a collector that gathers the elements of the stream into a TreePSet that uses the
-   *         natural ordering
+   *     natural ordering
    */
   public static <E extends Comparable<? super E>> Collector<E, ?, TreePSet<E>> toTreePSet() {
     return TreePSet.toTreePSet(Comparator.naturalOrder());
@@ -221,15 +213,14 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
    * Returns a collector that gathers a stream into a TreePSet with the elements of that stream,
    * using the specified comparator.
    *
-   * @param <E>  the type of elements to be maintained by the set
-   * @param comparator  the comparator to use
+   * @param <E> the type of elements to be maintained by the set
+   * @param comparator the comparator to use
    * @return a collector that gathers the elements of the stream into a TreePSet that uses the
-   *         specified comparator
-   * @throws NullPointerException  if the comparator is null
+   *     specified comparator
+   * @throws NullPointerException if the comparator is null
    */
   public static <E> Collector<E, ?, TreePSet<E>> toTreePSet(
-      final Comparator<? super E> comparator
-  ) {
+      final Comparator<? super E> comparator) {
     complainIfNull(comparator, "comparator is null");
 
     return Collectors.collectingAndThen(
@@ -259,7 +250,7 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
 
   @Override
   public TreePSet<E> descendingSet() {
-    return new TreePSet<E>(this.tree, this.ltrComparator, ! this.isLeftToRight);
+    return new TreePSet<E>(this.tree, this.ltrComparator, !this.isLeftToRight);
   }
 
   @Override
@@ -283,13 +274,14 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
 
     return this.withTree(
         this.isLeftToRight
-          ? this.tree.rangeToLeft(toElement, inclusive, this.ltrComparator)
-          : this.tree.rangeToRight(toElement, inclusive, this.ltrComparator));
+            ? this.tree.rangeToLeft(toElement, inclusive, this.ltrComparator)
+            : this.tree.rangeToRight(toElement, inclusive, this.ltrComparator));
   }
 
   @Override
   public E higher(final E e) {
-    return this.search(e, KVTree.SearchType.GT, KVTree.SearchType.LT);}
+    return this.search(e, KVTree.SearchType.GT, KVTree.SearchType.LT);
+  }
 
   @Override
   public Iterator<E> iterator() {
@@ -386,8 +378,10 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
 
   @Override
   public TreePSet<E> subSet(
-      final E fromElement, final boolean fromInclusive, final E toElement, final boolean toInclusive
-  ) {
+      final E fromElement,
+      final boolean fromInclusive,
+      final E toElement,
+      final boolean toInclusive) {
     complainIfNull(fromElement, "fromElement is null");
     complainIfNull(fromElement, "toElement is null");
 
@@ -397,8 +391,10 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
 
     return this.withTree(
         this.isLeftToRight
-          ? this.tree.range(fromElement, fromInclusive, toElement, toInclusive, this.ltrComparator)
-          : this.tree.range(toElement, toInclusive, fromElement, fromInclusive, this.ltrComparator));
+            ? this.tree.range(
+                fromElement, fromInclusive, toElement, toInclusive, this.ltrComparator)
+            : this.tree.range(
+                toElement, toInclusive, fromElement, fromInclusive, this.ltrComparator));
   }
 
   @Override
@@ -409,15 +405,15 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
   private E search(
       final E e,
       final KVTree.SearchType searchTypeIfLeftToRight,
-      final KVTree.SearchType searchTypeIfRightToLeft
-  ) {
+      final KVTree.SearchType searchTypeIfRightToLeft) {
     complainIfNull(e, "e is null");
 
-    return this.tree.search(
-        e,
-        this.ltrComparator,
-        this.isLeftToRight ? searchTypeIfLeftToRight : searchTypeIfRightToLeft
-      ).getKey();
+    return this.tree
+        .search(
+            e,
+            this.ltrComparator,
+            this.isLeftToRight ? searchTypeIfLeftToRight : searchTypeIfRightToLeft)
+        .getKey();
   }
 
   @Override
@@ -426,8 +422,8 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
 
     return this.withTree(
         this.isLeftToRight
-          ? this.tree.rangeToRight(fromElement, inclusive, this.ltrComparator)
-          : this.tree.rangeToLeft(fromElement, inclusive, this.ltrComparator));
+            ? this.tree.rangeToRight(fromElement, inclusive, this.ltrComparator)
+            : this.tree.rangeToLeft(fromElement, inclusive, this.ltrComparator));
   }
 
   private TreePSet<E> withTree(final KVTree<E, ?> tree) {

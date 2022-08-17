@@ -12,61 +12,58 @@ import java.util.NavigableSet;
 import java.util.NoSuchElementException;
 
 /**
- * <p>An immutable, persistent set of distinct, non-null elements, with elements arranged in sorted
+ * An immutable, persistent set of distinct, non-null elements, with elements arranged in sorted
  * order (according to some {@link java.util.Comparator}), and with various methods to obtain
  * specific elements or ranges of elements based on this ordering (such as the least element greater
- * than some value, or the set of elements between two values).</p>
+ * than some value, or the set of elements between two values).
  *
- * <p>(Note: this is different from {@link POrderedSet}, which keeps elements in the order that
- * they were added to the set.)</p>
+ * <p>(Note: this is different from {@link POrderedSet}, which keeps elements in the order that they
+ * were added to the set.)
  *
  * <p>Every PSortedSet is a {@link java.util.Set} and more specifically a {@link PSet}, but as with
  * any sorted set, a PSortedSet will only obey the general contract of those interfaces if its
- * comparator is consistent with equals. (See {@link java.util.SortedSet} for more information.)</p>
+ * comparator is consistent with equals. (See {@link java.util.SortedSet} for more information.)
  *
- * <p>Every PSortedSet is a {@link java.util.SortedSet} and more specifically a
- * {@link java.util.NavigableSet}, but the implementations of PSortedSet provided by this library
- * (pcollections) depart from the specification of those interfaces in a few ways:</p>
+ * <p>Every PSortedSet is a {@link java.util.SortedSet} and more specifically a {@link
+ * java.util.NavigableSet}, but the implementations of PSortedSet provided by this library
+ * (pcollections) depart from the specification of those interfaces in a few ways:
  *
  * <ul>
  *   <li>headSet(...), subSet(...), and tailSet(...) are specified by SortedSet and NavigableSet to
- *   return sets with a "restricted range", and to throw IllegalArgumentException if this instance
- *   already has a restricted range and the relevant argument is outside that range. (This ensures
- *   that set.headSet(10).headSet(15) doesn't contain elements that set.headSet(10) does not, and
- *   that set.headSet(10).headSet(15).add(12) is invalid because 12 can't be added to
- *   set.headSet(10).) This library's implementations do not throw IllegalArgumentException, but
- *   rather, they ensure that an argument outside the applicable range simply has no effect; so,
- *   set.headSet(10).headSet(15) is equivalent to set.headSet(10), because set.headSet(10) already
- *   contains no elements ≥ 15. (This is also the behavior of Guava's ImmutableSortedSet. The JDK's
- *   Collections.unmodifiableSortedSet(...) and Collections.unmodifiableNavigableSet(...) are
- *   agnostic on this point, because they just delegate to the underlying set.) Other
- *   implementations are encouraged to consider doing the same, and to document their behavior in
- *   this respect. Additionally, any implementations that <em>do</em> use the "restricted range"
- *   concept are encouraged to document the behavior of their minus, minusAll, plus, and plusAll
- *   methods when a value is outside the restricted range.</li>
- *
+ *       return sets with a "restricted range", and to throw IllegalArgumentException if this
+ *       instance already has a restricted range and the relevant argument is outside that range.
+ *       (This ensures that set.headSet(10).headSet(15) doesn't contain elements that
+ *       set.headSet(10) does not, and that set.headSet(10).headSet(15).add(12) is invalid because
+ *       12 can't be added to set.headSet(10).) This library's implementations do not throw
+ *       IllegalArgumentException, but rather, they ensure that an argument outside the applicable
+ *       range simply has no effect; so, set.headSet(10).headSet(15) is equivalent to
+ *       set.headSet(10), because set.headSet(10) already contains no elements ≥ 15. (This is also
+ *       the behavior of Guava's ImmutableSortedSet. The JDK's
+ *       Collections.unmodifiableSortedSet(...) and Collections.unmodifiableNavigableSet(...) are
+ *       agnostic on this point, because they just delegate to the underlying set.) Other
+ *       implementations are encouraged to consider doing the same, and to document their behavior
+ *       in this respect. Additionally, any implementations that <em>do</em> use the "restricted
+ *       range" concept are encouraged to document the behavior of their minus, minusAll, plus, and
+ *       plusAll methods when a value is outside the restricted range.
  *   <li>comparator() is specified by SortedSet to return "null if this set uses the natural
- *   ordering of its elements". This library's implementations never return null from that method;
- *   instead, when the set uses the natural ordering, the method returns a Comparator instance that
- *   implements the natural ordering. (This is because this library avoids null in general; a PSet
- *   does not allow null elements. This is also the behavior of Guava's ImmutableSortedSet, which
- *   also rejects null elements.) Other implementations of PSortedSet are encouraged to consider
- *   doing the same, and to document their behavior in this case (whether or not it's to return
- *   null).</li>
- *
- *   <li>pollFirst() and pollLast() are specified by NavigableSet to mutate this set, and
- *   are not specified to be optional operations. That's obviously not an option for a PSet, so
- *   PSortedSet provides default implementations of these methods that simply throw
- *   UnsupportedOperationException, which should be the right implementation for any implementation
- *   of this interface. (This is also the behavior of the JDK's
- *   Collections.unmodifiableNavigableSet(...) and Guava's ImmutableSortedSet.)</li>
+ *       ordering of its elements". This library's implementations never return null from that
+ *       method; instead, when the set uses the natural ordering, the method returns a Comparator
+ *       instance that implements the natural ordering. (This is because this library avoids null in
+ *       general; a PSet does not allow null elements. This is also the behavior of Guava's
+ *       ImmutableSortedSet, which also rejects null elements.) Other implementations of PSortedSet
+ *       are encouraged to consider doing the same, and to document their behavior in this case
+ *       (whether or not it's to return null).
+ *   <li>pollFirst() and pollLast() are specified by NavigableSet to mutate this set, and are not
+ *       specified to be optional operations. That's obviously not an option for a PSet, so
+ *       PSortedSet provides default implementations of these methods that simply throw
+ *       UnsupportedOperationException, which should be the right implementation for any
+ *       implementation of this interface. (This is also the behavior of the JDK's
+ *       Collections.unmodifiableNavigableSet(...) and Guava's ImmutableSortedSet.)
  * </ul>
  *
- * @param <E>  the type of elements maintained by this set
- *
+ * @param <E> the type of elements maintained by this set
  * @author Ran Ari-Gur
  * @since 3.2.0
- *
  * @see java.util.SortedSet
  * @see java.util.NavigableSet
  * @see java.util.Collections#unmodifiableSortedSet(java.util.SortedSet)
@@ -78,9 +75,8 @@ import java.util.NoSuchElementException;
 public interface PSortedSet<E> extends PSet<E>, NavigableSet<E> {
   /**
    * @return The comparator used to order the elements in this set. May be null if this set uses the
-   *         natural ordering of its elements, though in that case the implementations provided by
-   *         this library (pcollections) return a Comparator instance that implements the natural
-   *         ordering.
+   *     natural ordering of its elements, though in that case the implementations provided by this
+   *     library (pcollections) return a Comparator instance that implements the natural ordering.
    */
   @Override
   public Comparator<? super E> comparator();
@@ -108,10 +104,10 @@ public interface PSortedSet<E> extends PSet<E>, NavigableSet<E> {
    * @param list
    * @return This set, except with the elements of list removed (if they are elements of this set).
    * @throws NullPointerException if list is null or contains null
-   * @throws ClassCastException if list contains an element whose type is incompatible with this
-   *                            set (optional)
-   * @throws IllegalArgumentException if list contains an element that is incompatible with this
-   *                                  set (optional)
+   * @throws ClassCastException if list contains an element whose type is incompatible with this set
+   *     (optional)
+   * @throws IllegalArgumentException if list contains an element that is incompatible with this set
+   *     (optional)
    */
   @Override
   public PSortedSet<E> minusAll(Collection<?> list);
@@ -140,10 +136,10 @@ public interface PSortedSet<E> extends PSet<E>, NavigableSet<E> {
   /**
    * @param list
    * @return This set, except with the elements of list added (unless they are already elements of
-   *         this set).
+   *     this set).
    * @throws NullPointerException if list is null or contains null
-   * @throws IllegalArgumentException if list contains an element that is incompatible with this
-   *                                  set (optional)
+   * @throws IllegalArgumentException if list contains an element that is incompatible with this set
+   *     (optional)
    */
   @Override
   public PSortedSet<E> plusAll(Collection<? extends E> list);

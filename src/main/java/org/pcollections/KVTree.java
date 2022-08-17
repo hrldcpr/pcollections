@@ -15,26 +15,23 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
- * <p>A persistent (immutable, purely functional) balanced-binary-tree implementation, with such
- * functionality as is needed to support implementations of {@link PSortedMap} and
- * {@link PSortedSet}, namely {@link TreePMap} and {@link TreePSet}. Each instance of this class is
- * both a (sub)tree (with a host of methods for examining and manipulating that tree) and the
- * node at the root of that (sub)tree (implementing {@link Map.Entry&lt;K, V&gt;} and providing methods
- * {@link #getKey()} and {@link #getValue()} to retrieve the mapping at the node). Method Javadoc
- * refers to 'this node' or 'this tree' as appropriate.</p>
+ * A persistent (immutable, purely functional) balanced-binary-tree implementation, with such
+ * functionality as is needed to support implementations of {@link PSortedMap} and {@link
+ * PSortedSet}, namely {@link TreePMap} and {@link TreePSet}. Each instance of this class is both a
+ * (sub)tree (with a host of methods for examining and manipulating that tree) and the node at the
+ * root of that (sub)tree (implementing {@link Map.Entry&lt;K, V&gt;} and providing methods {@link
+ * #getKey()} and {@link #getValue()} to retrieve the mapping at the node). Method Javadoc refers to
+ * 'this node' or 'this tree' as appropriate.
  *
  * <p>All operations are guaranteed to complete within O(log n) time. A complete iteration pass over
- * entryIterator(boolean) completes in O(n) time. A few operations -- namely getKey,  getValue,
- * isEmpty, orNullIfEmpty, and size -- complete in O(1) time.</p>
+ * entryIterator(boolean) completes in O(n) time. A few operations -- namely getKey, getValue,
+ * isEmpty, orNullIfEmpty, and size -- complete in O(1) time.
  *
- * @param <K>
- *   the key type; serves as the key type for {@code TreePMap}, and as the element type for
- *   {@code TreePSet}. This class provides various methods that maintain the ordering and
- *   distinctness of keys based on a client-provided instance of {@code Comparator<? super K>}.
- * @param <V>
- *   the value type; serves as the value type for {@code TreePMap}. (Is ignored by
- *   {@code TreePSet}.)
- *
+ * @param <K> the key type; serves as the key type for {@code TreePMap}, and as the element type for
+ *     {@code TreePSet}. This class provides various methods that maintain the ordering and
+ *     distinctness of keys based on a client-provided instance of {@code Comparator<? super K>}.
+ * @param <V> the value type; serves as the value type for {@code TreePMap}. (Is ignored by {@code
+ *     TreePSet}.)
  * @author Ran Ari-Gur
  * @since 3.2.0
  */
@@ -53,7 +50,11 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
   private static final long serialVersionUID = 1L;
 
   enum SearchType {
-    LT, LE, EQ, GE, GT
+    LT,
+    LE,
+    EQ,
+    GE,
+    GT
   }
 
   /** The empty tree / leaf node. Access via {@link #empty()}. */
@@ -64,7 +65,9 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
    */
   private final int height;
 
-  /** @return The number of mappings in this tree. */
+  /**
+   * @return The number of mappings in this tree.
+   */
   private final int size;
 
   private final KVTree<K, V> left;
@@ -87,12 +90,7 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
    * which takes the same parameters but also handles rebalancing if needed. (This constructor just
    * throws an exception if 'left' and 'right' have mismatched heights.)
    */
-  private KVTree(
-      final KVTree<K, V> left,
-      final K key,
-      final V value,
-      final KVTree<K, V> right
-  ) {
+  private KVTree(final KVTree<K, V> left, final K key, final V value, final KVTree<K, V> right) {
     if (left.height + 1 < right.height || left.height > right.height + 1) {
       // should never happen -- this is a private method -- barring a bug, could only happen if
       // height reaches Integer.MAX_VALUE, which shouldn't be possible:
@@ -115,24 +113,23 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
   }
 
   /**
-   * <p>Creates a tree consisting of all the mappings of 'left', in order, followed by a mapping
-   * from 'key' to 'value', followed by all the mappings of 'right', in order. Handles any necessary
+   * Creates a tree consisting of all the mappings of 'left', in order, followed by a mapping from
+   * 'key' to 'value', followed by all the mappings of 'right', in order. Handles any necessary
    * rebalancing if 'left' and 'right' have mismatched heights. (The intention is that this method
    * be the only code that calls {@link #KVTree(KVTree, K, V, KVTree)} directly; all other methods
-   * should delegate to this one.)</p>
+   * should delegate to this one.)
    *
    * <p>Requires time proportional to the difference in heights between 'left' and 'right', which is
-   * in O(log(max(left.size, right.size))) = O(log(left.size + right.size)).</p>
+   * in O(log(max(left.size, right.size))) = O(log(left.size + right.size)).
    *
-   * <p>The height of the returned tree is guaranteed to be
-   * max(left.height, right.height) plus either zero or one. (This is important in ensuring the time
-   * guarantees of this method and of methods that call it.)</p>
+   * <p>The height of the returned tree is guaranteed to be max(left.height, right.height) plus
+   * either zero or one. (This is important in ensuring the time guarantees of this method and of
+   * methods that call it.)
    *
    * @return A tree containing the specified mappings in the specified order.
    */
   private static <K, V> KVTree<K, V> join(
-      final KVTree<K, V> left, final K key, final V value, final KVTree<K, V> right
-  ) {
+      final KVTree<K, V> left, final K key, final V value, final KVTree<K, V> right) {
     final int leftHeight = left.height;
     final int rightHeight = right.height;
 
@@ -183,8 +180,7 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
   }
 
   static <K, V> KVTree<K, V> fromEntryIterator(
-      final Iterator<? extends Map.Entry<? extends K, ? extends V>> iterator
-  ) {
+      final Iterator<? extends Map.Entry<? extends K, ? extends V>> iterator) {
     return fromIterator(iterator, IteratorType.ENTRY, Integer.MAX_VALUE);
   }
 
@@ -193,10 +189,10 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
   }
 
   /**
-   * Whether an iterator returns entries or just keys. (This is a bit of a hack to let
-   * {@link #fromEntryIterator(Iterator)} and {@link #fromKeyIterator(Iterator)} share code. A
-   * cleaner alternative would be to wrap the key iterator in an entry iterator; but that would
-   * create lots of unnecessary Map.Entry instances.)
+   * Whether an iterator returns entries or just keys. (This is a bit of a hack to let {@link
+   * #fromEntryIterator(Iterator)} and {@link #fromKeyIterator(Iterator)} share code. A cleaner
+   * alternative would be to wrap the key iterator in an entry iterator; but that would create lots
+   * of unnecessary Map.Entry instances.)
    */
   private enum IteratorType {
     ENTRY,
@@ -204,8 +200,7 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
   }
 
   private static <K, V> KVTree<K, V> fromIterator(
-      final Iterator<?> iterator, final IteratorType iteratorType, final int maxHeight
-  ) {
+      final Iterator<?> iterator, final IteratorType iteratorType, final int maxHeight) {
     KVTree<K, V> curr = KVTree.empty();
     while (true) {
       if (curr.height >= maxHeight) {
@@ -213,7 +208,7 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
         return curr;
       }
 
-      if (! iterator.hasNext()) {
+      if (!iterator.hasNext()) {
         return curr;
       }
 
@@ -222,10 +217,10 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
       final Object datum = iterator.next();
       @SuppressWarnings("unchecked")
       final K key =
-        (K) (iteratorType == IteratorType.KEY ? datum : ((Map.Entry<?, ?>) datum).getKey());
+          (K) (iteratorType == IteratorType.KEY ? datum : ((Map.Entry<?, ?>) datum).getKey());
       @SuppressWarnings("unchecked")
       final V value =
-        (V) (iteratorType == IteratorType.KEY ? null : ((Map.Entry<?, ?>) datum).getValue());
+          (V) (iteratorType == IteratorType.KEY ? null : ((Map.Entry<?, ?>) datum).getValue());
 
       final KVTree<K, V> right = fromIterator(iterator, iteratorType, left.height);
 
@@ -256,7 +251,9 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
         && Objects.equals(this.value, that.getValue());
   }
 
-  /** @return This node's key, or null if this node is the root of the empty tree. */
+  /**
+   * @return This node's key, or null if this node is the root of the empty tree.
+   */
   @Override
   public K getKey() {
     return this.key;
@@ -269,7 +266,7 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
   KVTree<K, V> getLeftmost() {
     checkNotEmpty();
     KVTree<K, V> currNode = this;
-    while (! currNode.left.isEmpty()) {
+    while (!currNode.left.isEmpty()) {
       currNode = currNode.left;
     }
     return currNode;
@@ -282,15 +279,15 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
   KVTree<K, V> getRightmost() {
     checkNotEmpty();
     KVTree<K, V> currNode = this;
-    while (! currNode.right.isEmpty()) {
+    while (!currNode.right.isEmpty()) {
       currNode = currNode.right;
     }
     return currNode;
   }
 
   /**
-   * @return
-   *   This node's value (which may be null), or null if this node is the root of the empty tree.
+   * @return This node's value (which may be null), or null if this node is the root of the empty
+   *     tree.
    */
   @Override
   public V getValue() {
@@ -300,10 +297,12 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
   /** implements hashCode() as specified by Map.Entry */
   @Override
   public int hashCode() {
-    return Objects.hashCode(this.key)^ Objects.hashCode(this.value); 
+    return Objects.hashCode(this.key) ^ Objects.hashCode(this.value);
   }
 
-  /** @return Whether this tree contains any mappings (i.e., whether its size is 0). */
+  /**
+   * @return Whether this tree contains any mappings (i.e., whether its size is 0).
+   */
   boolean isEmpty() {
     return this == EMPTY;
   }
@@ -347,7 +346,9 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
     return KVTree.join(this.left, this.key, this.value, this.right.minusRightmost());
   }
 
-  /** @return This node, or null if this node is the root of the empty tree. */
+  /**
+   * @return This node, or null if this node is the root of the empty tree.
+   */
   Map.Entry<K, V> orNullIfEmpty() {
     return this == EMPTY ? null : this;
   }
@@ -376,8 +377,7 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
       final boolean isLeftBoundInclusive,
       final K rightBound,
       final boolean isRightBoundInclusive,
-      final Comparator<? super K> comparator
-  ) {
+      final Comparator<? super K> comparator) {
     if (this.isEmpty()) {
       return this;
     }
@@ -433,8 +433,7 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
   KVTree<K, V> rangeToLeft(
       final K rightBound,
       final boolean isRightBoundInclusive,
-      final Comparator<? super K> comparator
-  ) {
+      final Comparator<? super K> comparator) {
     if (this.isEmpty()) {
       return this;
     }
@@ -457,8 +456,7 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
   KVTree<K, V> rangeToRight(
       final K leftBound,
       final boolean isleftBoundInclusive,
-      final Comparator<? super K> comparator
-  ) {
+      final Comparator<? super K> comparator) {
     if (this.isEmpty()) {
       return this;
     }
@@ -478,10 +476,7 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
   }
 
   KVTree<K, V> search(
-    final K key,
-    final Comparator<? super K> comparator,
-    final SearchType searchType
-  ) {
+      final K key, final Comparator<? super K> comparator, final SearchType searchType) {
     KVTree<K, V> currNode = this;
     KVTree<K, V> candidate = KVTree.empty();
     while (true) {
@@ -504,8 +499,7 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
           }
         } else if (searchType == SearchType.LE
             || searchType == SearchType.EQ
-            || searchType == SearchType.GE
-        ) {
+            || searchType == SearchType.GE) {
           return currNode;
         } else {
           if (currNode.right.isEmpty()) {
@@ -533,18 +527,20 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
     throw new UnsupportedOperationException();
   }
 
-  /** @return The number of mappings in this tree. */
+  /**
+   * @return The number of mappings in this tree.
+   */
   int size() {
     return this.size;
   }
 
   /**
-   * implements toString() in a form expected for an implementation of Map.Entry, namely
-   * "KEY=VALUE" (with no information about the presence or absence of child nodes).
+   * implements toString() in a form expected for an implementation of Map.Entry, namely "KEY=VALUE"
+   * (with no information about the presence or absence of child nodes).
    */
   @Override
   public String toString() {
-      return this.key + "=" + this.value;
+    return this.key + "=" + this.value;
   }
 
   private void checkNotEmpty() {

@@ -10,12 +10,11 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 
 /**
- * <p>Like {@link PSet} but preserves insertion order. Persistent equivalent of
- * {@link LinkedHashSet}.</p>
+ * Like {@link PSet} but preserves insertion order. Persistent equivalent of {@link LinkedHashSet}.
  *
  * <p>(Note: this is different from {@link PSortedSet}, which keeps elements in the order specified
- * by {@link java.lang.Comparable#compareTo(Object)} or
- * {@link java.util.Comparator#compare(Object, Object)}.)</p>
+ * by {@link java.lang.Comparable#compareTo(Object)} or {@link java.util.Comparator#compare(Object,
+ * Object)}.)
  *
  * @author Tassilo Horn &lt;horn@uni-koblenz.de&gt;
  * @param <E>

@@ -23,13 +23,11 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
+import junit.framework.AssertionFailedError;
+import junit.framework.TestCase;
 import org.pcollections.TreePSet;
 import org.pcollections.tests.util.CompareInconsistentWithEquals;
 import org.pcollections.tests.util.StringOrderComparator;
-
-import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
 
 public class TreePSetTest extends TestCase {
   /**
@@ -48,8 +46,7 @@ public class TreePSetTest extends TestCase {
 
     // . . . and, descendingSet():
     assertEquivalentComparator(
-        treeSetOf().descendingSet().comparator(),
-        EMPTY.descendingSet().comparator());
+        treeSetOf().descendingSet().comparator(), EMPTY.descendingSet().comparator());
 
     // If do specify a comparator, should get it:
     assertSame(STRING_ORDER_COMPARATOR, TreePSet.empty(STRING_ORDER_COMPARATOR).comparator());
@@ -61,12 +58,9 @@ public class TreePSetTest extends TestCase {
   }
 
   public void testDescendingIterator() {
+    assertSameSequence(treeSetOf()::descendingIterator, EMPTY::descendingIterator);
     assertSameSequence(
-        treeSetOf()::descendingIterator,
-        EMPTY::descendingIterator);
-    assertSameSequence(
-        treeSetOf().descendingSet()::descendingIterator,
-        EMPTY.descendingSet()::descendingIterator);
+        treeSetOf().descendingSet()::descendingIterator, EMPTY.descendingSet()::descendingIterator);
 
     assertSameSequence(
         treeSetOf(1, 2, 3, 4, 5)::descendingIterator,
@@ -87,23 +81,18 @@ public class TreePSetTest extends TestCase {
   }
 
   public void testDescendingSet() {
+    assertEquivalentState(treeSetOf().descendingSet(), EMPTY.descendingSet());
     assertEquivalentState(
-        treeSetOf().descendingSet(),
-        EMPTY.descendingSet());
-    assertEquivalentState(
-        treeSetOf().descendingSet().descendingSet(),
-        EMPTY.descendingSet().descendingSet());
+        treeSetOf().descendingSet().descendingSet(), EMPTY.descendingSet().descendingSet());
 
     assertEquivalentState(
-        treeSetOf(1, 2, 3, 4).descendingSet(),
-        TreePSet.of(1, 2, 3, 4).descendingSet());
+        treeSetOf(1, 2, 3, 4).descendingSet(), TreePSet.of(1, 2, 3, 4).descendingSet());
     assertEquivalentState(
         treeSetOf(1, 2, 3, 4).descendingSet().descendingSet(),
         TreePSet.of(1, 2, 3, 4).descendingSet().descendingSet());
 
     assertEquivalentState(
-        TreePSet.of(1, 2, 3, 4),
-        TreePSet.of(1, 2, 3, 4).descendingSet().descendingSet());
+        TreePSet.of(1, 2, 3, 4), TreePSet.of(1, 2, 3, 4).descendingSet().descendingSet());
 
     // Note: descendingSet() differs from all the other producer methods, from a testing standpoint,
     // in that it sets a flag in the returned TreePSet that almost all other TreePSet methods have
@@ -117,13 +106,14 @@ public class TreePSetTest extends TestCase {
    * and elements, and that it returns false for each of various objects that are not such sets.
    */
   public void testEquals() {
-    final List<Subcase> subcases = Arrays.asList(
-        new Subcase(treeSetOf(), EMPTY),
-        new Subcase(treeSetOf().descendingSet(), EMPTY.descendingSet()),
-        new Subcase(treeSetOf(1, 2, 3, 4, 5), TreePSet.of(1, 2, 3, 4, 5)),
-        new Subcase(
-            treeSetOf(1, 2, 3, 4, 5).descendingSet(),
-            TreePSet.of(1, 2, 3, 4, 5).descendingSet()));
+    final List<Subcase> subcases =
+        Arrays.asList(
+            new Subcase(treeSetOf(), EMPTY),
+            new Subcase(treeSetOf().descendingSet(), EMPTY.descendingSet()),
+            new Subcase(treeSetOf(1, 2, 3, 4, 5), TreePSet.of(1, 2, 3, 4, 5)),
+            new Subcase(
+                treeSetOf(1, 2, 3, 4, 5).descendingSet(),
+                TreePSet.of(1, 2, 3, 4, 5).descendingSet()));
 
     for (final Subcase subcase : subcases) {
       final NavigableSet<Integer> expected = subcase.expected;
@@ -145,7 +135,7 @@ public class TreePSetTest extends TestCase {
       assertTrue(actual.equals(expected.descendingSet()));
 
       // must return false for a set that's too small:
-      if (! actual.isEmpty()) {
+      if (!actual.isEmpty()) {
         final TreeSet<Integer> tooSmall = new TreeSet<>(expected);
         tooSmall.pollFirst();
         assertFalse(actual.equals((Object) tooSmall));
@@ -159,7 +149,7 @@ public class TreePSetTest extends TestCase {
       }
 
       // must return false for a set that has a wrong element:
-      if (! actual.isEmpty()) {
+      if (!actual.isEmpty()) {
         final TreeSet<Integer> wrong = new TreeSet<>(expected);
         final Integer wrongElement = findSomeNonElement(wrong);
         wrong.pollFirst();
@@ -177,8 +167,7 @@ public class TreePSetTest extends TestCase {
     // the overload that takes a comparator:
 
     assertEquivalentState(
-        new TreeSet<>(STRING_ORDER_COMPARATOR),
-        TreePSet.empty(STRING_ORDER_COMPARATOR));
+        new TreeSet<>(STRING_ORDER_COMPARATOR), TreePSet.empty(STRING_ORDER_COMPARATOR));
 
     assertThrows(NullPointerException.class, () -> TreePSet.empty(null));
   }
@@ -210,16 +199,12 @@ public class TreePSetTest extends TestCase {
       final TreeSet<Integer> expected = new TreeSet<>(STRING_ORDER_COMPARATOR);
       expected.addAll(collection);
 
-      assertEquivalentState(
-          expected,
-          TreePSet.from(STRING_ORDER_COMPARATOR, collection));
+      assertEquivalentState(expected, TreePSet.from(STRING_ORDER_COMPARATOR, collection));
     }
 
     assertThrows(NullPointerException.class, () -> TreePSet.from(null, new ArrayList<>()));
 
-    assertThrows(
-        NullPointerException.class,
-        () -> TreePSet.from(STRING_ORDER_COMPARATOR, null));
+    assertThrows(NullPointerException.class, () -> TreePSet.from(STRING_ORDER_COMPARATOR, null));
 
     assertThrows(
         NullPointerException.class,
@@ -287,17 +272,18 @@ public class TreePSetTest extends TestCase {
 
     TreePSet<CompareInconsistentWithEquals> actual = TreePSet.empty();
 
-    for (int i = 0 ; i < 20; ++i) {
+    for (int i = 0; i < 20; ++i) {
       final int randomEq1 = RANDOM.nextInt();
       final int randomEq2 = RANDOM.nextInt();
       final int randomComp1 = RANDOM.nextInt();
       final int randomComp2 = RANDOM.nextInt();
 
-      final List<CompareInconsistentWithEquals> toAdd = Arrays.asList(
-          new CompareInconsistentWithEquals(randomEq1, randomComp1),
-          new CompareInconsistentWithEquals(randomEq1, randomComp2),
-          new CompareInconsistentWithEquals(randomEq2, randomComp1),
-          new CompareInconsistentWithEquals(randomEq2, randomComp2));
+      final List<CompareInconsistentWithEquals> toAdd =
+          Arrays.asList(
+              new CompareInconsistentWithEquals(randomEq1, randomComp1),
+              new CompareInconsistentWithEquals(randomEq1, randomComp2),
+              new CompareInconsistentWithEquals(randomEq2, randomComp1),
+              new CompareInconsistentWithEquals(randomEq2, randomComp2));
 
       expected.addAll(toAdd);
       actual = actual.plusAll(toAdd);
@@ -325,8 +311,7 @@ public class TreePSetTest extends TestCase {
 
     assertEquivalentState(treeSetOf(1, 2, 3, 4, 5), TreePSet.of(1, 2, 3, 4, 5));
     assertEquivalentState(
-        treeSetOf(1, 2, 3, 4, 5).descendingSet(),
-        TreePSet.of(1, 2, 3, 4, 5).descendingSet());
+        treeSetOf(1, 2, 3, 4, 5).descendingSet(), TreePSet.of(1, 2, 3, 4, 5).descendingSet());
 
     final TreePSet<Integer> set = TreePSet.of(1, 2, 3);
     assertNotSame(set.iterator(), set.iterator());
@@ -398,35 +383,24 @@ public class TreePSetTest extends TestCase {
 
       assertEquivalentState(expected.subSet(from, to), actual.subSet(from, to));
       assertEquivalentState(
-          expected.descendingSet().subSet(to, from),
-          actual.descendingSet().subSet(to, from));
+          expected.descendingSet().subSet(to, from), actual.descendingSet().subSet(to, from));
     }
   }
 
   public void testMinusAll() {
-    assertEquivalentState(
-        EMPTY,
-        EMPTY.minusAll(Arrays.asList()));
+    assertEquivalentState(EMPTY, EMPTY.minusAll(Arrays.asList()));
+
+    assertEquivalentState(EMPTY, EMPTY.minusAll(Arrays.asList(1, 2, 3, 4, 5)));
+
+    assertEquivalentState(EMPTY, TreePSet.of(1, 2, 3, 4, 5).minusAll(Arrays.asList(1, 2, 3, 4, 5)));
 
     assertEquivalentState(
-        EMPTY,
-        EMPTY.minusAll(Arrays.asList(1, 2, 3, 4, 5)));
+        TreePSet.of(1, 3, 5), TreePSet.of(1, 2, 3, 4, 5).minusAll(Arrays.asList(0, 2, 4, 6)));
+
+    assertEquivalentState(EMPTY.descendingSet(), EMPTY.descendingSet().minusAll(Arrays.asList()));
 
     assertEquivalentState(
-        EMPTY,
-        TreePSet.of(1, 2, 3, 4, 5).minusAll(Arrays.asList(1, 2, 3, 4, 5)));
-
-    assertEquivalentState(
-        TreePSet.of(1, 3, 5),
-        TreePSet.of(1, 2, 3, 4, 5).minusAll(Arrays.asList(0, 2, 4, 6)));
-
-    assertEquivalentState(
-        EMPTY.descendingSet(),
-        EMPTY.descendingSet().minusAll(Arrays.asList()));
-
-    assertEquivalentState(
-        EMPTY.descendingSet(),
-        EMPTY.descendingSet().minusAll(Arrays.asList(1, 2, 3, 4, 5)));
+        EMPTY.descendingSet(), EMPTY.descendingSet().minusAll(Arrays.asList(1, 2, 3, 4, 5)));
 
     assertEquivalentState(
         EMPTY.descendingSet(),
@@ -504,29 +478,21 @@ public class TreePSetTest extends TestCase {
 
       assertSameSequence(expected.subSet(from, to), actual.subSet(from, to));
       assertSameSequence(
-          expected.descendingSet().subSet(to, from),
-          actual.descendingSet().subSet(to, from));
+          expected.descendingSet().subSet(to, from), actual.descendingSet().subSet(to, from));
     }
   }
 
   public void testOf() {
     // the overload that doesn't take an explicit comparator (uses natural ordering):
 
-    assertEquivalentState(
-        treeSetOf(),
-        EMPTY);
+    assertEquivalentState(treeSetOf(), EMPTY);
+
+    assertEquivalentState(treeSetOf(1), TreePSet.of(1));
+
+    assertEquivalentState(treeSetOf(1, 3, 5, 2, 4), TreePSet.of(1, 3, 5, 2, 4));
 
     assertEquivalentState(
-        treeSetOf(1),
-        TreePSet.of(1));
-
-    assertEquivalentState(
-        treeSetOf(1, 3, 5, 2, 4),
-        TreePSet.of(1, 3, 5, 2, 4));
-
-    assertEquivalentState(
-        treeSetOf(new Integer[] { 1, 3, 5, 2, 4 }),
-        TreePSet.of(new Integer[] { 1, 3, 5, 2, 4 }));
+        treeSetOf(new Integer[] {1, 3, 5, 2, 4}), TreePSet.of(new Integer[] {1, 3, 5, 2, 4}));
 
     assertThrows(NullPointerException.class, () -> TreePSet.from(null));
 
@@ -543,16 +509,12 @@ public class TreePSetTest extends TestCase {
       final TreeSet<Integer> expected = new TreeSet<>(STRING_ORDER_COMPARATOR);
       expected.addAll(collection);
 
-      assertEquivalentState(
-          expected,
-          TreePSet.from(STRING_ORDER_COMPARATOR, collection));
+      assertEquivalentState(expected, TreePSet.from(STRING_ORDER_COMPARATOR, collection));
     }
 
     assertThrows(NullPointerException.class, () -> TreePSet.from(null, new ArrayList<>()));
 
-    assertThrows(
-        NullPointerException.class,
-        () -> TreePSet.from(STRING_ORDER_COMPARATOR, null));
+    assertThrows(NullPointerException.class, () -> TreePSet.from(STRING_ORDER_COMPARATOR, null));
 
     assertThrows(
         NullPointerException.class,
@@ -560,13 +522,14 @@ public class TreePSetTest extends TestCase {
   }
 
   public void testPlusAndMinus() {
-    final List<Subcase> subcases = Arrays.asList(
-        new Subcase(treeSetOf(), EMPTY),
-        new Subcase(treeSetOf().descendingSet(), EMPTY.descendingSet()),
-        new Subcase(treeSetOf(1, 2, 3, 4, 5), TreePSet.of(1, 2, 3, 4, 5)),
-        new Subcase(
-            treeSetOf(1, 2, 3, 4, 5).descendingSet(),
-            TreePSet.of(1, 2, 3, 4, 5).descendingSet()));
+    final List<Subcase> subcases =
+        Arrays.asList(
+            new Subcase(treeSetOf(), EMPTY),
+            new Subcase(treeSetOf().descendingSet(), EMPTY.descendingSet()),
+            new Subcase(treeSetOf(1, 2, 3, 4, 5), TreePSet.of(1, 2, 3, 4, 5)),
+            new Subcase(
+                treeSetOf(1, 2, 3, 4, 5).descendingSet(),
+                TreePSet.of(1, 2, 3, 4, 5).descendingSet()));
 
     for (final Subcase subcase : subcases) {
       final NavigableSet<Integer> expected = subcase.expected;
@@ -600,40 +563,28 @@ public class TreePSetTest extends TestCase {
   }
 
   public void testPlusAll() {
-    assertEquivalentState(
-        EMPTY,
-        EMPTY.plusAll(Arrays.asList()));
-    assertEquivalentState(
-        EMPTY.descendingSet(),
-        EMPTY.descendingSet().plusAll(Arrays.asList()));
+    assertEquivalentState(EMPTY, EMPTY.plusAll(Arrays.asList()));
+    assertEquivalentState(EMPTY.descendingSet(), EMPTY.descendingSet().plusAll(Arrays.asList()));
 
-    assertEquivalentState(
-        TreePSet.of(1, 2, 3, 4, 5),
-        EMPTY.plusAll(Arrays.asList(1, 2, 3, 4, 5)));
+    assertEquivalentState(TreePSet.of(1, 2, 3, 4, 5), EMPTY.plusAll(Arrays.asList(1, 2, 3, 4, 5)));
     assertEquivalentState(
         TreePSet.of(1, 2, 3, 4, 5).descendingSet(),
         EMPTY.descendingSet().plusAll(Arrays.asList(1, 2, 3, 4, 5)));
 
     assertEquivalentState(
-        TreePSet.of(1, 2, 3, 4, 5),
-        TreePSet.of(1, 2, 3, 4, 5).plusAll(Arrays.asList()));
+        TreePSet.of(1, 2, 3, 4, 5), TreePSet.of(1, 2, 3, 4, 5).plusAll(Arrays.asList()));
     assertEquivalentState(
         TreePSet.of(1, 2, 3, 4, 5).descendingSet(),
         TreePSet.of(1, 2, 3, 4, 5).descendingSet().plusAll(Arrays.asList()));
 
     assertEquivalentState(
-        TreePSet.of(1, 2, 3, 4, 5),
-        TreePSet.of(1, 3, 5).plusAll(Arrays.asList(2, 3, 4)));
+        TreePSet.of(1, 2, 3, 4, 5), TreePSet.of(1, 3, 5).plusAll(Arrays.asList(2, 3, 4)));
     assertEquivalentState(
         TreePSet.of(1, 2, 3, 4, 5).descendingSet(),
         TreePSet.of(1, 3, 5).descendingSet().plusAll(Arrays.asList(2, 3, 4)));
 
-    assertThrows(
-        NullPointerException.class,
-        () -> EMPTY.plusAll(null));
-    assertThrows(
-        NullPointerException.class,
-        () -> EMPTY.plusAll(Arrays.asList(0, null)));
+    assertThrows(NullPointerException.class, () -> EMPTY.plusAll(null));
+    assertThrows(NullPointerException.class, () -> EMPTY.plusAll(Arrays.asList(0, null)));
   }
 
   /**
@@ -641,13 +592,14 @@ public class TreePSetTest extends TestCase {
    * parameter(s) and the overloads without.
    */
   public void testRanges() {
-    final List<Subcase> subcases = Arrays.asList(
-        new Subcase(treeSetOf(), EMPTY),
-        new Subcase(treeSetOf().descendingSet(), EMPTY.descendingSet()),
-        new Subcase(treeSetOf(1, 2, 3, 4, 5), TreePSet.of(1, 2, 3, 4, 5)),
-        new Subcase(
-            treeSetOf(1, 2, 3, 4, 5).descendingSet(),
-            TreePSet.of(1, 2, 3, 4, 5).descendingSet()));
+    final List<Subcase> subcases =
+        Arrays.asList(
+            new Subcase(treeSetOf(), EMPTY),
+            new Subcase(treeSetOf().descendingSet(), EMPTY.descendingSet()),
+            new Subcase(treeSetOf(1, 2, 3, 4, 5), TreePSet.of(1, 2, 3, 4, 5)),
+            new Subcase(
+                treeSetOf(1, 2, 3, 4, 5).descendingSet(),
+                TreePSet.of(1, 2, 3, 4, 5).descendingSet()));
 
     for (final Subcase subcase : subcases) {
       final NavigableSet<Integer> expected = subcase.expected;
@@ -668,37 +620,24 @@ public class TreePSetTest extends TestCase {
 
         for (final int from : bounds) {
           if (actual.comparator().compare(from, to) <= 0) {
+            assertEquivalentState(expected.subSet(from, to), actual.subSet(from, to));
             assertEquivalentState(
-                expected.subSet(from, to),
-                actual.subSet(from, to));
+                expected.subSet(from, true, to, true), actual.subSet(from, true, to, true));
             assertEquivalentState(
-                expected.subSet(from, true, to, true),
-                actual.subSet(from, true, to, true));
+                expected.subSet(from, true, to, false), actual.subSet(from, true, to, false));
             assertEquivalentState(
-                expected.subSet(from, true, to, false),
-                actual.subSet(from, true, to, false));
+                expected.subSet(from, false, to, true), actual.subSet(from, false, to, true));
             assertEquivalentState(
-                expected.subSet(from, false, to, true),
-                actual.subSet(from, false, to, true));
-            assertEquivalentState(
-                expected.subSet(from, false, to, false),
-                actual.subSet(from, false, to, false));
+                expected.subSet(from, false, to, false), actual.subSet(from, false, to, false));
           } else {
+            assertThrows(IllegalArgumentException.class, () -> actual.subSet(from, to));
+            assertThrows(IllegalArgumentException.class, () -> actual.subSet(from, true, to, true));
             assertThrows(
-                IllegalArgumentException.class,
-                () -> actual.subSet(from, to));
+                IllegalArgumentException.class, () -> actual.subSet(from, true, to, false));
             assertThrows(
-                IllegalArgumentException.class,
-                () -> actual.subSet(from, true, to, true));
+                IllegalArgumentException.class, () -> actual.subSet(from, false, to, true));
             assertThrows(
-                IllegalArgumentException.class,
-                () -> actual.subSet(from, true, to, false));
-            assertThrows(
-                IllegalArgumentException.class,
-                () -> actual.subSet(from, false, to, true));
-            assertThrows(
-                IllegalArgumentException.class,
-                () -> actual.subSet(from, false, to, false));
+                IllegalArgumentException.class, () -> actual.subSet(from, false, to, false));
           }
         }
       }
@@ -725,17 +664,18 @@ public class TreePSetTest extends TestCase {
    * and lower(...), by validating that they give the same result for a TreePSet as for a TreeSet.
    */
   public void testSearchers() {
-    final List<Subcase> subcases = Arrays.asList(
-        new Subcase(treeSetOf(), EMPTY),
-        new Subcase(treeSetOf().descendingSet(), EMPTY.descendingSet()),
-        new Subcase(treeSetOf(1, 2, 3, 4, 5), TreePSet.of(1, 2, 3, 4, 5)),
-        new Subcase(
-            treeSetOf(1, 2, 3, 4, 5).descendingSet(),
-            TreePSet.of(1, 2, 3, 4, 5).descendingSet()),
-        new Subcase(treeSetOf(1, 3, 5, 7, 9), TreePSet.of(1, 3, 5, 7, 9)),
-        new Subcase(
-            treeSetOf(1, 3, 5, 7, 9).descendingSet(),
-            TreePSet.of(1, 3, 5, 7, 9).descendingSet()));
+    final List<Subcase> subcases =
+        Arrays.asList(
+            new Subcase(treeSetOf(), EMPTY),
+            new Subcase(treeSetOf().descendingSet(), EMPTY.descendingSet()),
+            new Subcase(treeSetOf(1, 2, 3, 4, 5), TreePSet.of(1, 2, 3, 4, 5)),
+            new Subcase(
+                treeSetOf(1, 2, 3, 4, 5).descendingSet(),
+                TreePSet.of(1, 2, 3, 4, 5).descendingSet()),
+            new Subcase(treeSetOf(1, 3, 5, 7, 9), TreePSet.of(1, 3, 5, 7, 9)),
+            new Subcase(
+                treeSetOf(1, 3, 5, 7, 9).descendingSet(),
+                TreePSet.of(1, 3, 5, 7, 9).descendingSet()));
 
     for (final Subcase subcase : subcases) {
       final NavigableSet<Integer> expected = subcase.expected;
@@ -745,7 +685,7 @@ public class TreePSetTest extends TestCase {
       final Iterable<Integer> elementsToTest = expected.isEmpty() ? Arrays.asList(0) : expected;
 
       for (final int element : elementsToTest) {
-        for (final int arg : new int[] { element - 1, element, element + 1 }) {
+        for (final int arg : new int[] {element - 1, element, element + 1}) {
           assertEquals(expected.ceiling(arg), actual.ceiling(arg));
           assertEquals(expected.contains(arg), actual.contains(arg));
           assertEquals(expected.floor(arg), actual.floor(arg));
@@ -775,8 +715,7 @@ public class TreePSetTest extends TestCase {
 
   public void testSerializeAndDeserialize() throws Exception {
     assertEquivalentState(
-        TreePSet.of(1, 2, 3, 4),
-        serializeAndDeserialize(TreePSet.of(1, 2, 3, 4)));
+        TreePSet.of(1, 2, 3, 4), serializeAndDeserialize(TreePSet.of(1, 2, 3, 4)));
 
     assertEquivalentState(
         TreePSet.of(1, 2, 3, 4).descendingSet(),
@@ -810,8 +749,7 @@ public class TreePSetTest extends TestCase {
     assertThrows(NullPointerException.class, () -> TreePSet.singleton(null, 3));
 
     assertThrows(
-        NullPointerException.class,
-        () -> TreePSet.singleton(STRING_ORDER_COMPARATOR, null));
+        NullPointerException.class, () -> TreePSet.singleton(STRING_ORDER_COMPARATOR, null));
   }
 
   public void testSize() {
@@ -826,13 +764,14 @@ public class TreePSetTest extends TestCase {
    * Test toArray() -- both the overload that takes an array parameter, and the one that does not.
    */
   public void testToArray() {
-    final List<Subcase> subcases = Arrays.asList(
-        new Subcase(treeSetOf(), EMPTY),
-        new Subcase(treeSetOf().descendingSet(), EMPTY.descendingSet()),
-        new Subcase(treeSetOf(1, 2, 3, 4, 5), TreePSet.of(1, 2, 3, 4, 5)),
-        new Subcase(
-            treeSetOf(1, 2, 3, 4, 5).descendingSet(),
-            TreePSet.of(1, 2, 3, 4, 5).descendingSet()));
+    final List<Subcase> subcases =
+        Arrays.asList(
+            new Subcase(treeSetOf(), EMPTY),
+            new Subcase(treeSetOf().descendingSet(), EMPTY.descendingSet()),
+            new Subcase(treeSetOf(1, 2, 3, 4, 5), TreePSet.of(1, 2, 3, 4, 5)),
+            new Subcase(
+                treeSetOf(1, 2, 3, 4, 5).descendingSet(),
+                TreePSet.of(1, 2, 3, 4, 5).descendingSet()));
 
     for (final Subcase subcase : subcases) {
       final NavigableSet<Integer> expected = subcase.expected;
@@ -851,7 +790,7 @@ public class TreePSetTest extends TestCase {
       }
 
       // arg that's too small:
-      if (! expected.isEmpty()) {
+      if (!expected.isEmpty()) {
         final Integer[] tooSmall = new Integer[expected.size() - 1];
         final Integer[] expectedArr = expected.toArray(tooSmall);
         final Integer[] actualArr = actual.toArray(tooSmall);
@@ -918,15 +857,15 @@ public class TreePSetTest extends TestCase {
       expected.addAll(collection);
 
       assertEquivalentState(
-          expected,
-          collection.stream().collect(TreePSet.toTreePSet(STRING_ORDER_COMPARATOR)));
+          expected, collection.stream().collect(TreePSet.toTreePSet(STRING_ORDER_COMPARATOR)));
     }
 
     assertThrows(NullPointerException.class, () -> TreePSet.toTreePSet(null));
 
     assertThrows(
         NullPointerException.class,
-        () -> Arrays.asList(3, null).stream().collect(TreePSet.toTreePSet(STRING_ORDER_COMPARATOR)));
+        () ->
+            Arrays.asList(3, null).stream().collect(TreePSet.toTreePSet(STRING_ORDER_COMPARATOR)));
   }
 
   /**
@@ -946,10 +885,10 @@ public class TreePSetTest extends TestCase {
   }
 
   /**
-   * <p>Assert that actual has the expected state, in that it has the same elements as expected, in
-   * the same order, and reports an equivalent comparator.</p>
+   * Assert that actual has the expected state, in that it has the same elements as expected, in the
+   * same order, and reports an equivalent comparator.
    *
-   * <p>This method is intended to validate the result of any method that produces a TreePSet.</p>
+   * <p>This method is intended to validate the result of any method that produces a TreePSet.
    *
    * <p>Background: a TreePSet instance has three pieces of state: a tree containing the elements
    * (which obviously has internal structure, but the TreePSet doesn't have to worry about that), a
@@ -961,29 +900,24 @@ public class TreePSetTest extends TestCase {
    * obviously not ideal to write a test based on our understanding of the inner workings of the
    * class we're testing; but given the huge number of different producer method scenarios, we'd
    * have a massive combinatorial explosion of different instances to test if we didn't cut it down
-   * in some way along these lines.)</p>
+   * in some way along these lines.)
    *
    * <p>Caveat: if actual is empty or has only one element, then it's meaningless to talk about the
    * order that its elements are in. So any method that produces a TreePSet should have a test case
    * for producing a TreePSet with more than one element (unless the method <em>never</em> produces
-   * a TreePSet with more than one element, in which case that doesn't matter).</p>
+   * a TreePSet with more than one element, in which case that doesn't matter).
    *
    * @param expected
    * @param actual
    */
   private static void assertEquivalentState(
-      final SortedSet<Integer> expected,
-      final TreePSet<Integer> actual
-  ) {
+      final SortedSet<Integer> expected, final TreePSet<Integer> actual) {
     assertSameSequence(expected, actual);
 
     assertEquivalentComparator(expected.comparator(), actual.comparator());
   }
 
-  private static <E> void assertSameSequence(
-      final Iterable<E> expected,
-      final Iterable<E> actual
-  ) {
+  private static <E> void assertSameSequence(final Iterable<E> expected, final Iterable<E> actual) {
     final ArrayList<E> expectedList = new ArrayList<>();
     for (final E element : expected) {
       expectedList.add(element);
@@ -996,9 +930,7 @@ public class TreePSetTest extends TestCase {
   }
 
   private static void assertEquivalentComparator(
-      final Comparator<? super Integer> expected,
-      final Comparator<? super Integer> actual
-  ) {
+      final Comparator<? super Integer> expected, final Comparator<? super Integer> actual) {
     assertNotNull(actual);
 
     // We only work with five orderings in this test -- the natural ordering (1 < 2 < 10), the
@@ -1018,17 +950,16 @@ public class TreePSetTest extends TestCase {
   }
 
   private static void assertThrows(
-      final Class<? extends RuntimeException> exceptionClass,
-      final Runnable runnable
-  ) {
+      final Class<? extends RuntimeException> exceptionClass, final Runnable runnable) {
     try {
       runnable.run();
 
       fail("Expected a [" + exceptionClass.getName() + "] to be thrown");
     } catch (final RuntimeException re) {
-      if (! exceptionClass.isInstance(re)) {
-        final AssertionFailedError failure = new AssertionFailedError(
-            "Expected a [" + exceptionClass.getName() + "] to be thrown, instead got: " + re);
+      if (!exceptionClass.isInstance(re)) {
+        final AssertionFailedError failure =
+            new AssertionFailedError(
+                "Expected a [" + exceptionClass.getName() + "] to be thrown, instead got: " + re);
         failure.initCause(re);
         throw failure;
       }
@@ -1038,7 +969,7 @@ public class TreePSetTest extends TestCase {
   private static Integer findSomeNonElement(final SortedSet<Integer> set) {
     int i = 0;
     do {
-      if (! set.contains(i)) {
+      if (!set.contains(i)) {
         return i;
       }
     } while (++i != 0);

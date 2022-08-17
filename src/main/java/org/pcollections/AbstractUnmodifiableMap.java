@@ -15,16 +15,15 @@ import java.util.function.Function;
  * A subclass of AbstractMap that overrides the various mutator methods to mark them as deprecated
  * and unconditionally throw UnsupportedOperationException.
  *
- * @param <K>  the type of keys maintained by this map
- * @param <V>  the type of mapped values
- *
+ * @param <K> the type of keys maintained by this map
+ * @param <V> the type of mapped values
  * @author Ran Ari-Gur
  * @since 3.2.0
  */
 public abstract class AbstractUnmodifiableMap<K, V> extends AbstractMap<K, V> {
 
   /**
-   * @throws UnsupportedOperationException  always
+   * @throws UnsupportedOperationException always
    * @deprecated Unsupported operation.
    */
   @Deprecated
@@ -34,7 +33,7 @@ public abstract class AbstractUnmodifiableMap<K, V> extends AbstractMap<K, V> {
   }
 
   /**
-   * @throws UnsupportedOperationException  always
+   * @throws UnsupportedOperationException always
    * @deprecated Unsupported operation.
    */
   @Deprecated
@@ -44,7 +43,7 @@ public abstract class AbstractUnmodifiableMap<K, V> extends AbstractMap<K, V> {
   }
 
   /**
-   * @throws UnsupportedOperationException  always
+   * @throws UnsupportedOperationException always
    * @deprecated Unsupported operation.
    */
   @Deprecated
@@ -54,27 +53,29 @@ public abstract class AbstractUnmodifiableMap<K, V> extends AbstractMap<K, V> {
   }
 
   /**
-   * @throws UnsupportedOperationException  always
+   * @throws UnsupportedOperationException always
    * @deprecated Unsupported operation.
    */
   @Deprecated
   @Override
-  public V computeIfPresent(final K k, final BiFunction<? super K, ? super V, ? extends V> function) {
+  public V computeIfPresent(
+      final K k, final BiFunction<? super K, ? super V, ? extends V> function) {
     throw new UnsupportedOperationException();
   }
 
   /**
-   * @throws UnsupportedOperationException  always
+   * @throws UnsupportedOperationException always
    * @deprecated Unsupported operation.
    */
   @Deprecated
   @Override
-  public V merge(final K k, final V v, final BiFunction<? super V, ? super V, ? extends V> function) {
+  public V merge(
+      final K k, final V v, final BiFunction<? super V, ? super V, ? extends V> function) {
     throw new UnsupportedOperationException();
   }
 
   /**
-   * @throws UnsupportedOperationException  always
+   * @throws UnsupportedOperationException always
    * @deprecated Unsupported operation.
    */
   @Deprecated
@@ -84,7 +85,7 @@ public abstract class AbstractUnmodifiableMap<K, V> extends AbstractMap<K, V> {
   }
 
   /**
-   * @throws UnsupportedOperationException  always
+   * @throws UnsupportedOperationException always
    * @deprecated Unsupported operation.
    */
   @Deprecated
@@ -94,7 +95,7 @@ public abstract class AbstractUnmodifiableMap<K, V> extends AbstractMap<K, V> {
   }
 
   /**
-   * @throws UnsupportedOperationException  always
+   * @throws UnsupportedOperationException always
    * @deprecated Unsupported operation.
    */
   @Deprecated
@@ -104,7 +105,7 @@ public abstract class AbstractUnmodifiableMap<K, V> extends AbstractMap<K, V> {
   }
 
   /**
-   * @throws UnsupportedOperationException  always
+   * @throws UnsupportedOperationException always
    * @deprecated Unsupported operation.
    */
   @Deprecated
@@ -114,7 +115,7 @@ public abstract class AbstractUnmodifiableMap<K, V> extends AbstractMap<K, V> {
   }
 
   /**
-   * @throws UnsupportedOperationException  always
+   * @throws UnsupportedOperationException always
    * @deprecated Unsupported operation.
    */
   @Deprecated
@@ -124,7 +125,7 @@ public abstract class AbstractUnmodifiableMap<K, V> extends AbstractMap<K, V> {
   }
 
   /**
-   * @throws UnsupportedOperationException  always
+   * @throws UnsupportedOperationException always
    * @deprecated Unsupported operation.
    */
   @Deprecated

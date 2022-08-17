@@ -31,15 +31,13 @@ import java.util.TreeMap;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
+import junit.framework.AssertionFailedError;
+import junit.framework.TestCase;
 import org.pcollections.PSortedSet;
 import org.pcollections.TreePMap;
 import org.pcollections.TreePSet;
 import org.pcollections.tests.util.CompareInconsistentWithEquals;
 import org.pcollections.tests.util.StringOrderComparator;
-
-import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
 
 public class TreePMapTest extends TestCase {
   /**
@@ -60,8 +58,7 @@ public class TreePMapTest extends TestCase {
 
     // . . . and, descendingMap():
     assertEquivalentComparator(
-        treeMapOf().descendingMap().comparator(),
-        EMPTY.descendingMap().comparator());
+        treeMapOf().descendingMap().comparator(), EMPTY.descendingMap().comparator());
 
     // If do specify a comparator, should get it:
     assertSame(STRING_ORDER_COMPARATOR, TreePMap.empty(STRING_ORDER_COMPARATOR).comparator());
@@ -80,12 +77,9 @@ public class TreePMapTest extends TestCase {
     assertSame(TreePSet.class, EMPTY.descendingKeySet().getClass());
     assertSame(TreePSet.class, EMPTY.descendingMap().descendingKeySet().getClass());
 
+    assertEquivalentState(treeMapOf().descendingKeySet(), EMPTY.descendingKeySet());
     assertEquivalentState(
-        treeMapOf().descendingKeySet(),
-        EMPTY.descendingKeySet());
-    assertEquivalentState(
-        treeMapOf().descendingMap().descendingKeySet(),
-        EMPTY.descendingMap().descendingKeySet());
+        treeMapOf().descendingMap().descendingKeySet(), EMPTY.descendingMap().descendingKeySet());
 
     assertEquivalentState(
         treeMapOf(STRINGIFY, 1, 2, 3, 4).descendingKeySet(),
@@ -100,12 +94,9 @@ public class TreePMapTest extends TestCase {
   }
 
   public void testDescendingMap() {
+    assertEquivalentState(treeMapOf().descendingMap(), EMPTY.descendingMap());
     assertEquivalentState(
-        treeMapOf().descendingMap(),
-        EMPTY.descendingMap());
-    assertEquivalentState(
-        treeMapOf().descendingMap().descendingMap(),
-        EMPTY.descendingMap().descendingMap());
+        treeMapOf().descendingMap().descendingMap(), EMPTY.descendingMap().descendingMap());
 
     assertEquivalentState(
         treeMapOf(STRINGIFY, 1, 2, 3, 4).descendingMap(),
@@ -129,8 +120,7 @@ public class TreePMapTest extends TestCase {
     assertEquivalentState(new TreeMap<>(), TreePMap.empty());
 
     assertEquivalentState(
-        new TreeMap<>(STRING_ORDER_COMPARATOR),
-        TreePMap.empty(STRING_ORDER_COMPARATOR));
+        new TreeMap<>(STRING_ORDER_COMPARATOR), TreePMap.empty(STRING_ORDER_COMPARATOR));
 
     assertThrows(NullPointerException.class, () -> TreePMap.empty(null));
   }
@@ -155,7 +145,7 @@ public class TreePMapTest extends TestCase {
       entriesToTest.add(entryOf(0, "0"));
       entriesToTest.add(entryOf(1, null));
       entriesToTest.addAll(expected);
-      if (! expected.isEmpty()) {
+      if (!expected.isEmpty()) {
         entriesToTest.add(entryOf(expected.iterator().next().getKey(), "wrong"));
       }
 
@@ -163,8 +153,7 @@ public class TreePMapTest extends TestCase {
         assertEquals(expected.contains(entry), actual.contains(entry));
 
         assertEquals(
-            expected.containsAll(Arrays.asList(entry)),
-            actual.containsAll(Arrays.asList(entry)));
+            expected.containsAll(Arrays.asList(entry)), actual.containsAll(Arrays.asList(entry)));
       }
       assertFalse(actual.contains(null));
       assertTrue(actual.containsAll(expected));
@@ -204,10 +193,9 @@ public class TreePMapTest extends TestCase {
       assertThrows(UnsupportedOperationException.class, () -> actual.removeAll(null));
       assertThrows(UnsupportedOperationException.class, () -> actual.removeIf(null));
       assertThrows(UnsupportedOperationException.class, () -> actual.retainAll(null));
-      if (! expected.isEmpty()) {
+      if (!expected.isEmpty()) {
         assertThrows(
-            UnsupportedOperationException.class,
-            () -> actual.iterator().next().setValue("wrong"));
+            UnsupportedOperationException.class, () -> actual.iterator().next().setValue("wrong"));
       }
     }
   }
@@ -247,7 +235,7 @@ public class TreePMapTest extends TestCase {
       assertTrue(actual.equals(expected.descendingMap()));
 
       // must return false for a map that's too small:
-      if (! actual.isEmpty()) {
+      if (!actual.isEmpty()) {
         final TreeMap<Integer, String> tooSmall = new TreeMap<>(expected);
         tooSmall.pollFirstEntry();
         assertFalse(actual.equals((Object) tooSmall));
@@ -261,7 +249,7 @@ public class TreePMapTest extends TestCase {
       }
 
       // must return false for a map that has a wrong mapping:
-      if (! actual.isEmpty()) {
+      if (!actual.isEmpty()) {
         final TreeMap<Integer, String> wrong = new TreeMap<>(expected);
         wrong.put(wrong.firstKey(), "wrong");
         assertFalse(actual.equals((Object) wrong));
@@ -284,11 +272,9 @@ public class TreePMapTest extends TestCase {
     assertThrows(NullPointerException.class, () -> TreePMap.from(null));
 
     assertThrows(
-        NullPointerException.class,
-        () -> TreePMap.from(Collections.singletonMap(null, "foo")));
+        NullPointerException.class, () -> TreePMap.from(Collections.singletonMap(null, "foo")));
     assertThrows(
-        NullPointerException.class,
-        () -> TreePMap.from(Collections.singletonMap("foo", null)));
+        NullPointerException.class, () -> TreePMap.from(Collections.singletonMap("foo", null)));
 
     // the overload that does take an explicit comparator:
 
@@ -301,16 +287,12 @@ public class TreePMapTest extends TestCase {
       final TreeMap<Integer, String> expected = new TreeMap<>(STRING_ORDER_COMPARATOR);
       expected.putAll(map);
 
-      assertEquivalentState(
-          expected,
-          TreePMap.from(STRING_ORDER_COMPARATOR, map));
+      assertEquivalentState(expected, TreePMap.from(STRING_ORDER_COMPARATOR, map));
     }
 
     assertThrows(NullPointerException.class, () -> TreePMap.from(null, new HashMap<>()));
 
-    assertThrows(
-        NullPointerException.class,
-        () -> TreePMap.from(STRING_ORDER_COMPARATOR, null));
+    assertThrows(NullPointerException.class, () -> TreePMap.from(STRING_ORDER_COMPARATOR, null));
 
     assertThrows(
         NullPointerException.class,
@@ -375,16 +357,11 @@ public class TreePMapTest extends TestCase {
   }
 
   public void testHashCode() {
-    assertEquals(
-        treeMapOf().hashCode(),
-        EMPTY.hashCode());
-    assertEquals(
-        treeMapOf().descendingMap().hashCode(),
-        EMPTY.descendingMap().hashCode());
+    assertEquals(treeMapOf().hashCode(), EMPTY.hashCode());
+    assertEquals(treeMapOf().descendingMap().hashCode(), EMPTY.descendingMap().hashCode());
 
     assertEquals(
-        treeMapOf(STRINGIFY, 1, 2, 3, 4).hashCode(),
-        treePMapOf(STRINGIFY, 1, 2, 3, 4).hashCode());
+        treeMapOf(STRINGIFY, 1, 2, 3, 4).hashCode(), treePMapOf(STRINGIFY, 1, 2, 3, 4).hashCode());
     assertEquals(
         treeMapOf(STRINGIFY, 1, 2, 3, 4).descendingMap().hashCode(),
         treePMapOf(STRINGIFY, 1, 2, 3, 4).descendingMap().hashCode());
@@ -399,17 +376,18 @@ public class TreePMapTest extends TestCase {
 
     TreePMap<CompareInconsistentWithEquals, String> actual = TreePMap.empty();
 
-    for (int i = 0 ; i < 20; ++i) {
+    for (int i = 0; i < 20; ++i) {
       final int randomEq1 = RANDOM.nextInt();
       final int randomEq2 = RANDOM.nextInt();
       final int randomComp1 = RANDOM.nextInt();
       final int randomComp2 = RANDOM.nextInt();
 
-      final List<CompareInconsistentWithEquals> keysToPut = Arrays.asList(
-          new CompareInconsistentWithEquals(randomEq1, randomComp1),
-          new CompareInconsistentWithEquals(randomEq1, randomComp2),
-          new CompareInconsistentWithEquals(randomEq2, randomComp1),
-          new CompareInconsistentWithEquals(randomEq2, randomComp2));
+      final List<CompareInconsistentWithEquals> keysToPut =
+          Arrays.asList(
+              new CompareInconsistentWithEquals(randomEq1, randomComp1),
+              new CompareInconsistentWithEquals(randomEq1, randomComp2),
+              new CompareInconsistentWithEquals(randomEq2, randomComp1),
+              new CompareInconsistentWithEquals(randomEq2, randomComp2));
 
       for (final CompareInconsistentWithEquals key : keysToPut) {
         final String value = key.toString();
@@ -422,7 +400,8 @@ public class TreePMapTest extends TestCase {
 
     final Iterator<Map.Entry<CompareInconsistentWithEquals, String>> actualIterator =
         actual.entrySet().iterator();
-    for (final Map.Entry<CompareInconsistentWithEquals, String> expectedEntry : expected.entrySet()) {
+    for (final Map.Entry<CompareInconsistentWithEquals, String> expectedEntry :
+        expected.entrySet()) {
       final Map.Entry<CompareInconsistentWithEquals, String> actualEntry = actualIterator.next();
       assertSame(expectedEntry.getKey(), actualEntry.getKey());
       assertEquals(expectedEntry.getValue(), actualEntry.getValue());
@@ -445,12 +424,9 @@ public class TreePMapTest extends TestCase {
     assertSame(TreePSet.class, EMPTY.keySet().getClass());
     assertSame(TreePSet.class, EMPTY.descendingMap().keySet().getClass());
 
+    assertEquivalentState(treeMapOf().navigableKeySet(), EMPTY.keySet());
     assertEquivalentState(
-        treeMapOf().navigableKeySet(),
-        EMPTY.keySet());
-    assertEquivalentState(
-        treeMapOf().descendingMap().navigableKeySet(),
-        EMPTY.descendingMap().keySet());
+        treeMapOf().descendingMap().navigableKeySet(), EMPTY.descendingMap().keySet());
 
     assertEquivalentState(
         treeMapOf(STRINGIFY, 1, 2, 3, 4).navigableKeySet(),
@@ -474,8 +450,7 @@ public class TreePMapTest extends TestCase {
 
     // case where left.height < right.height - 2:
     assertEquivalentState(
-        treeMapOf(STRINGIFY, 8, 9, 10, 11, 12, 13, 14, 15),
-        oneToFifteen.tailMap(8, true));
+        treeMapOf(STRINGIFY, 8, 9, 10, 11, 12, 13, 14, 15), oneToFifteen.tailMap(8, true));
 
     // case where left.height == right.height - 2 and right.left.height <= right.right.height:
     assertEquivalentState(treeMapOf(STRINGIFY, 4, 6, 7), oneToSeven.minus(5).tailMap(4, true));
@@ -494,10 +469,8 @@ public class TreePMapTest extends TestCase {
 
     // case where left.height > right.height + 2:
     assertEquivalentState(
-        treeMapOf(STRINGIFY, 1, 2, 3, 4, 5, 6, 7, 8),
-        oneToFifteen.headMap(8, true));
+        treeMapOf(STRINGIFY, 1, 2, 3, 4, 5, 6, 7, 8), oneToFifteen.headMap(8, true));
   }
-
 
   /** Perform a few simple validations on a largish random map (just as a sanity-check). */
   public void testLargishRandomMap() {
@@ -525,39 +498,32 @@ public class TreePMapTest extends TestCase {
 
       assertEquivalentState(expected.subMap(from, to), actual.subMap(from, to));
       assertEquivalentState(
-          expected.descendingMap().subMap(to, from),
-          actual.descendingMap().subMap(to, from));
+          expected.descendingMap().subMap(to, from), actual.descendingMap().subMap(to, from));
     }
   }
 
   public void testMinusAll() {
-    assertEquivalentState(
-        EMPTY,
-        EMPTY.minusAll(Arrays.asList()));
+    assertEquivalentState(EMPTY, EMPTY.minusAll(Arrays.asList()));
+
+    assertEquivalentState(EMPTY, EMPTY.minusAll(Arrays.asList(1, 2, 3, 4, 5)));
 
     assertEquivalentState(
-        EMPTY,
-        EMPTY.minusAll(Arrays.asList(1, 2, 3, 4, 5)));
-
-    assertEquivalentState(
-        EMPTY,
-        treePMapOf(STRINGIFY, 1, 2, 3, 4, 5).minusAll(Arrays.asList(1, 2, 3, 4, 5)));
+        EMPTY, treePMapOf(STRINGIFY, 1, 2, 3, 4, 5).minusAll(Arrays.asList(1, 2, 3, 4, 5)));
 
     assertEquivalentState(
         treePMapOf(STRINGIFY, 1, 3, 5),
         treePMapOf(STRINGIFY, 1, 2, 3, 4, 5).minusAll(Arrays.asList(0, 2, 4, 6)));
 
+    assertEquivalentState(EMPTY.descendingMap(), EMPTY.descendingMap().minusAll(Arrays.asList()));
+
     assertEquivalentState(
-        EMPTY.descendingMap(),
-        EMPTY.descendingMap().minusAll(Arrays.asList()));
+        EMPTY.descendingMap(), EMPTY.descendingMap().minusAll(Arrays.asList(1, 2, 3, 4, 5)));
 
     assertEquivalentState(
         EMPTY.descendingMap(),
-        EMPTY.descendingMap().minusAll(Arrays.asList(1, 2, 3, 4, 5)));
-
-    assertEquivalentState(
-        EMPTY.descendingMap(),
-        treePMapOf(STRINGIFY, 1, 2, 3, 4, 5).descendingMap().minusAll(Arrays.asList(1, 2, 3, 4, 5)));
+        treePMapOf(STRINGIFY, 1, 2, 3, 4, 5)
+            .descendingMap()
+            .minusAll(Arrays.asList(1, 2, 3, 4, 5)));
 
     assertEquivalentState(
         treePMapOf(STRINGIFY, 1, 3, 5).descendingMap(),
@@ -571,8 +537,7 @@ public class TreePMapTest extends TestCase {
     assertThrows(NoSuchElementException.class, () -> EMPTY.minusFirstEntry());
 
     assertEquivalentState(
-        treePMapOf(STRINGIFY, 2, 3, 4, 5),
-        treePMapOf(STRINGIFY, 1, 2, 3, 4, 5).minusFirstEntry());
+        treePMapOf(STRINGIFY, 2, 3, 4, 5), treePMapOf(STRINGIFY, 1, 2, 3, 4, 5).minusFirstEntry());
 
     assertEquivalentState(
         treePMapOf(STRINGIFY, 1, 2, 3, 4).descendingMap(),
@@ -583,8 +548,7 @@ public class TreePMapTest extends TestCase {
     assertThrows(NoSuchElementException.class, () -> EMPTY.minusLastEntry());
 
     assertEquivalentState(
-        treePMapOf(STRINGIFY, 1, 2, 3, 4),
-        treePMapOf(STRINGIFY, 1, 2, 3, 4, 5).minusLastEntry());
+        treePMapOf(STRINGIFY, 1, 2, 3, 4), treePMapOf(STRINGIFY, 1, 2, 3, 4, 5).minusLastEntry());
 
     assertEquivalentState(
         treePMapOf(STRINGIFY, 2, 3, 4, 5).descendingMap(),
@@ -623,12 +587,9 @@ public class TreePMapTest extends TestCase {
     assertSame(TreePSet.class, EMPTY.navigableKeySet().getClass());
     assertSame(TreePSet.class, EMPTY.descendingMap().navigableKeySet().getClass());
 
+    assertEquivalentState(treeMapOf().navigableKeySet(), EMPTY.navigableKeySet());
     assertEquivalentState(
-        treeMapOf().navigableKeySet(),
-        EMPTY.navigableKeySet());
-    assertEquivalentState(
-        treeMapOf().descendingMap().navigableKeySet(),
-        EMPTY.descendingMap().navigableKeySet());
+        treeMapOf().descendingMap().navigableKeySet(), EMPTY.descendingMap().navigableKeySet());
 
     assertEquivalentState(
         treeMapOf(STRINGIFY, 1, 2, 3, 4).navigableKeySet(),
@@ -681,16 +642,12 @@ public class TreePMapTest extends TestCase {
   }
 
   public void testPlusAll() {
+    assertEquivalentState(EMPTY, EMPTY.plusAll(Collections.emptyMap()));
     assertEquivalentState(
-        EMPTY,
-        EMPTY.plusAll(Collections.emptyMap()));
-    assertEquivalentState(
-        EMPTY.descendingMap(),
-        EMPTY.descendingMap().plusAll(Collections.emptyMap()));
+        EMPTY.descendingMap(), EMPTY.descendingMap().plusAll(Collections.emptyMap()));
 
     assertEquivalentState(
-        treePMapOf(STRINGIFY, 1, 2, 3, 4, 5),
-        EMPTY.plusAll(treeMapOf(STRINGIFY, 1, 2, 3, 4, 5)));
+        treePMapOf(STRINGIFY, 1, 2, 3, 4, 5), EMPTY.plusAll(treeMapOf(STRINGIFY, 1, 2, 3, 4, 5)));
     assertEquivalentState(
         treePMapOf(STRINGIFY, 1, 2, 3, 4, 5).descendingMap(),
         EMPTY.descendingMap().plusAll(treeMapOf(STRINGIFY, 1, 2, 3, 4, 5)));
@@ -716,17 +673,15 @@ public class TreePMapTest extends TestCase {
         treePMapOf(STRINGIFY, 1, 2, 3, 4, 5).plusAll(treeMapOf(evenOrStringify, 2, 3, 4)));
     assertEquivalentState(
         treePMapOf(evenOrStringify, 1, 2, 3, 4, 5).descendingMap(),
-        treePMapOf(STRINGIFY, 1, 2, 3, 4, 5).descendingMap().plusAll(treeMapOf(evenOrStringify, 2, 3, 4)));
+        treePMapOf(STRINGIFY, 1, 2, 3, 4, 5)
+            .descendingMap()
+            .plusAll(treeMapOf(evenOrStringify, 2, 3, 4)));
 
+    assertThrows(NullPointerException.class, () -> EMPTY.plusAll(null));
     assertThrows(
-        NullPointerException.class,
-        () -> EMPTY.plusAll(null));
+        NullPointerException.class, () -> EMPTY.plusAll(Collections.singletonMap(null, "foo")));
     assertThrows(
-        NullPointerException.class,
-        () -> EMPTY.plusAll(Collections.singletonMap(null, "foo")));
-    assertThrows(
-        NullPointerException.class,
-        () -> EMPTY.plusAll(Collections.singletonMap(3, null)));
+        NullPointerException.class, () -> EMPTY.plusAll(Collections.singletonMap(3, null)));
   }
 
   /**
@@ -762,27 +717,24 @@ public class TreePMapTest extends TestCase {
 
         for (final int from : bounds) {
           if (actual.comparator().compare(from, to) <= 0) {
+            assertEquivalentState(expected.subMap(from, to), actual.subMap(from, to));
             assertEquivalentState(
-                expected.subMap(from, to),
-                actual.subMap(from, to));
+                expected.subMap(from, true, to, true), actual.subMap(from, true, to, true));
             assertEquivalentState(
-                expected.subMap(from, true, to, true),
-                actual.subMap(from, true, to, true));
+                expected.subMap(from, true, to, false), actual.subMap(from, true, to, false));
             assertEquivalentState(
-                expected.subMap(from, true, to, false),
-                actual.subMap(from, true, to, false));
+                expected.subMap(from, false, to, true), actual.subMap(from, false, to, true));
             assertEquivalentState(
-                expected.subMap(from, false, to, true),
-                actual.subMap(from, false, to, true));
-            assertEquivalentState(
-                expected.subMap(from, false, to, false),
-                actual.subMap(from, false, to, false));
+                expected.subMap(from, false, to, false), actual.subMap(from, false, to, false));
           } else {
             assertThrows(IllegalArgumentException.class, () -> actual.subMap(from, to));
             assertThrows(IllegalArgumentException.class, () -> actual.subMap(from, true, to, true));
-            assertThrows(IllegalArgumentException.class, () -> actual.subMap(from, true, to, false));
-            assertThrows(IllegalArgumentException.class, () -> actual.subMap(from, false, to, true));
-            assertThrows(IllegalArgumentException.class, () -> actual.subMap(from, false, to, false));
+            assertThrows(
+                IllegalArgumentException.class, () -> actual.subMap(from, true, to, false));
+            assertThrows(
+                IllegalArgumentException.class, () -> actual.subMap(from, false, to, true));
+            assertThrows(
+                IllegalArgumentException.class, () -> actual.subMap(from, false, to, false));
           }
         }
       }
@@ -811,27 +763,29 @@ public class TreePMapTest extends TestCase {
    * they give the same result for a TreePMap as for a TreeMap.
    */
   public void testSearchers() {
-    final List<Subcase> subcases = Arrays.asList(
-        new Subcase(treeMapOf(), EMPTY),
-        new Subcase(treeMapOf().descendingMap(), EMPTY.descendingMap()),
-        new Subcase(treeMapOf(STRINGIFY, 1, 2, 3, 4, 5), treePMapOf(STRINGIFY, 1, 2, 3, 4, 5)),
-        new Subcase(
-            treeMapOf(STRINGIFY, 1, 2, 3, 4, 5).descendingMap(),
-            treePMapOf(STRINGIFY, 1, 2, 3, 4, 5).descendingMap()),
-        new Subcase(treeMapOf(STRINGIFY, 1, 3, 5, 7, 9), treePMapOf(STRINGIFY, 1, 3, 5, 7, 9)),
-        new Subcase(
-            treeMapOf(STRINGIFY, 1, 3, 5, 7, 9).descendingMap(),
-            treePMapOf(STRINGIFY, 1, 3, 5, 7, 9).descendingMap()));
+    final List<Subcase> subcases =
+        Arrays.asList(
+            new Subcase(treeMapOf(), EMPTY),
+            new Subcase(treeMapOf().descendingMap(), EMPTY.descendingMap()),
+            new Subcase(treeMapOf(STRINGIFY, 1, 2, 3, 4, 5), treePMapOf(STRINGIFY, 1, 2, 3, 4, 5)),
+            new Subcase(
+                treeMapOf(STRINGIFY, 1, 2, 3, 4, 5).descendingMap(),
+                treePMapOf(STRINGIFY, 1, 2, 3, 4, 5).descendingMap()),
+            new Subcase(treeMapOf(STRINGIFY, 1, 3, 5, 7, 9), treePMapOf(STRINGIFY, 1, 3, 5, 7, 9)),
+            new Subcase(
+                treeMapOf(STRINGIFY, 1, 3, 5, 7, 9).descendingMap(),
+                treePMapOf(STRINGIFY, 1, 3, 5, 7, 9).descendingMap()));
 
     for (final Subcase subcase : subcases) {
       final NavigableMap<Integer, String> expected = subcase.expected;
       final TreePMap<Integer, String> actual = subcase.actual;
 
       // ensure that we have an key to test even if expected is empty:
-      final Iterable<Integer> keysToTest = expected.isEmpty() ? Arrays.asList(0) : expected.keySet();
+      final Iterable<Integer> keysToTest =
+          expected.isEmpty() ? Arrays.asList(0) : expected.keySet();
 
       for (final int key : keysToTest) {
-        for (final int arg : new int[] { key - 1, key, key + 1 }) {
+        for (final int arg : new int[] {key - 1, key, key + 1}) {
           assertEquals(expected.ceilingEntry(arg), actual.ceilingEntry(arg));
           assertEquals(expected.ceilingKey(arg), actual.ceilingKey(arg));
           assertEquals(expected.containsKey(arg), actual.containsKey(arg));
@@ -888,8 +842,7 @@ public class TreePMapTest extends TestCase {
     // the overload that doesn't take an explicit comparator (uses natural ordering):
 
     assertEquivalentState(
-        new TreeMap<>(Collections.singletonMap(3, "foo")),
-        TreePMap.singleton(3, "foo"));
+        new TreeMap<>(Collections.singletonMap(3, "foo")), TreePMap.singleton(3, "foo"));
 
     assertThrows(NullPointerException.class, () -> TreePMap.singleton(null, "foo"));
     assertThrows(NullPointerException.class, () -> TreePMap.singleton(3, null));
@@ -906,11 +859,9 @@ public class TreePMapTest extends TestCase {
     assertThrows(NullPointerException.class, () -> TreePMap.singleton(null, 3, "foo"));
 
     assertThrows(
-        NullPointerException.class,
-        () -> TreePMap.singleton(STRING_ORDER_COMPARATOR, null, "foo"));
+        NullPointerException.class, () -> TreePMap.singleton(STRING_ORDER_COMPARATOR, null, "foo"));
     assertThrows(
-        NullPointerException.class,
-        () -> TreePMap.singleton(STRING_ORDER_COMPARATOR, "foo", null));
+        NullPointerException.class, () -> TreePMap.singleton(STRING_ORDER_COMPARATOR, "foo", null));
   }
 
   public void testSize() {
@@ -931,9 +882,7 @@ public class TreePMapTest extends TestCase {
     assertEquals("{1=1}", treePMapOf(STRINGIFY, 1).descendingMap().toString());
 
     // map with multiple mappings -- separated with comma + space, and order matters:
-    assertEquals(
-        "{1=1, 2=2, 3=3, 4=4, 5=5}",
-        treePMapOf(STRINGIFY, 1, 2, 3, 4, 5).toString());
+    assertEquals("{1=1, 2=2, 3=3, 4=4, 5=5}", treePMapOf(STRINGIFY, 1, 2, 3, 4, 5).toString());
     assertEquals(
         "{5=5, 4=4, 3=3, 2=2, 1=1}",
         treePMapOf(STRINGIFY, 1, 2, 3, 4, 5).descendingMap().toString());
@@ -971,12 +920,8 @@ public class TreePMapTest extends TestCase {
                   .collect(TreePMap.toTreePMap(entry -> "duplicate key", Map.Entry::getValue)));
     }
 
-    assertThrows(
-        NullPointerException.class,
-        () -> TreePMap.toTreePMap(null, Function.identity()));
-    assertThrows(
-        NullPointerException.class,
-        () -> TreePMap.toTreePMap(Function.identity(), null));
+    assertThrows(NullPointerException.class, () -> TreePMap.toTreePMap(null, Function.identity()));
+    assertThrows(NullPointerException.class, () -> TreePMap.toTreePMap(Function.identity(), null));
 
     // the overload that takes an explicit comparator, but not an explicit merge function (throws
     // IllegalStateException on duplicate keys):
@@ -993,27 +938,31 @@ public class TreePMapTest extends TestCase {
       assertEquivalentState(
           expected,
           map.entrySet().parallelStream()
-              .collect(TreePMap.toTreePMap(
+              .collect(
+                  TreePMap.toTreePMap(
                       STRING_ORDER_COMPARATOR, Map.Entry::getKey, Map.Entry::getValue)));
 
       assertThrows(
           NullPointerException.class,
           () ->
               map.entrySet().parallelStream()
-                  .collect(TreePMap.toTreePMap(
-                      STRING_ORDER_COMPARATOR, entry -> null, Map.Entry::getValue)));
+                  .collect(
+                      TreePMap.toTreePMap(
+                          STRING_ORDER_COMPARATOR, entry -> null, Map.Entry::getValue)));
       assertThrows(
           NullPointerException.class,
           () ->
               map.entrySet().parallelStream()
-                  .collect(TreePMap.toTreePMap(
-                      STRING_ORDER_COMPARATOR, Map.Entry::getKey, entry -> null)));
+                  .collect(
+                      TreePMap.toTreePMap(
+                          STRING_ORDER_COMPARATOR, Map.Entry::getKey, entry -> null)));
       assertThrows(
           IllegalStateException.class,
           () ->
               map.entrySet().parallelStream()
-                  .collect(TreePMap.toTreePMap(
-                      STRING_ORDER_COMPARATOR, entry -> "duplicate", Map.Entry::getValue)));
+                  .collect(
+                      TreePMap.toTreePMap(
+                          STRING_ORDER_COMPARATOR, entry -> "duplicate", Map.Entry::getValue)));
     }
 
     assertThrows(
@@ -1029,13 +978,14 @@ public class TreePMapTest extends TestCase {
     // the overload that doesn't take an explicit comparator (uses natural ordering) but does take
     // an explicit merge function:
 
-    final BinaryOperator<String> mergeFunction = (oldValue, newValue) -> {
-      final List<String> mergedValue = new ArrayList<>();
-      mergedValue.addAll(Arrays.asList(oldValue.split(":")));
-      mergedValue.addAll(Arrays.asList(newValue.split(":")));
-      Collections.sort(mergedValue);
-      return String.join(":", mergedValue);
-    };
+    final BinaryOperator<String> mergeFunction =
+        (oldValue, newValue) -> {
+          final List<String> mergedValue = new ArrayList<>();
+          mergedValue.addAll(Arrays.asList(oldValue.split(":")));
+          mergedValue.addAll(Arrays.asList(newValue.split(":")));
+          Collections.sort(mergedValue);
+          return String.join(":", mergedValue);
+        };
 
     {
       final Map<Integer, String> map = new HashMap<>();
@@ -1050,9 +1000,9 @@ public class TreePMapTest extends TestCase {
 
       // map all entries to duplicate key, to exercise merge function:
       assertEquivalentState(
-          new TreeMap<>(Collections.singletonMap(
-              3,
-              map.values().parallelStream().sorted().collect(Collectors.joining(":")))),
+          new TreeMap<>(
+              Collections.singletonMap(
+                  3, map.values().parallelStream().sorted().collect(Collectors.joining(":")))),
           map.entrySet().parallelStream()
               .collect(TreePMap.toTreePMap(entry -> 3, Map.Entry::getValue, mergeFunction)));
 
@@ -1095,7 +1045,8 @@ public class TreePMapTest extends TestCase {
       assertEquivalentState(
           expected,
           map.entrySet().parallelStream()
-              .collect(TreePMap.toTreePMap(
+              .collect(
+                  TreePMap.toTreePMap(
                       STRING_ORDER_COMPARATOR,
                       Map.Entry::getKey,
                       Map.Entry::getValue,
@@ -1107,21 +1058,30 @@ public class TreePMapTest extends TestCase {
       assertEquivalentState(
           expected,
           map.entrySet().parallelStream()
-              .collect(TreePMap.toTreePMap(
-                  STRING_ORDER_COMPARATOR, entry -> 3, Map.Entry::getValue, mergeFunction)));
+              .collect(
+                  TreePMap.toTreePMap(
+                      STRING_ORDER_COMPARATOR, entry -> 3, Map.Entry::getValue, mergeFunction)));
 
       assertThrows(
           NullPointerException.class,
           () ->
               map.entrySet().parallelStream()
-                  .collect(TreePMap.toTreePMap(
-                      STRING_ORDER_COMPARATOR, entry -> null, Map.Entry::getValue, mergeFunction)));
+                  .collect(
+                      TreePMap.toTreePMap(
+                          STRING_ORDER_COMPARATOR,
+                          entry -> null,
+                          Map.Entry::getValue,
+                          mergeFunction)));
       assertThrows(
           NullPointerException.class,
           () ->
               map.entrySet().parallelStream()
-                  .collect(TreePMap.toTreePMap(
-                      STRING_ORDER_COMPARATOR, Map.Entry::getKey, entry -> null, mergeFunction)));
+                  .collect(
+                      TreePMap.toTreePMap(
+                          STRING_ORDER_COMPARATOR,
+                          Map.Entry::getKey,
+                          entry -> null,
+                          mergeFunction)));
     }
 
     assertThrows(
@@ -1144,8 +1104,7 @@ public class TreePMapTest extends TestCase {
 
     assertEquals(Arrays.asList(), new ArrayList<>(EMPTY.values()));
     assertEquals(
-        Arrays.asList("1", "2", "10"),
-        new ArrayList<>(treePMapOf(STRINGIFY, 1, 2, 10).values()));
+        Arrays.asList("1", "2", "10"), new ArrayList<>(treePMapOf(STRINGIFY, 1, 2, 10).values()));
   }
 
   /**
@@ -1165,10 +1124,10 @@ public class TreePMapTest extends TestCase {
   }
 
   /**
-   * <p>Assert that actual has the expected state, in that it has the same mappings as expected, in
-   * the same order, and reports an equivalent comparator.</p>
+   * Assert that actual has the expected state, in that it has the same mappings as expected, in the
+   * same order, and reports an equivalent comparator.
    *
-   * <p>This method is intended to validate the result of any method that produces a TreePMap.</p>
+   * <p>This method is intended to validate the result of any method that produces a TreePMap.
    *
    * <p>Background: a TreePMap instance has three pieces of state: a tree containing the mappings
    * (which obviously has internal structure, but the TreePMap doesn't have to worry about that), a
@@ -1180,20 +1139,18 @@ public class TreePMapTest extends TestCase {
    * obviously not ideal to write a test based on our understanding of the inner workings of the
    * class we're testing; but given the huge number of different producer method scenarios, we'd
    * have a massive combinatorial explosion of different instances to test if we didn't cut it down
-   * in some way along these lines.)</p>
+   * in some way along these lines.)
    *
    * <p>Caveat: if actual is empty or has only one mapping, then it's meaningless to talk about the
    * order that its mappings are in. So any method that produces a TreePMap should have a test case
    * for producing a TreePMap with more than one mapping (unless the method <em>never</em> produces
-   * a TreePMap with more than one mapping, in which case that doesn't matter).</p>
+   * a TreePMap with more than one mapping, in which case that doesn't matter).
    *
    * @param expected
    * @param actual
    */
   private static <V> void assertEquivalentState(
-      final SortedMap<Integer, V> expected,
-      final TreePMap<Integer, V> actual
-  ) {
+      final SortedMap<Integer, V> expected, final TreePMap<Integer, V> actual) {
     assertSameSequence(expected.entrySet(), actual.entrySet());
 
     assertEquivalentComparator(expected.comparator(), actual.comparator());
@@ -1201,18 +1158,13 @@ public class TreePMapTest extends TestCase {
 
   /** Same as {@link #assertEquivalentState(SortedMap, TreePMap)}, but for sets instead of maps. */
   private static <V> void assertEquivalentState(
-      final SortedSet<Integer> expected,
-      final PSortedSet<Integer> actual
-  ) {
+      final SortedSet<Integer> expected, final PSortedSet<Integer> actual) {
     assertSameSequence(expected, actual);
 
     assertEquivalentComparator(expected.comparator(), actual.comparator());
   }
 
-  private static <E> void assertSameSequence(
-      final Iterable<E> expected,
-      final Iterable<E> actual
-  ) {
+  private static <E> void assertSameSequence(final Iterable<E> expected, final Iterable<E> actual) {
     final ArrayList<E> expectedList = new ArrayList<>();
     for (final E element : expected) {
       expectedList.add(element);
@@ -1225,9 +1177,7 @@ public class TreePMapTest extends TestCase {
   }
 
   private static void assertEquivalentComparator(
-      final Comparator<? super Integer> expected,
-      final Comparator<? super Integer> actual
-  ) {
+      final Comparator<? super Integer> expected, final Comparator<? super Integer> actual) {
     assertNotNull(actual);
 
     // We only work with four orderings in this test -- the natural ordering (1 < 2 < 10), the
@@ -1246,17 +1196,16 @@ public class TreePMapTest extends TestCase {
   }
 
   private static void assertThrows(
-      final Class<? extends RuntimeException> exceptionClass,
-      final Runnable runnable
-  ) {
+      final Class<? extends RuntimeException> exceptionClass, final Runnable runnable) {
     try {
       runnable.run();
 
       fail("Expected a [" + exceptionClass.getName() + "] to be thrown");
     } catch (final RuntimeException re) {
-      if (! exceptionClass.isInstance(re)) {
-        final AssertionFailedError failure = new AssertionFailedError(
-            "Expected a [" + exceptionClass.getName() + "] to be thrown, instead got: " + re);
+      if (!exceptionClass.isInstance(re)) {
+        final AssertionFailedError failure =
+            new AssertionFailedError(
+                "Expected a [" + exceptionClass.getName() + "] to be thrown, instead got: " + re);
         failure.initCause(re);
         throw failure;
       }
@@ -1270,7 +1219,7 @@ public class TreePMapTest extends TestCase {
   private static Integer findSomeNonKey(final SortedMap<Integer, ?> map) {
     int i = 0;
     do {
-      if (! map.containsKey(i)) {
+      if (!map.containsKey(i)) {
         return i;
       }
     } while (++i != 0);
@@ -1304,9 +1253,7 @@ public class TreePMapTest extends TestCase {
   }
 
   private static TreeMap<Integer, String> treeMapOf(
-      final Function<? super Integer, String> keyToValue,
-      final Integer... keys
-  ) {
+      final Function<? super Integer, String> keyToValue, final Integer... keys) {
     final TreeMap<Integer, String> treeMap = new TreeMap<>();
     for (final Integer key : keys) {
       treeMap.put(key, keyToValue.apply(key));
@@ -1315,9 +1262,7 @@ public class TreePMapTest extends TestCase {
   }
 
   private static TreePMap<Integer, String> treePMapOf(
-      final Function<? super Integer, String> keyToValue,
-      final Integer... keys
-  ) {
+      final Function<? super Integer, String> keyToValue, final Integer... keys) {
     TreePMap<Integer, String> treeMap = TreePMap.empty();
     for (final Integer key : keys) {
       treeMap = treeMap.plus(key, keyToValue.apply(key));
@@ -1328,8 +1273,7 @@ public class TreePMapTest extends TestCase {
   private static TreePMap<Integer, String> treePMapOf(
       final Comparator<? super Integer> comparator,
       final Function<? super Integer, String> keyToValue,
-      final Integer... keys
-  ) {
+      final Integer... keys) {
     TreePMap<Integer, String> treeMap = TreePMap.empty(comparator);
     for (final Integer key : keys) {
       treeMap = treeMap.plus(key, keyToValue.apply(key));
