@@ -310,7 +310,8 @@ public class Benchmarks {
   }
 
   private static Collection collectionIterator(final Collection c) {
-    for (@SuppressWarnings("unused") Object e : c) ;
+    for (@SuppressWarnings("unused") Object e : c)
+      ;
     return c;
   }
 }
