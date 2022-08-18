@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.0] - 2022-08-17
+### Added
+- Sorted maps and sorted sets [[#92](https://github.com/hrldcpr/pcollections/pull/92) by [@ran-arigur](https://github.com/ran-arigur)]
+### Changed
+- Only use one build system [[#64](https://github.com/hrldcpr/pcollections/issues/64)]
+
 ## [3.1.4] - 2020-09-13
 ### Fixed
 - Empty Iterator.next() throws `NoSuchElementException` [[#46](https://github.com/hrldcpr/pcollections/pull/46) by [@ilya-g](https://github.com/ilya-g)]
