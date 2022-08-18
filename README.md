@@ -64,13 +64,13 @@ PCollections is in the [Maven Central repository](https://search.maven.org/searc
 <dependency>
     <groupId>org.pcollections</groupId>
     <artifactId>pcollections</artifactId>
-    <version>3.1.4</version>
+    <version>3.2.0</version>
 </dependency>
 ```
 
 or Gradle:
 ```groovy
-compile 'org.pcollections:pcollections:3.1.4'
+compile 'org.pcollections:pcollections:3.2.0'
 ```
 
 ### Example Code
