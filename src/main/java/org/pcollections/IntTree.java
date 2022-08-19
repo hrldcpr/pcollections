@@ -120,10 +120,6 @@ class IntTree<V> implements Serializable {
 
     // otherwise replace this with the next key (i.e. the smallest key to the right):
 
-    // TODO have minNode() instead of minKey to avoid having to call get()
-    // TODO get node from larger subtree, i.e. if left.size>right.size use left.maxNode()
-    // TODO have faster minusMin() instead of just using minus()
-
     long newKey = right.minKey() + this.key;
     // (right.minKey() is relative to this; adding this.key makes it 'absolute'
     //	where 'absolute' really means relative to the parent of this)
@@ -249,7 +245,6 @@ class IntTree<V> implements Serializable {
   }
 
   //// entrySet().iterator() IMPLEMENTATION ////
-  // TODO make this a ListIterator?
   private static final class EntryIterator<V> implements Iterator<Entry<Integer, V>> {
     private PStack<IntTree<V>> stack = ConsPStack.empty(); // path of nonempty nodes
     private int key = 0; // note we use _int_ here since this is a truly absolute key

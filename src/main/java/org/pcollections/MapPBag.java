@@ -96,7 +96,6 @@ public final class MapPBag<E> extends AbstractCollection<E> implements PBag<E>, 
     if (!(that instanceof PBag)) return false;
     if (!(that instanceof MapPBag)) {
       // make that into a MapPBag:
-      // TODO this is INEFFICIENT
       MapPBag<Object> empty = (MapPBag<Object>) this.minusAll(this);
       that = empty.plusAll((PBag<?>) that);
     }
@@ -131,7 +130,6 @@ public final class MapPBag<E> extends AbstractCollection<E> implements PBag<E>, 
   }
 
   //// PRIVATE UTILITIES ////
-  // TODO should this be part of PBag?
   @SuppressWarnings("unchecked")
   private int count(final Object o) {
     if (!contains(o)) return 0;

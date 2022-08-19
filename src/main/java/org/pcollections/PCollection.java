@@ -40,8 +40,6 @@ public interface PCollection<E> extends Collection<E> {
    */
   public PCollection<E> minusAll(Collection<?> list);
 
-  // TODO public PCollection<E> retainingAll(Collection<?> list);
-
   @Deprecated
   boolean add(E o);
 

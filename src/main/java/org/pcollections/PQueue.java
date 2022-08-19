@@ -16,9 +16,6 @@ import java.util.Queue;
  * @author mtklein
  */
 public interface PQueue<E> extends PCollection<E>, Queue<E> {
-  // TODO i think PQueue should extend PSequence,
-  // even though the methods will be inefficient -- H
-
   /* Guaranteed to stay as a PQueue, i.e. guaranteed-fast methods */
   public PQueue<E> minus();
 

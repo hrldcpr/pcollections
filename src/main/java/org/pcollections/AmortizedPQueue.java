@@ -12,9 +12,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-// TODO javadoc
-// TODO tests
-
 /**
  * @author mtklein
  * @param <E>

@@ -102,14 +102,10 @@ public final class IntTreePMap<V> extends AbstractMap<Integer, V>
   }
 
   IntTreePMap<V> withKeysChangedAbove(final int key, final int delta) {
-    // TODO check preconditions of changeKeysAbove()
-    // TODO make public?
     return withRoot(root.changeKeysAbove(key, delta));
   }
 
   IntTreePMap<V> withKeysChangedBelow(final int key, final int delta) {
-    // TODO check preconditions of changeKeysAbove()
-    // TODO make public?
     return withRoot(root.changeKeysBelow(key, delta));
   }
 

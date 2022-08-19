@@ -91,8 +91,4 @@ public class HashPMapTest extends TestCase {
     UtilityTest.assertEqualsAndHash(
         HashTreePMap.empty().plus(10, "test"), HashTreePMap.singleton(10, "test"));
   }
-
-  public void testWithKeysChanged() {
-    // TODO
-  }
 }

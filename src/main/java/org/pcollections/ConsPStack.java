@@ -214,7 +214,6 @@ public final class ConsPStack<E> extends AbstractSequentialList<E>
   }
 
   public ConsPStack<E> minusAll(final Collection<?> list) {
-    // TODO wrap list in a Set to speed up contains()?
     if (list.isEmpty()) return this;
 
     ConsPStack<E> kept = empty();
