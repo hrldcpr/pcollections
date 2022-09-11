@@ -111,7 +111,7 @@ public class UtilityTest extends TestCase {
   }
 
   static void sequenceExceptions(PSequence<Integer> pseq) {
-    Random r = new Random();
+    Random r = new Random(123);
     for (int i = 0; i < 100; i++) {
       int j = r.nextInt(100) - 10, size0 = 0;
       boolean inBounds = false;

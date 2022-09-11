@@ -20,7 +20,7 @@ public class IntTreePMapTest extends TestCase {
   public void testRandomlyAgainstJavaMap() {
     PMap<Integer, Integer> pmap = IntTreePMap.empty();
     Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-    Random r = new Random();
+    Random r = new Random(123);
     for (int i = 0; i < 10000; i++) {
       if (pmap.size() == 0 || r.nextBoolean()) { // add
         int k = r.nextInt(), v = r.nextInt();

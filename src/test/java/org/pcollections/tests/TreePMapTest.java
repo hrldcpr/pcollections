@@ -46,7 +46,7 @@ public class TreePMapTest extends TestCase {
    */
   private static final TreePMap<Integer, String> EMPTY = TreePMap.empty();
 
-  private static final Random RANDOM = new Random();
+  private static final Random RANDOM = new Random(123);
 
   private static final Comparator<Object> STRING_ORDER_COMPARATOR = StringOrderComparator.INSTANCE;
 

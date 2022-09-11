@@ -19,7 +19,7 @@ public class TreePVectorTest extends TestCase {
   public void testRandomlyAgainstJavaList() {
     PVector<Integer> pvec = TreePVector.empty();
     List<Integer> list = new LinkedList<Integer>();
-    Random r = new Random();
+    Random r = new Random(123);
     for (int i = 0; i < 1000; i++) {
       if (pvec.size() == 0 || r.nextBoolean()) { // add
         if (r.nextBoolean()) { // append
