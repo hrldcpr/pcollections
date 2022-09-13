@@ -28,8 +28,4 @@ public interface POrderedSet<E> extends PSet<E> {
   public POrderedSet<E> minus(Object e);
 
   public POrderedSet<E> minusAll(Collection<?> list);
-
-  E get(int index);
-
-  int indexOf(Object o);
 }

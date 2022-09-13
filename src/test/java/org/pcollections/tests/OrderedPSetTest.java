@@ -27,7 +27,6 @@ public class OrderedPSetTest extends TestCase {
 
     Iterator<Integer> it = s.iterator();
     for (int i = 0; i < vals.length; i++) {
-      assertEquals(vals[i], s.get(i).intValue());
       assertEquals(vals[i], it.next().intValue());
     }
   }
@@ -41,7 +40,6 @@ public class OrderedPSetTest extends TestCase {
 
     Iterator<Integer> it = s.iterator();
     for (int i = 0; i < vals.length; i++) {
-      assertEquals(vals[i], s.get(i).intValue());
       assertEquals(vals[i], it.next().intValue());
     }
   }

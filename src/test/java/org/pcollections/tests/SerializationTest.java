@@ -176,10 +176,6 @@ public class SerializationTest extends TestCase {
     assertNotNull(deserializedOrderedPSet);
     assertEquals(3, deserializedOrderedPSet.size());
     assertNotSame(initialOrderedPSet, deserializedOrderedPSet);
-
-    assertEquals(0, deserializedOrderedPSet.indexOf(ELEMENT1));
-    assertEquals(1, deserializedOrderedPSet.indexOf(ELEMENT2));
-    assertEquals(2, deserializedOrderedPSet.indexOf(ELEMENT3));
   }
 
   public void testSerializationForTreePVector() {
