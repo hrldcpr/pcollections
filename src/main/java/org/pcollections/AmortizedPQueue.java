@@ -135,21 +135,4 @@ public class AmortizedPQueue<E> extends AbstractUnmodifiableQueue<E>
   public PCollection<E> minusAll(Collection<?> list) {
     return Empty.<E>vector().plusAll(this).minusAll(list);
   }
-
-  public static void main(String[] args) {
-    AmortizedPQueue<Integer> queue = new AmortizedPQueue<Integer>();
-
-    queue = queue.plus(1).minus().minus().plus(2).plus(3).plus(4).plus(5).minus().plus(6).plus(7);
-    PQueue<Integer> original = queue;
-
-    System.out.println("    \t" + queue.front + " " + queue.back);
-
-    while (queue.size() > 0) {
-      int i = queue.peek();
-      queue = queue.minus();
-      System.out.println(i + " <- \t" + queue.front + " " + queue.back);
-    }
-
-    System.out.println(original);
-  }
 }
