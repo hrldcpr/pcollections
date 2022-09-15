@@ -34,7 +34,7 @@ import java.util.Set;
  * @author harold
  * @param <V>
  */
-public final class IntTreePMap<V> extends AbstractMap<Integer, V>
+public final class IntTreePMap<V> extends AbstractUnmodifiableMap<Integer, V>
     implements PMap<Integer, V>, Serializable {
 
   private static final long serialVersionUID = 1L;

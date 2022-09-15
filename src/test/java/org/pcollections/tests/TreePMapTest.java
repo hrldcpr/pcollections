@@ -39,6 +39,8 @@ import org.pcollections.TreePSet;
 import org.pcollections.tests.util.CompareInconsistentWithEquals;
 import org.pcollections.tests.util.StringOrderComparator;
 
+import static org.pcollections.tests.util.UnmodifiableAssertions.assertMapMutatorsThrow;
+
 public class TreePMapTest extends TestCase {
   /**
    * An empty TreePMap&lt;Integer, String&gt; using the natural ordering; useful in cases where type
@@ -46,7 +48,7 @@ public class TreePMapTest extends TestCase {
    */
   private static final TreePMap<Integer, String> EMPTY = TreePMap.empty();
 
-  private static final Random RANDOM = new Random();
+  private static final Random RANDOM = new Random(123);
 
   private static final Comparator<Object> STRING_ORDER_COMPARATOR = StringOrderComparator.INSTANCE;
 
@@ -1279,5 +1281,12 @@ public class TreePMapTest extends TestCase {
       treeMap = treeMap.plus(key, keyToValue.apply(key));
     }
     return treeMap;
+  }
+
+  public void testUnmodifiable() {
+    assertMapMutatorsThrow(
+        TreePMap.singleton("key1", "value1"),
+        "key2", "value2"
+    );
   }
 }

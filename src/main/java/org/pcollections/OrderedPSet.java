@@ -11,7 +11,7 @@ import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class OrderedPSet<E> extends AbstractSet<E> implements POrderedSet<E>, Serializable {
+public class OrderedPSet<E> extends AbstractUnmodifiableSet<E> implements POrderedSet<E>, Serializable {
 
   private static final long serialVersionUID = 1L;
 

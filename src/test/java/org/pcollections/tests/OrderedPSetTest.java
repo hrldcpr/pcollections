@@ -14,6 +14,8 @@ import org.pcollections.OrderedPSet;
 import org.pcollections.POrderedSet;
 import org.pcollections.PSet;
 
+import static org.pcollections.tests.util.UnmodifiableAssertions.assertSetMutatorsThrow;
+
 public class OrderedPSetTest extends TestCase {
 
   public void testPlus() {
@@ -48,7 +50,7 @@ public class OrderedPSetTest extends TestCase {
     PSet<Integer> s = Empty.set();
     POrderedSet<Integer> os = Empty.orderedSet();
 
-    Random r = new Random();
+    Random r = new Random(123);
     for (int i = 0; i < 100000; i++) {
       int v = r.nextInt(1000);
       if (r.nextFloat() < 0.8) {
@@ -66,5 +68,9 @@ public class OrderedPSetTest extends TestCase {
   public void testIterator() {
     UtilityTest.iteratorExceptions(Empty.orderedSet().iterator());
     UtilityTest.iteratorExceptions(OrderedPSet.singleton(10).iterator());
+  }
+
+  public void testUnmodifiable() {
+    assertSetMutatorsThrow(OrderedPSet.singleton("value1"), "value2");
   }
 }

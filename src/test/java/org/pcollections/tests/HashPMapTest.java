@@ -14,13 +14,15 @@ import junit.framework.TestCase;
 import org.pcollections.HashTreePMap;
 import org.pcollections.PMap;
 
+import static org.pcollections.tests.util.UnmodifiableAssertions.assertMapMutatorsThrow;
+
 public class HashPMapTest extends TestCase {
 
   /** Compares the behavior of java.util.HashMap to the behavior of HashTreePMap. */
   public void testRandomlyAgainstJavaMap() {
     PMap<Integer, Integer> pmap = HashTreePMap.empty();
     Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-    Random r = new Random();
+    Random r = new Random(123);
     for (int i = 0; i < 10000; i++) {
       if (pmap.size() == 0 || r.nextBoolean()) { // add
         int k = r.nextInt(), v = r.nextInt();
@@ -90,5 +92,12 @@ public class HashPMapTest extends TestCase {
   public void testSingleton() {
     UtilityTest.assertEqualsAndHash(
         HashTreePMap.empty().plus(10, "test"), HashTreePMap.singleton(10, "test"));
+  }
+
+  public void testUnmodifiable() {
+    assertMapMutatorsThrow(
+        HashTreePMap.singleton("key1", "value1"),
+        "key2", "value2"
+    );
   }
 }

@@ -29,6 +29,8 @@ import org.pcollections.TreePSet;
 import org.pcollections.tests.util.CompareInconsistentWithEquals;
 import org.pcollections.tests.util.StringOrderComparator;
 
+import static org.pcollections.tests.util.UnmodifiableAssertions.assertSetMutatorsThrow;
+
 public class TreePSetTest extends TestCase {
   /**
    * An empty TreePSet&lt;Integer&gt; using the natural ordering; useful in cases where type
@@ -36,7 +38,7 @@ public class TreePSetTest extends TestCase {
    */
   private static final TreePSet<Integer> EMPTY = TreePSet.empty();
 
-  private static final Random RANDOM = new Random();
+  private static final Random RANDOM = new Random(123);
 
   private static final Comparator<Object> STRING_ORDER_COMPARATOR = StringOrderComparator.INSTANCE;
 
@@ -996,5 +998,9 @@ public class TreePSetTest extends TestCase {
 
   private static TreeSet<Integer> treeSetOf(final Integer... elements) {
     return new TreeSet<>(Arrays.asList(elements));
+  }
+
+  public void testUnmodifiable() {
+    assertSetMutatorsThrow(TreePSet.singleton("value1"), "value2");
   }
 }

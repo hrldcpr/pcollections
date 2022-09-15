@@ -22,7 +22,7 @@ public class ConsPStackTest extends TestCase {
   public void testRandomlyAgainstJavaList() {
     PStack<Integer> pstack = ConsPStack.empty();
     List<Integer> list = new LinkedList<Integer>();
-    Random r = new Random();
+    Random r = new Random(123);
     for (int i = 0; i < 1000; i++) {
       if (pstack.size() == 0 || r.nextBoolean()) { // add
         if (r.nextBoolean()) { // append
