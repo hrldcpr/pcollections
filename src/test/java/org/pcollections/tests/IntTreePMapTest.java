@@ -14,6 +14,8 @@ import junit.framework.TestCase;
 import org.pcollections.IntTreePMap;
 import org.pcollections.PMap;
 
+import static org.pcollections.tests.util.UnmodifiableAssertions.assertMapMutatorsThrow;
+
 public class IntTreePMapTest extends TestCase {
 
   /** Compares the behavior of java.util.HashMap to the behavior of IntTreePMap. */
@@ -90,5 +92,12 @@ public class IntTreePMapTest extends TestCase {
   public void testSingleton() {
     UtilityTest.assertEqualsAndHash(
         IntTreePMap.empty().plus(10, "test"), IntTreePMap.singleton(10, "test"));
+  }
+
+  public void testUnmodifiable() {
+    assertMapMutatorsThrow(
+        IntTreePMap.singleton(1, "value1"),
+        2, "value2"
+    );
   }
 }
