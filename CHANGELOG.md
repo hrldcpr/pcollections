@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Mutator methods consistently throw `UnsupportedOperationException` [[#93](https://github.com/hrldcpr/pcollections/issues/93)] [[#97](https://github.com/hrldcpr/pcollections/pull/97) by [@prdoyle](https://github.com/prdoyle)]
 
 ## [3.2.0] - 2022-08-17
 ### Added
