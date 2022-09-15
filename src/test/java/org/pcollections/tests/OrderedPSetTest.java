@@ -14,6 +14,8 @@ import org.pcollections.OrderedPSet;
 import org.pcollections.POrderedSet;
 import org.pcollections.PSet;
 
+import static org.pcollections.tests.util.UnmodifiableAssertions.assertSetMutatorsThrow;
+
 public class OrderedPSetTest extends TestCase {
 
   public void testPlus() {
@@ -66,5 +68,9 @@ public class OrderedPSetTest extends TestCase {
   public void testIterator() {
     UtilityTest.iteratorExceptions(Empty.orderedSet().iterator());
     UtilityTest.iteratorExceptions(OrderedPSet.singleton(10).iterator());
+  }
+
+  public void testUnmodifiable() {
+    assertSetMutatorsThrow(OrderedPSet.singleton("value1"), "value2");
   }
 }
