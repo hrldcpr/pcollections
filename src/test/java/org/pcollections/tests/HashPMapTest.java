@@ -6,6 +6,8 @@
 
 package org.pcollections.tests;
 
+import static org.pcollections.tests.util.UnmodifiableAssertions.assertMapMutatorsThrow;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,8 +15,6 @@ import java.util.Random;
 import junit.framework.TestCase;
 import org.pcollections.HashTreePMap;
 import org.pcollections.PMap;
-
-import static org.pcollections.tests.util.UnmodifiableAssertions.assertMapMutatorsThrow;
 
 public class HashPMapTest extends TestCase {
 
@@ -95,9 +95,6 @@ public class HashPMapTest extends TestCase {
   }
 
   public void testUnmodifiable() {
-    assertMapMutatorsThrow(
-        HashTreePMap.singleton("key1", "value1"),
-        "key2", "value2"
-    );
+    assertMapMutatorsThrow(HashTreePMap.singleton("key1", "value1"), "key2", "value2");
   }
 }

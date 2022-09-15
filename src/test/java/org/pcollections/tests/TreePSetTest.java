@@ -6,6 +6,8 @@
 
 package org.pcollections.tests;
 
+import static org.pcollections.tests.util.UnmodifiableAssertions.assertSetMutatorsThrow;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -28,8 +30,6 @@ import junit.framework.TestCase;
 import org.pcollections.TreePSet;
 import org.pcollections.tests.util.CompareInconsistentWithEquals;
 import org.pcollections.tests.util.StringOrderComparator;
-
-import static org.pcollections.tests.util.UnmodifiableAssertions.assertSetMutatorsThrow;
 
 public class TreePSetTest extends TestCase {
   /**

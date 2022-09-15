@@ -6,6 +6,8 @@
 
 package org.pcollections.tests;
 
+import static org.pcollections.tests.util.UnmodifiableAssertions.assertMapMutatorsThrow;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -38,8 +40,6 @@ import org.pcollections.TreePMap;
 import org.pcollections.TreePSet;
 import org.pcollections.tests.util.CompareInconsistentWithEquals;
 import org.pcollections.tests.util.StringOrderComparator;
-
-import static org.pcollections.tests.util.UnmodifiableAssertions.assertMapMutatorsThrow;
 
 public class TreePMapTest extends TestCase {
   /**
@@ -1284,9 +1284,6 @@ public class TreePMapTest extends TestCase {
   }
 
   public void testUnmodifiable() {
-    assertMapMutatorsThrow(
-        TreePMap.singleton("key1", "value1"),
-        "key2", "value2"
-    );
+    assertMapMutatorsThrow(TreePMap.singleton("key1", "value1"), "key2", "value2");
   }
 }

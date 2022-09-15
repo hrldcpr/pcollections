@@ -6,6 +6,8 @@
 
 package org.pcollections.tests;
 
+import static org.pcollections.tests.util.UnmodifiableAssertions.assertSetMutatorsThrow;
+
 import java.util.Iterator;
 import java.util.Random;
 import junit.framework.TestCase;
@@ -13,8 +15,6 @@ import org.pcollections.Empty;
 import org.pcollections.OrderedPSet;
 import org.pcollections.POrderedSet;
 import org.pcollections.PSet;
-
-import static org.pcollections.tests.util.UnmodifiableAssertions.assertSetMutatorsThrow;
 
 public class OrderedPSetTest extends TestCase {
 
