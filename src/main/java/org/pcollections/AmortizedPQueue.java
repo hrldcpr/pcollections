@@ -7,7 +7,6 @@
 package org.pcollections;
 
 import java.io.Serializable;
-import java.util.AbstractQueue;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -16,7 +15,8 @@ import java.util.NoSuchElementException;
  * @author mtklein
  * @param <E>
  */
-public class AmortizedPQueue<E> extends AbstractQueue<E> implements PQueue<E>, Serializable {
+public class AmortizedPQueue<E> extends AbstractUnmodifiableQueue<E>
+    implements PQueue<E>, Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -134,18 +134,6 @@ public class AmortizedPQueue<E> extends AbstractQueue<E> implements PQueue<E>, S
 
   public PCollection<E> minusAll(Collection<?> list) {
     return Empty.<E>vector().plusAll(this).minusAll(list);
-  }
-
-  /* These 2 methods are not applicable to a persistent collection. */
-  public boolean offer(E o) {
-    // Not possible to modify a persistent queue, interface
-    // says return false if it's not added.
-    throw new UnsupportedOperationException();
-  }
-
-  public E poll() {
-    // Poll is meant to destructively remove and return the front of the queue.
-    throw new UnsupportedOperationException();
   }
 
   public static void main(String[] args) {

@@ -7,7 +7,6 @@
 package org.pcollections;
 
 import java.io.Serializable;
-import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -24,7 +23,8 @@ import java.util.Map.Entry;
  * @author harold
  * @param <E>
  */
-public class TreePVector<E> extends AbstractList<E> implements PVector<E>, Serializable {
+public class TreePVector<E> extends AbstractUnmodifiableList<E>
+    implements PVector<E>, Serializable {
 
   private static final long serialVersionUID = 1L;
 

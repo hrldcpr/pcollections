@@ -7,7 +7,6 @@
 package org.pcollections;
 
 import java.io.Serializable;
-import java.util.AbstractSequentialList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -22,7 +21,7 @@ import java.util.NoSuchElementException;
  * @author harold
  * @param <E>
  */
-public final class ConsPStack<E> extends AbstractSequentialList<E>
+public final class ConsPStack<E> extends AbstractUnmodifiableSequentialList<E>
     implements PStack<E>, Serializable {
 
   private static final long serialVersionUID = 1L;
