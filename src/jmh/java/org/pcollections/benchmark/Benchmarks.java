@@ -11,6 +11,7 @@ import static org.pcollections.benchmark.Benchmarks.CollectionType.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -38,8 +39,8 @@ public class Benchmarks {
     TREE_P_VECTOR,
     HASH_SET,
     HASH_TREE_P_SET,
-    HASH_MAP,
     HASH_TREE_P_BAG,
+    HASH_MAP,
     INT_TREE_P_MAP;
   }
 
@@ -48,117 +49,81 @@ public class Benchmarks {
     @Param public BaseListType testAgainst;
   }
 
-  @State(Scope.Benchmark)
-  public static class GeneralCollections {
-    @Param public BaseListType testAgainst;
-
-    @Param({
-      "LINKED_LIST",
-      "ARRAY_LIST",
-      "CONS_P_STACK",
-      "TREE_P_VECTOR",
-      "HASH_SET",
-      "HASH_TREE_P_SET",
-      "HASH_MAP",
-      "HASH_TREE_P_BAG",
-      "INT_TREE_P_MAP"
-    })
-    public CollectionType testWith;
-  }
-
-  private Object[][] baseList;
-  private Collection[][] collections;
-  private Map[][] maps;
+  private Map<BaseListType, Object[]> baseList;
+  private Map<BaseListType, Map<CollectionType, Collection>> collections;
+  private Map<BaseListType, Map<CollectionType, Map>> maps;
 
   /** setup benchmark data structures */
   @Setup
   public void init() {
-    baseList = new Object[BaseListType.values().length][];
-    collections = new Collection[BaseListType.values().length][CollectionType.values().length];
-    maps = new Map[BaseListType.values().length][CollectionType.values().length];
+    baseList = new EnumMap<>(BaseListType.class);
+    collections = new EnumMap<>(BaseListType.class);
+    maps = new EnumMap<>(BaseListType.class);
 
-    // make an array of linear indices
     int n = 1000;
     Object[] list = new Object[n];
-    for (int i = 0; i < n; i++) list[i] = i;
-    baseList[LINEAR.ordinal()] = list;
-
-    collections[LINEAR.ordinal()][LINKED_LIST.ordinal()] = collectionAdd(new LinkedList(), list);
-    collections[LINEAR.ordinal()][ARRAY_LIST.ordinal()] = collectionAdd(new ArrayList(), list);
-    collections[LINEAR.ordinal()][CONS_P_STACK.ordinal()] =
-        pCollectionPlus(ConsPStack.empty(), list);
-    collections[LINEAR.ordinal()][TREE_P_VECTOR.ordinal()] =
-        pCollectionPlus(TreePVector.empty(), list);
-    collections[LINEAR.ordinal()][HASH_SET.ordinal()] = collectionAdd(new HashSet(), list);
-    collections[LINEAR.ordinal()][HASH_TREE_P_SET.ordinal()] =
-        pCollectionPlus(HashTreePSet.empty(), list);
-    collections[LINEAR.ordinal()][HASH_TREE_P_BAG.ordinal()] =
-        pCollectionPlus(HashTreePBag.empty(), list);
-
-    maps[LINEAR.ordinal()][HASH_MAP.ordinal()] = mapPut(new HashMap(), list);
-    maps[LINEAR.ordinal()][INT_TREE_P_MAP.ordinal()] = pMapPlus(IntTreePMap.empty(), list);
-
-    // make an array of random indices
     Random r = new Random();
-    for (int i = 0; i < n; i++) list[i] = r.nextInt();
-    baseList[RANDOM.ordinal()] = list;
+    for (BaseListType lr : BaseListType.values()) {
+      for (int i = 0; i < n; i++) list[i] = lr == LINEAR ? i : r.nextInt();
+      baseList.put(lr, list);
 
-    collections[RANDOM.ordinal()][LINKED_LIST.ordinal()] = collectionAdd(new LinkedList(), list);
-    collections[RANDOM.ordinal()][ARRAY_LIST.ordinal()] = collectionAdd(new ArrayList(), list);
-    collections[RANDOM.ordinal()][CONS_P_STACK.ordinal()] =
-        pCollectionPlus(ConsPStack.empty(), list);
-    collections[RANDOM.ordinal()][TREE_P_VECTOR.ordinal()] =
-        pCollectionPlus(TreePVector.empty(), list);
-    collections[RANDOM.ordinal()][HASH_SET.ordinal()] = collectionAdd(new HashSet(), list);
-    collections[RANDOM.ordinal()][HASH_TREE_P_SET.ordinal()] =
-        pCollectionPlus(HashTreePSet.empty(), list);
-    collections[RANDOM.ordinal()][HASH_TREE_P_BAG.ordinal()] =
-        pCollectionPlus(HashTreePBag.empty(), list);
+      Map<CollectionType, Collection> cs = new EnumMap<>(CollectionType.class);
+      cs.put(LINKED_LIST, collectionAdd(new LinkedList(), list));
+      cs.put(ARRAY_LIST, collectionAdd(new ArrayList(), list));
+      cs.put(CONS_P_STACK, pCollectionPlus(ConsPStack.empty(), list));
+      cs.put(TREE_P_VECTOR, pCollectionPlus(TreePVector.empty(), list));
+      cs.put(HASH_SET, collectionAdd(new HashSet(), list));
+      cs.put(HASH_TREE_P_SET, pCollectionPlus(HashTreePSet.empty(), list));
+      cs.put(HASH_TREE_P_BAG, pCollectionPlus(HashTreePBag.empty(), list));
+      collections.put(lr, cs);
 
-    maps[RANDOM.ordinal()][HASH_MAP.ordinal()] = mapPut(new HashMap(), list);
-    maps[RANDOM.ordinal()][INT_TREE_P_MAP.ordinal()] = pMapPlus(IntTreePMap.empty(), list);
+      Map<CollectionType, Map> ms = new EnumMap<>(CollectionType.class);
+      ms.put(HASH_MAP, mapPut(new HashMap(), list));
+      ms.put(INT_TREE_P_MAP, pMapPlus(IntTreePMap.empty(), list));
+      maps.put(lr, ms);
+    }
   }
 
   @Benchmark
   public void linked_list_add(LinearAndRandom lr) {
     List list = new LinkedList();
-    collectionAdd(list, baseList[lr.testAgainst.ordinal()]);
+    collectionAdd(list, baseList.get(lr.testAgainst));
   }
 
   @Benchmark
   public void array_list_add(LinearAndRandom lr) {
     List list = new ArrayList();
-    collectionAdd(list, baseList[lr.testAgainst.ordinal()]);
+    collectionAdd(list, baseList.get(lr.testAgainst));
   }
 
   @Benchmark
   public void consp_plus(LinearAndRandom lr) {
     ConsPStack list = ConsPStack.empty();
-    pCollectionPlus(list, baseList[lr.testAgainst.ordinal()]);
+    pCollectionPlus(list, baseList.get(lr.testAgainst));
   }
 
   @Benchmark
   public void treePVector_plus(LinearAndRandom lr) {
     TreePVector vector = TreePVector.empty();
-    pCollectionPlus(vector, baseList[lr.testAgainst.ordinal()]);
+    pCollectionPlus(vector, baseList.get(lr.testAgainst));
   }
 
   @Benchmark
   public void hashSet_plus(LinearAndRandom lr) {
     HashSet set = new HashSet();
-    collectionAdd(set, baseList[lr.testAgainst.ordinal()]);
+    collectionAdd(set, baseList.get(lr.testAgainst));
   }
 
   @Benchmark
   public void hashTreePMap_plus(LinearAndRandom lr) {
     PMap map = HashTreePMap.empty();
-    pMapPlus(map, baseList[lr.testAgainst.ordinal()]);
+    pMapPlus(map, baseList.get(lr.testAgainst));
   }
 
   @Benchmark
   public void intTreePMap_plus(LinearAndRandom lr) {
     PMap map = IntTreePMap.empty();
-    pMapPlus(map, baseList[lr.testAgainst.ordinal()]);
+    pMapPlus(map, baseList.get(lr.testAgainst));
   }
 
   // ---- contains / not contains ---- //
@@ -181,15 +146,13 @@ public class Benchmarks {
   @Benchmark
   public void contains(CollectionsWithContains lrl) {
     collectionContains(
-        collections[lrl.testAgainst.ordinal()][lrl.testWith.ordinal()],
-        baseList[lrl.testAgainst.ordinal()]);
+        collections.get(lrl.testAgainst).get(lrl.testWith), baseList.get(lrl.testAgainst));
   }
 
   @Benchmark
-  public void _notContains(CollectionsWithContains lrl) {
+  public void notContains(CollectionsWithContains lrl) {
     collectionNotContains(
-        collections[lrl.testAgainst.ordinal()][lrl.testWith.ordinal()],
-        baseList[lrl.testAgainst.ordinal()].length);
+        collections.get(lrl.testAgainst).get(lrl.testWith), baseList.get(lrl.testAgainst).length);
   }
 
   // ---- get ---- //
@@ -204,7 +167,7 @@ public class Benchmarks {
 
   @Benchmark
   public void get(CollectionsWithGet lrl) {
-    listGet((List) collections[lrl.testAgainst.ordinal()][lrl.testWith.ordinal()]);
+    listGet((List) collections.get(lrl.testAgainst).get(lrl.testWith));
   }
 
   // ---- iterator ---- //
@@ -228,14 +191,14 @@ public class Benchmarks {
 
   @Benchmark
   public void iterator(CollectionsWithIterator lrl) {
-    collectionIterator(collections[lrl.testAgainst.ordinal()][lrl.testWith.ordinal()]);
+    collectionIterator(collections.get(lrl.testAgainst).get(lrl.testWith));
   }
 
   // --- hash map construction ---
 
   @Benchmark
   public void put(LinearAndRandom lr) {
-    mapPut(new HashMap(), baseList[lr.testAgainst.ordinal()]);
+    mapPut(new HashMap(), baseList.get(lr.testAgainst));
   }
 
   // ---- contains key ----
@@ -250,16 +213,13 @@ public class Benchmarks {
 
   @Benchmark
   public void mapContainsKey(CollectionsWithContainsKey lrl) {
-    mapContainsKey(
-        maps[lrl.testAgainst.ordinal()][lrl.testWith.ordinal()],
-        baseList[lrl.testAgainst.ordinal()]);
+    mapContainsKey(maps.get(lrl.testAgainst).get(lrl.testWith), baseList.get(lrl.testAgainst));
   }
 
   @Benchmark
   public void mapNotContainsKey(CollectionsWithContainsKey lrl) {
     mapNotContainsKey(
-        maps[lrl.testAgainst.ordinal()][lrl.testWith.ordinal()],
-        baseList[lrl.testAgainst.ordinal()].length);
+        maps.get(lrl.testAgainst).get(lrl.testWith), baseList.get(lrl.testAgainst).length);
   }
 
   // --- helper methods ---
