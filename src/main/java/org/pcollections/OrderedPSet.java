@@ -16,7 +16,7 @@ public class OrderedPSet<E> extends AbstractUnmodifiableSet<E>
   private static final long serialVersionUID = 1L;
 
   private static final OrderedPSet<Object> EMPTY =
-      new OrderedPSet<Object>(Empty.set(), Empty.vector());
+      new OrderedPSet<Object>(Empty.map(), Empty.sortedMap());
 
   @SuppressWarnings("unchecked")
   public static <E> OrderedPSet<E> empty() {
@@ -33,18 +33,19 @@ public class OrderedPSet<E> extends AbstractUnmodifiableSet<E>
     return OrderedPSet.<E>empty().plus(e);
   }
 
-  private final PSet<E> contents;
-  private final PVector<E> order;
+  private final PMap<E, Long> ids;
+  private final PSortedMap<Long, E> elements;
 
-  private OrderedPSet(final PSet<E> c, final PVector<E> o) {
-    contents = c;
-    order = o;
+  private OrderedPSet(final PMap<E, Long> ids, final PSortedMap<Long, E> elements) {
+    this.ids = ids;
+    this.elements = elements;
   }
 
   @Override
   public OrderedPSet<E> plus(final E e) {
-    if (contents.contains(e)) return this;
-    return new OrderedPSet<E>(contents.plus(e), order.plus(e));
+    if (ids.containsKey(e)) return this;
+    final Long id = elements.isEmpty() ? -Long.MIN_VALUE : (elements.lastKey() + 1);
+    return new OrderedPSet<E>(ids.plus(e, id), elements.plus(id, e));
   }
 
   @Override
@@ -58,8 +59,9 @@ public class OrderedPSet<E> extends AbstractUnmodifiableSet<E>
 
   @Override
   public OrderedPSet<E> minus(final Object e) {
-    if (!contents.contains(e)) return this;
-    return new OrderedPSet<E>(contents.minus(e), order.minus(e));
+    final Long id = ids.get(e);
+    if (id == null) return this;
+    return new OrderedPSet<E>(ids.minus(e), elements.minus(id));
   }
 
   @Override
@@ -73,22 +75,11 @@ public class OrderedPSet<E> extends AbstractUnmodifiableSet<E>
 
   @Override
   public Iterator<E> iterator() {
-    return order.iterator();
+    return elements.values().iterator();
   }
 
   @Override
   public int size() {
-    return contents.size();
-  }
-
-  @Override
-  public E get(final int index) {
-    return order.get(index);
-  }
-
-  @Override
-  public int indexOf(final Object o) {
-    if (!contents.contains(o)) return -1;
-    return order.indexOf(o);
+    return ids.size();
   }
 }
