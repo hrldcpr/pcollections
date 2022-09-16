@@ -183,8 +183,7 @@ public class Benchmarks {
       "TREE_P_VECTOR",
       "HASH_SET",
       "HASH_TREE_P_SET",
-      "HASH_TREE_P_BAG",
-      "INT_TREE_P_MAP"
+      "HASH_TREE_P_BAG"
     })
     public CollectionType testWith;
   }
@@ -207,7 +206,7 @@ public class Benchmarks {
   public static class CollectionsWithContainsKey {
     @Param public BaseListType testAgainst;
 
-    @Param({"HASH_MAP", "HASH_TREE_P_BAG", "INT_TREE_P_MAP"})
+    @Param({"HASH_MAP", "INT_TREE_P_MAP"})
     public CollectionType testWith;
   }
 
