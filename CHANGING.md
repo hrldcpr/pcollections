@@ -13,3 +13,9 @@ Then follow the instructions at https://central.sonatype.org/pages/releasing-the
 Finally, increment the version in build.gradle and add back -SNAPSHOT, and commit.
 
 Finally finally, once the new version is available in Maven Central (takes a few hours), update the version in the Maven and Gradle snippets in the README and update CHANGELOG.md.
+
+
+…also, if you want to run the benchmarks:
+(They're a bit janky and take forever, but you can always add your own and comment out the ones you don't want to run.)
+- `./gradlew --stop; rm -fr build/ && ./gradlew jmh`
+(Stopping the daemon and deleting build/ fixes issues when you're changing or commenting out benchmarks.)
