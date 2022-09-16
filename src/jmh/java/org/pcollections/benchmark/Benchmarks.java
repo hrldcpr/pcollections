@@ -40,6 +40,7 @@ public class Benchmarks {
     HASH_SET,
     HASH_TREE_P_SET,
     HASH_TREE_P_BAG,
+    ORDERED_P_SET,
     HASH_MAP,
     INT_TREE_P_MAP;
   }
@@ -75,6 +76,7 @@ public class Benchmarks {
       cs.put(HASH_SET, collectionAdd(new HashSet(), list));
       cs.put(HASH_TREE_P_SET, pCollectionPlus(HashTreePSet.empty(), list));
       cs.put(HASH_TREE_P_BAG, pCollectionPlus(HashTreePBag.empty(), list));
+      cs.put(ORDERED_P_SET, pCollectionPlus(OrderedPSet.empty(), list));
       collections.put(lr, cs);
 
       Map<CollectionType, Map> ms = new EnumMap<>(CollectionType.class);
@@ -109,6 +111,24 @@ public class Benchmarks {
   }
 
   @Benchmark
+  public void ordered_pset_plus(LinearAndRandom lr) {
+    OrderedPSet set = OrderedPSet.empty();
+    pCollectionPlus(set, baseList.get(lr.testAgainst));
+  }
+
+  @Benchmark
+  public void ordered_pset_plus_minus(LinearAndRandom lr) {
+    OrderedPSet set = OrderedPSet.empty();
+    pCollectionPlusMinus(set, baseList.get(lr.testAgainst));
+  }
+
+  @Benchmark
+  public void ordered_pset_plus_minus_reverse(LinearAndRandom lr) {
+    OrderedPSet set = OrderedPSet.empty();
+    pCollectionPlusMinusReverse(set, baseList.get(lr.testAgainst));
+  }
+
+  @Benchmark
   public void hashSet_plus(LinearAndRandom lr) {
     HashSet set = new HashSet();
     collectionAdd(set, baseList.get(lr.testAgainst));
@@ -138,7 +158,8 @@ public class Benchmarks {
       "TREE_P_VECTOR",
       "HASH_SET",
       "HASH_TREE_P_SET",
-      "HASH_TREE_P_BAG"
+      "HASH_TREE_P_BAG",
+      "ORDERED_P_SET"
     })
     public CollectionType testWith;
   }
@@ -183,7 +204,8 @@ public class Benchmarks {
       "TREE_P_VECTOR",
       "HASH_SET",
       "HASH_TREE_P_SET",
-      "HASH_TREE_P_BAG"
+      "HASH_TREE_P_BAG",
+      "ORDERED_P_SET"
     })
     public CollectionType testWith;
   }
@@ -225,6 +247,18 @@ public class Benchmarks {
 
   private static PCollection pCollectionPlus(PCollection c, final Object[] list) {
     for (Object e : list) c = c.plus(e);
+    return c;
+  }
+
+  private static PCollection pCollectionPlusMinus(PCollection c, final Object[] list) {
+    for (Object e : list) c = c.plus(e);
+    for (Object e : list) c = c.minus(e);
+    return c;
+  }
+
+  private static PCollection pCollectionPlusMinusReverse(PCollection c, final Object[] list) {
+    for (Object e : list) c = c.plus(e);
+    for (int i = list.length - 1; i >= 0; i--) c = c.minus(list[i]);
     return c;
   }
 
