@@ -24,4 +24,8 @@ public interface PSet<E> extends PCollection<E>, Set<E> {
   public PSet<E> minus(Object e);
   // @Override
   public PSet<E> minusAll(Collection<?> list);
+
+  public default PSet<E> intersect(Collection<? extends E> list) {
+    return this.minusAll(this.minusAll(list));
+  }
 }
