@@ -21,11 +21,15 @@ import java.util.LinkedHashSet;
  */
 public interface POrderedSet<E> extends PSet<E> {
 
+  @Override
   public POrderedSet<E> plus(E e);
 
+  @Override
   public POrderedSet<E> plusAll(Collection<? extends E> list);
 
+  @Override
   public POrderedSet<E> minus(Object e);
 
+  @Override
   public POrderedSet<E> minusAll(Collection<?> list);
 }
