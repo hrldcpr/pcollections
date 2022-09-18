@@ -6,6 +6,7 @@
 
 package org.pcollections.tests;
 
+import static org.pcollections.tests.util.NullCheckAssertions.assertMapChecksForNull;
 import static org.pcollections.tests.util.UnmodifiableAssertions.assertMapMutatorsThrow;
 
 import java.io.ByteArrayInputStream;
@@ -1286,5 +1287,10 @@ public class TreePMapTest extends TestCase {
   public void testUnmodifiable() {
     assertMapMutatorsThrow(TreePMap.empty(), "key", "value");
     assertMapMutatorsThrow(TreePMap.singleton("key1", "value1"), "key2", "value2");
+  }
+
+  public void testChecksForNull() {
+    assertMapChecksForNull(TreePMap.empty(), "key", "value");
+    assertMapChecksForNull(TreePMap.singleton("key1", "value1"), "key2", "value2");
   }
 }

@@ -6,6 +6,7 @@
 
 package org.pcollections.tests;
 
+import static org.pcollections.tests.util.NullCheckAssertions.assertMapChecksForNull;
 import static org.pcollections.tests.util.UnmodifiableAssertions.assertMapMutatorsThrow;
 
 import java.util.HashMap;
@@ -97,6 +98,11 @@ public class HashPMapTest extends TestCase {
   public void testUnmodifiable() {
     assertMapMutatorsThrow(HashTreePMap.empty(), "key1", "value1");
     assertMapMutatorsThrow(HashTreePMap.singleton("key1", "value1"), "key2", "value2");
+  }
+
+  public void testChecksForNull() {
+    assertMapChecksForNull(HashTreePMap.empty(), "key1", "value1");
+    assertMapChecksForNull(HashTreePMap.singleton("key1", "value1"), "key2", "value2");
   }
 
 }
