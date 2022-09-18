@@ -1284,6 +1284,7 @@ public class TreePMapTest extends TestCase {
   }
 
   public void testUnmodifiable() {
+    assertMapMutatorsThrow(TreePMap.empty(), "key", "value");
     assertMapMutatorsThrow(TreePMap.singleton("key1", "value1"), "key2", "value2");
   }
 }

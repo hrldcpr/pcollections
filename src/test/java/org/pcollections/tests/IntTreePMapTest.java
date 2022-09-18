@@ -95,6 +95,7 @@ public class IntTreePMapTest extends TestCase {
   }
 
   public void testUnmodifiable() {
+    assertMapMutatorsThrow(IntTreePMap.empty(), 1, "value1");
     assertMapMutatorsThrow(IntTreePMap.singleton(1, "value1"), 2, "value2");
   }
 }
