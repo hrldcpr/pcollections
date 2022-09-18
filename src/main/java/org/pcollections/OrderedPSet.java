@@ -10,6 +10,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 
+import static java.util.Objects.requireNonNull;
+
 public class OrderedPSet<E> extends AbstractUnmodifiableSet<E>
     implements POrderedSet<E>, Serializable {
 
@@ -37,8 +39,8 @@ public class OrderedPSet<E> extends AbstractUnmodifiableSet<E>
   private final PSortedMap<Long, E> elements;
 
   private OrderedPSet(final PMap<E, Long> ids, final PSortedMap<Long, E> elements) {
-    this.ids = ids;
-    this.elements = elements;
+    this.ids = requireNonNull(ids, "ids is null");
+    this.elements = requireNonNull(elements, "elements is null");
   }
 
   @Override

@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * A persistent vector of non-null elements.
  *
@@ -67,7 +69,7 @@ public class TreePVector<E> extends AbstractUnmodifiableList<E>
   private final IntTreePMap<E> map;
 
   private TreePVector(final IntTreePMap<E> map) {
-    this.map = map;
+    this.map = requireNonNull(map, "map is null");
   }
 
   //// REQUIRED METHODS FROM AbstractList ////

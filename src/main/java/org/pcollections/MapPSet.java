@@ -10,6 +10,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * A map-backed persistent set.
  *
@@ -58,7 +60,7 @@ public final class MapPSet<E> extends AbstractUnmodifiableSet<E> implements PSet
   private final PMap<E, Object> map;
   // not instantiable (or subclassable):
   private MapPSet(final PMap<E, Object> map) {
-    this.map = map;
+    this.map = requireNonNull(map, "map is null");
   }
 
   //// REQUIRED METHODS FROM AbstractSet ////

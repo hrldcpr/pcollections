@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * A map-backed persistent bag.
  *
@@ -40,7 +42,7 @@ public final class MapPBag<E> extends AbstractUnmodifiableCollection<E>
   private final int size;
   // not instantiable (or subclassable):
   private MapPBag(final PMap<E, Integer> map, final int size) {
-    this.map = map;
+    this.map = requireNonNull(map, "map is null");
     this.size = size;
   }
 

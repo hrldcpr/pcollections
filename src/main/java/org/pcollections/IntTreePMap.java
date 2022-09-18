@@ -80,7 +80,7 @@ public final class IntTreePMap<V> extends AbstractUnmodifiableMap<Integer, V>
   private final IntTree<V> root;
   // not externally instantiable (or subclassable):
   private IntTreePMap(final IntTree<V> root) {
-    this.root = root;
+    this.root = requireNonNull(root, "root is null");
   }
 
   private IntTreePMap<V> withRoot(final IntTree<V> root) {
