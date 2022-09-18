@@ -17,6 +17,8 @@ import java.util.TreeSet;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * An implementation of {@link PSortedSet} based on a self-balancing binary search tree.
  *
@@ -49,11 +51,9 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
       final KVTree<E, ?> tree,
       final Comparator<? super E> ltrComparator,
       final boolean isLeftToRight) {
-    complainIfNull(tree, "tree is null");
-    complainIfNull(ltrComparator, "comparator is null");
 
-    this.tree = tree;
-    this.ltrComparator = ltrComparator;
+    this.tree = requireNonNull(tree, "tree is null");
+    this.ltrComparator = requireNonNull(ltrComparator, "comparator is null");
     this.isLeftToRight = isLeftToRight;
   }
 
@@ -118,9 +118,7 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
    * @throws NullPointerException if the specified set is or contains null
    */
   public static <E> TreePSet<E> fromSortedSet(final SortedSet<E> set) {
-    complainIfNull(set, "set is null");
-
-    if (set instanceof TreePSet<?>) {
+    if (requireNonNull(set, "set is null") instanceof TreePSet<?>) {
       return (TreePSet<E>) set;
     }
 
@@ -130,7 +128,7 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
     {
       final Iterator<? extends Map.Entry<E, ?>> treeIterator = tree.entryIterator(true);
       while (treeIterator.hasNext()) {
-        complainIfNull(treeIterator.next().getKey(), "set contains null element");
+        requireNonNull(treeIterator.next().getKey(), "set contains null element");
       }
     }
 
@@ -221,7 +219,7 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
    */
   public static <E> Collector<E, ?, TreePSet<E>> toTreePSet(
       final Comparator<? super E> comparator) {
-    complainIfNull(comparator, "comparator is null");
+    requireNonNull(comparator, "comparator is null");
 
     return Collectors.collectingAndThen(
         Collectors.toCollection(() -> new TreeSet<E>(comparator)),
@@ -270,7 +268,7 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
 
   @Override
   public TreePSet<E> headSet(final E toElement, final boolean inclusive) {
-    complainIfNull(toElement, "toElement is null");
+    requireNonNull(toElement, "toElement is null");
 
     return this.withTree(
         this.isLeftToRight
@@ -312,19 +310,18 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
 
   @Override
   public TreePSet<E> minus(final Object e) {
-    complainIfNull(e, "element is null");
-
-    return this.withTree(this.tree.minus(sneakilyDowncast(e), this.ltrComparator));
+    return this.withTree(this.tree.minus(
+        sneakilyDowncast(requireNonNull(e, "element is null")),
+        this.ltrComparator));
   }
 
   @Override
   public TreePSet<E> minusAll(final Collection<?> list) {
-    complainIfNull(list, "list is null");
 
     KVTree<E, ?> tree = this.tree;
 
-    for (final Object e : list) {
-      complainIfNull(e, "list contains null element");
+    for (final Object e : requireNonNull(list, "list is null")) {
+      requireNonNull(e, "list contains null element");
 
       tree = tree.minus(sneakilyDowncast(e), this.ltrComparator);
     }
@@ -346,21 +343,21 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
 
   @Override
   public TreePSet<E> plus(final E e) {
-    complainIfNull(e, "element is null");
-
-    return this.withTree(this.tree.plus(e, null, this.ltrComparator));
+    return this.withTree(this.tree.plus(
+        requireNonNull(e, "element is null"),
+      null,
+      this.ltrComparator));
   }
 
   @Override
   public TreePSet<E> plusAll(final Collection<? extends E> list) {
-    complainIfNull(list, "list is null");
-
     KVTree<E, ?> tree = this.tree;
 
-    for (final E e : list) {
-      complainIfNull(e, "list contains null element");
-
-      tree = tree.plus(e, null, this.ltrComparator);
+    for (final E e : requireNonNull(list, "list is null")) {
+      tree = tree.plus(
+          requireNonNull(e, "list contains null element"),
+        null,
+        this.ltrComparator);
     }
 
     return this.withTree(tree);
@@ -382,8 +379,8 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
       final boolean fromInclusive,
       final E toElement,
       final boolean toInclusive) {
-    complainIfNull(fromElement, "fromElement is null");
-    complainIfNull(fromElement, "toElement is null");
+    requireNonNull(fromElement, "fromElement is null");
+    requireNonNull(fromElement, "toElement is null");
 
     if (this.comparator().compare(fromElement, toElement) > 0) {
       throw new IllegalArgumentException("fromElement > toElement");
@@ -406,11 +403,9 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
       final E e,
       final KVTree.SearchType searchTypeIfLeftToRight,
       final KVTree.SearchType searchTypeIfRightToLeft) {
-    complainIfNull(e, "e is null");
-
     return this.tree
         .search(
-            e,
+            requireNonNull(e, "e is null"),
             this.ltrComparator,
             this.isLeftToRight ? searchTypeIfLeftToRight : searchTypeIfRightToLeft)
         .getKey();
@@ -418,7 +413,7 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
 
   @Override
   public TreePSet<E> tailSet(final E fromElement, final boolean inclusive) {
-    complainIfNull(fromElement, "fromElement is null");
+    requireNonNull(fromElement, "fromElement is null");
 
     return this.withTree(
         this.isLeftToRight
@@ -428,12 +423,6 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
 
   private TreePSet<E> withTree(final KVTree<E, ?> tree) {
     return tree == this.tree ? this : new TreePSet<E>(tree, this.ltrComparator, this.isLeftToRight);
-  }
-
-  private static void complainIfNull(final Object o, final String msg) {
-    if (o == null) {
-      throw new NullPointerException(msg);
-    }
   }
 
   // we put this in its own method, to limit the scope of the @SuppressWarnings:
