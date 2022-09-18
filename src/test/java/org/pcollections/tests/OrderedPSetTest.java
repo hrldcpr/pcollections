@@ -8,6 +8,7 @@ package org.pcollections.tests;
 
 import static java.util.stream.Collectors.toList;
 import static org.pcollections.tests.util.CollectionHelpers.assertSetSemantics;
+import static org.pcollections.tests.util.NullCheckAssertions.assertSetChecksForNull;
 import static org.pcollections.tests.util.UnmodifiableAssertions.assertSetMutatorsThrow;
 
 import java.util.ArrayList;
@@ -78,6 +79,10 @@ public class OrderedPSetTest extends TestCase {
 
   public void testUnmodifiable() {
     assertSetMutatorsThrow(OrderedPSet.singleton("value1"), "value2");
+  }
+
+  public void testChecksForNull() {
+    assertSetChecksForNull(OrderedPSet.singleton("value1"), "value2");
   }
 
   @ParameterizedTest

@@ -8,6 +8,7 @@ package org.pcollections.tests;
 
 import static org.pcollections.tests.util.CollectionHelpers.assertSetSemantics;
 import static org.pcollections.tests.util.CollectionHelpers.collectionElementCases;
+import static org.pcollections.tests.util.NullCheckAssertions.assertSetChecksForNull;
 import static org.pcollections.tests.util.UnmodifiableAssertions.assertSetMutatorsThrow;
 
 import java.io.ByteArrayInputStream;
@@ -34,6 +35,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.pcollections.HashTreePSet;
+import org.pcollections.OrderedPSet;
 import org.pcollections.TreePSet;
 import org.pcollections.tests.util.CollectionHelpers;
 import org.pcollections.tests.util.CompareInconsistentWithEquals;
@@ -1013,6 +1015,13 @@ public class TreePSetTest extends TestCase {
     assertSetMutatorsThrow(TreePSet.singleton("value1"), "value2");
     assertSetMutatorsThrow(HashTreePSet.empty(), "value");
     assertSetMutatorsThrow(HashTreePSet.singleton("value1"), "value2");
+  }
+
+  public void testChecksForNull() {
+    assertSetChecksForNull(TreePSet.empty(), "value");
+    assertSetChecksForNull(TreePSet.singleton("value1"), "value2");
+    assertSetChecksForNull(HashTreePSet.empty(), "value");
+    assertSetChecksForNull(HashTreePSet.singleton("value1"), "value2");
   }
 
   @ParameterizedTest
