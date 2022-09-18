@@ -13,6 +13,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * An efficient persistent map from integer keys to non-null values.
  *
@@ -162,7 +164,7 @@ public final class IntTreePMap<V> extends AbstractUnmodifiableMap<Integer, V>
   }
 
   public IntTreePMap<V> minus(final Object key) {
-    if (!(key instanceof Integer)) return this;
+    if (!(requireNonNull(key, "key is null") instanceof Integer)) return this;
     return withRoot(root.minus((Integer) key));
   }
 
@@ -175,7 +177,11 @@ public final class IntTreePMap<V> extends AbstractUnmodifiableMap<Integer, V>
 
   public IntTreePMap<V> minusAll(final Collection<?> keys) {
     IntTree<V> root = this.root;
-    for (Object key : keys) if (key instanceof Integer) root = root.minus((Integer) key);
+    for (Object key : keys) {
+      if (requireNonNull(key, "key is null") instanceof Integer) {
+        root = root.minus((Integer) key);
+      }
+    }
     return withRoot(root);
   }
 }
