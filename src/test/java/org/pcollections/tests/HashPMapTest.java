@@ -95,6 +95,7 @@ public class HashPMapTest extends TestCase {
   }
 
   public void testUnmodifiable() {
+    assertMapMutatorsThrow(HashTreePMap.empty(), "key1", "value1");
     assertMapMutatorsThrow(HashTreePMap.singleton("key1", "value1"), "key2", "value2");
   }
 }
