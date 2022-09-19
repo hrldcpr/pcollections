@@ -44,7 +44,7 @@ public class OrderedPSet<E> extends AbstractUnmodifiableSet<E>
   @Override
   public OrderedPSet<E> plus(final E e) {
     if (ids.containsKey(e)) return this;
-    final Long id = elements.isEmpty() ? -Long.MIN_VALUE : (elements.lastKey() + 1);
+    final Long id = elements.isEmpty() ? Long.MIN_VALUE : (elements.lastKey() + 1);
     return new OrderedPSet<E>(ids.plus(e, id), elements.plus(id, e));
   }
 
