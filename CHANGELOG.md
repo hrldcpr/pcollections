@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Mutator methods consistently throw `UnsupportedOperationException` [[#93](https://github.com/hrldcpr/pcollections/issues/93)] [[#97](https://github.com/hrldcpr/pcollections/pull/97) by [@prdoyle](https://github.com/prdoyle)]
 - `OrderedPSet.minus()` is faster—logarithmic instead of linear [[#98](https://github.com/hrldcpr/pcollections/pull/98)]
 ### Removed
-- ~`POrderedSet.get()`~ and ~`POrderedSet.indexOf()`~ [[#98](https://github.com/hrldcpr/pcollections/pull/98)]
+- ~`POrderedSet`~ interface, since it adds nothing beyond `PSet`
+- ~`OrderedPSet.get()`~ and ~`OrderedPSet.indexOf()`~ [[#98](https://github.com/hrldcpr/pcollections/pull/98)]
 
 ## [3.2.0] - 2022-08-17
 ### Added

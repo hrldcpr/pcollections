@@ -13,13 +13,12 @@ import java.util.Random;
 import junit.framework.TestCase;
 import org.pcollections.Empty;
 import org.pcollections.OrderedPSet;
-import org.pcollections.POrderedSet;
 import org.pcollections.PSet;
 
 public class OrderedPSetTest extends TestCase {
 
   public void testPlus() {
-    POrderedSet<Integer> s = Empty.orderedSet();
+    PSet<Integer> s = Empty.orderedSet();
     s = s.plus(3).plus(2).plus(1).plus(1).plus(2).plus(3).plus(4);
 
     int vals[] = new int[] {3, 2, 1, 4};
@@ -32,7 +31,7 @@ public class OrderedPSetTest extends TestCase {
   }
 
   public void testPlusMinus() {
-    POrderedSet<Integer> s = Empty.orderedSet();
+    PSet<Integer> s = Empty.orderedSet();
     s = s.plus(3).plus(2).plus(1).minus(1).plus(2).plus(3).minus(17).plus(5).plus(1).plus(4);
 
     int vals[] = new int[] {3, 2, 5, 1, 4};
@@ -46,7 +45,7 @@ public class OrderedPSetTest extends TestCase {
 
   public void testBehavesLikePSet() {
     PSet<Integer> s = Empty.set();
-    POrderedSet<Integer> os = Empty.orderedSet();
+    PSet<Integer> os = Empty.orderedSet();
 
     Random r = new Random(123);
     for (int i = 0; i < 100000; i++) {

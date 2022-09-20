@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
  * specific elements or ranges of elements based on this ordering (such as the least element greater
  * than some value, or the set of elements between two values).
  *
- * <p>(Note: this is different from {@link POrderedSet}, which keeps elements in the order that they
+ * <p>(Note: this is different from {@link OrderedPSet}, which keeps elements in the order that they
  * were added to the set.)
  *
  * <p>Every PSortedSet is a {@link java.util.Set} and more specifically a {@link PSet}, but as with

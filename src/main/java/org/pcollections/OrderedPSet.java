@@ -9,9 +9,18 @@ package org.pcollections;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 
-public class OrderedPSet<E> extends AbstractUnmodifiableSet<E>
-    implements POrderedSet<E>, Serializable {
+/**
+ * Like {@link PSet} but preserves insertion order. Persistent equivalent of {@link LinkedHashSet}.
+ *
+ * <p>(Note: this is different from {@link PSortedSet}, which keeps elements in the order specified
+ * by {@link java.lang.Comparable#compareTo(Object)} or {@link java.util.Comparator#compare(Object,
+ * Object)}.)
+ *
+ * @param <E>
+ */
+public class OrderedPSet<E> extends AbstractUnmodifiableSet<E> implements PSet<E>, Serializable {
 
   private static final long serialVersionUID = 1L;
 
