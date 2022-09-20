@@ -127,7 +127,6 @@ public final class ConsPStack<E> extends AbstractUnmodifiableSequentialList<E>
       }
 
       public E previous() {
-        System.err.println("ConsPStack.listIterator().previous() is inefficient, don't use it!");
         if (!hasPrevious()) {
           throw new NoSuchElementException();
         }
