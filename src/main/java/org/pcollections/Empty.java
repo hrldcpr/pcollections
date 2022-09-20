@@ -39,7 +39,7 @@ public final class Empty {
     return HashTreePSet.empty();
   }
 
-  public static <E> POrderedSet<E> orderedSet() {
+  public static <E> PSet<E> orderedSet() {
     return OrderedPSet.empty();
   }
 
