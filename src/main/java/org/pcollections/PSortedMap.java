@@ -13,11 +13,14 @@ import java.util.NavigableMap;
 import java.util.NoSuchElementException;
 
 /**
- * An immutable, persistent map from non-null keys of type K to non-null values of type V, with keys
+ * An immutable, persistent map from keys of type K to values of type V, with keys
  * arranged in sorted order (according to some {@link java.util.Comparator}), and with various
  * methods to obtain specific mappings or ranges of mappings based on this ordering (such as the
  * least key greater than some instance of type K, or the sub-map with keys between two instances of
  * type K).
+ *
+ * <p>Null values are supported. Null keys are disallowed unless the subclass specifically supports
+ * them; attempts to add a null key will result in {@link NullPointerException}.
  *
  * <p>(Note: this is different from {@link OrderedPMap}, which keeps entries in the order that they
  * were added to the map.)
@@ -51,10 +54,9 @@ import java.util.NoSuchElementException;
  *       ordering of its elements". This library's implementations never return null from that
  *       method; instead, when the map uses the natural ordering, the method returns a Comparator
  *       instance that implements the natural ordering. (This is because this library avoids null in
- *       general; a PMap does not allow null keys or values. This is also the behavior of Guava's
- *       ImmutableSortedMap, which also rejects null keys and values.) Other implementations of
- *       PSortedMap are encouraged to consider doing the same, and to document their behavior in
- *       this case (whether or not it's to return null).
+ *       general. This is also the behavior of Guava's ImmutableSortedMap, which also rejects
+ *       null keys and values.) Other implementations of PSortedMap are encouraged to consider doing the same,
+ *       and to document their behavior in this case (whether or not it's to return null).
  *   <li>pollFirstEntry() and pollLastEntry() are specified by NavigableMap to mutate this map, and
  *       are not specified to be optional operations. That's obviously not an option for a PMap, so
  *       PSortedMap provides default implementations of these methods that simply throw

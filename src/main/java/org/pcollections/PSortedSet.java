@@ -12,13 +12,16 @@ import java.util.NavigableSet;
 import java.util.NoSuchElementException;
 
 /**
- * An immutable, persistent set of distinct, non-null elements, with elements arranged in sorted
+ * An immutable, persistent set of distinct, elements, with elements arranged in sorted
  * order (according to some {@link java.util.Comparator}), and with various methods to obtain
  * specific elements or ranges of elements based on this ordering (such as the least element greater
  * than some value, or the set of elements between two values).
  *
  * <p>(Note: this is different from {@link OrderedPSet}, which keeps elements in the order that they
  * were added to the set.)
+ *
+ * <p>Null values are disallowed unless the subclass specifically supports them;
+ * attempts to add a null value will result in {@link NullPointerException}.
  *
  * <p>Every PSortedSet is a {@link java.util.Set} and more specifically a {@link PSet}, but as with
  * any sorted set, a PSortedSet will only obey the general contract of those interfaces if its
@@ -49,10 +52,9 @@ import java.util.NoSuchElementException;
  *       ordering of its elements". This library's implementations never return null from that
  *       method; instead, when the set uses the natural ordering, the method returns a Comparator
  *       instance that implements the natural ordering. (This is because this library avoids null in
- *       general; a PSet does not allow null elements. This is also the behavior of Guava's
- *       ImmutableSortedSet, which also rejects null elements.) Other implementations of PSortedSet
- *       are encouraged to consider doing the same, and to document their behavior in this case
- *       (whether or not it's to return null).
+ *       general. This is also the behavior of Guava's ImmutableSortedSet, which also rejects null
+ *       elements.) Other implementations of PSortedSet are encouraged to consider doing the same,
+ *       and to document their behavior in this case (whether or not it's to return null).
  *   <li>pollFirst() and pollLast() are specified by NavigableSet to mutate this set, and are not
  *       specified to be optional operations. That's obviously not an option for a PSet, so
  *       PSortedSet provides default implementations of these methods that simply throw
@@ -93,7 +95,6 @@ public interface PSortedSet<E> extends PSet<E>, NavigableSet<E> {
   /**
    * @param e
    * @return This set, except with e removed (if e is an element of this set).
-   * @throws NullPointerException if e is null
    * @throws ClassCastException if the type of e is incompatible with this set (optional)
    * @throws IllegalArgumentException if e is incompatible with this set (optional)
    */

@@ -22,6 +22,8 @@ import static java.util.Objects.requireNonNull;
 /**
  * An implementation of {@link PSortedSet} based on a self-balancing binary search tree.
  *
+ * <p>Null values are not allowed.
+ *
  * <p>Instances of this class are obtained via any of various static factory methods and static
  * collector methods. These methods come in pairs, with one version that accepts an explicit
  * comparator to use and one version that uses the natural ordering of the elements.

@@ -33,7 +33,7 @@ public interface PSequence<E> extends PCollection<E>, List<E> {
 
   /**
    * @param i
-   * @param e non-null
+   * @param e
    * @return a sequence consisting of the elements of this with e inserted at index i.
    * @throws IndexOutOfBOundsException if i&lt;0 || i&gt;this.size()
    */

@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * A persistent map from non-null keys to non-null values.
+ * A persistent map from keys to values. Keys and values can be null.
  *
  * <p>This map uses a given integer map to map hashcodes to lists of elements with the same
  * hashcode. Thus if all elements have the same hashcode, performance is reduced to that of an

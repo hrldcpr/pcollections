@@ -90,7 +90,7 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
    * @param <V> the type of mapped values
    * @param map the mappings to include
    * @return a TreePMap containing the specified mappings and using the natural ordering of the keys
-   * @throws NullPointerException if the map is null or contains a null key or value
+   * @throws NullPointerException if the map is null or contains a null key
    */
   public static <K extends Comparable<? super K>, V> TreePMap<K, V> from(
       final Map<? extends K, ? extends V> map) {
@@ -105,8 +105,7 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
    * @param comparator the comparator to use
    * @param map the mappings to include
    * @return a TreePMap with the specified comparator and mappings
-   * @throws NullPointerException if the comparator or map is null or the map contains a null key or
-   *     value
+   * @throws NullPointerException if the comparator or map is null or the map contains a null key
    */
   public static <K, V> TreePMap<K, V> from(
       final Comparator<? super K> comparator, final Map<? extends K, ? extends V> map) {
@@ -122,7 +121,7 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
    * @param <V> the type of mapped values
    * @param map the map whose mappings and ordering to use
    * @return a TreePMap with the same mappings and ordering as the specified set
-   * @throws NullPointerException if the specified map is null or contains a null key or value
+   * @throws NullPointerException if the specified map is null or contains a null key
    */
   public static <K, V> TreePMap<K, V> fromSortedMap(final SortedMap<K, ? extends V> map) {
     requireNonNull(map, "map is null");
@@ -133,7 +132,7 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
 
     final KVTree<K, V> tree = KVTree.fromEntryIterator(map.entrySet().iterator());
 
-    // check for null keys and values:
+    // check for null keys
     {
       final Iterator<? extends Map.Entry<K, V>> treeIterator = tree.entryIterator(true);
       while (treeIterator.hasNext()) {
@@ -173,7 +172,7 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
    * @param key the key
    * @param value the value
    * @return a TreePMap containing the specified mapping and using the specified comparator
-   * @throws NullPointerException if the specified comparator, key, or value is null
+   * @throws NullPointerException if the specified comparator or key is null
    */
   public static <K, V> TreePMap<K, V> singleton(
       final Comparator<? super K> comparator, final K key, final V value) {
@@ -275,8 +274,6 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
 
     final BiConsumer<TreeMap<K, V>, T> accumulator =
         (treeMap, element) -> {
-          requireNonNull(element, "stream element is null");
-
           final K key = requireNonNull(keyMapper.apply(element), "key is null");
           final V value = requireNonNull(valueMapper.apply(element), "value is null");
 

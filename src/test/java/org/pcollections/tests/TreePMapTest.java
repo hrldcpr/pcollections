@@ -350,7 +350,7 @@ public class TreePMapTest extends TestCase {
       assertThrows(NullPointerException.class, () -> TreePMap.fromSortedMap(containsNullKey));
     }
 
-    // if SortedMap contains null value, complain:
+    // if SortedMap contains null value, it should work
     {
       final TreeMap<Integer, String> containsNullValue = new TreeMap<>(STRING_ORDER_COMPARATOR);
       containsNullValue.put(RANDOM.nextInt(), randomString());
