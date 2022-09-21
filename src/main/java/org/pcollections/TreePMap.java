@@ -325,7 +325,8 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
 
   @Override
   public boolean containsKey(final Object key) {
-    return this.get(key) != null;
+    return this.search(sneakilyDowncast(key), KVTree.SearchType.EQ, KVTree.SearchType.EQ)
+        != KVTree.empty();
   }
 
   @Override
@@ -484,11 +485,7 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
 
   @Override
   public TreePMap<K, V> plus(final K key, final V value) {
-
-    return this.withTree(this.tree.plus(
-        requireNonNull(key, "key is null"),
-        requireNonNull(value, "value is null"),
-        this.ltrComparator));
+    return this.withTree(this.tree.plus(requireNonNull(key), value, this.ltrComparator));
   }
 
   @Override
@@ -500,7 +497,7 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
     for (final Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
       updatedTree = updatedTree.plus(
           requireNonNull(entry.getKey(), "map contains null key"),
-          requireNonNull(entry.getValue(), "map contains null value"),
+          entry.getValue(),
           this.ltrComparator);
     }
 
