@@ -6,6 +6,8 @@
 
 package org.pcollections.tests;
 
+import static org.pcollections.tests.util.CollectionHelpers.assertSetSemantics;
+import static org.pcollections.tests.util.CollectionHelpers.collectionElementCases;
 import static org.pcollections.tests.util.UnmodifiableAssertions.assertSetMutatorsThrow;
 
 import java.io.ByteArrayInputStream;
@@ -25,9 +27,14 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Stream;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.pcollections.TreePSet;
+import org.pcollections.tests.util.CollectionHelpers;
 import org.pcollections.tests.util.CompareInconsistentWithEquals;
 import org.pcollections.tests.util.StringOrderComparator;
 
@@ -1003,4 +1010,11 @@ public class TreePSetTest extends TestCase {
   public void testUnmodifiable() {
     assertSetMutatorsThrow(TreePSet.singleton("value1"), "value2");
   }
+
+  @ParameterizedTest
+  @MethodSource("org.pcollections.tests.util.CollectionHelpers#collectionElementPairCases")
+  public void treePSet_hasSetSemantics(List<String> left, List<String> right) {
+    assertSetSemantics(TreePSet.from(left), right);
+  }
+
 }
