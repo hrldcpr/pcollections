@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Like {@link PSet} but preserves insertion order. Persistent equivalent of {@link LinkedHashSet}.
  *
@@ -46,8 +48,8 @@ public class OrderedPSet<E> extends AbstractUnmodifiableSet<E> implements PSet<E
   private final PSortedMap<Long, E> elements;
 
   private OrderedPSet(final PMap<E, Long> ids, final PSortedMap<Long, E> elements) {
-    this.ids = ids;
-    this.elements = elements;
+    this.ids = requireNonNull(ids, "ids is null");
+    this.elements = requireNonNull(elements, "elements is null");
   }
 
   @Override
