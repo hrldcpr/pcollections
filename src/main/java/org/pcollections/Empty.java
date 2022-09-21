@@ -39,6 +39,10 @@ public final class Empty {
     return HashTreePSet.empty();
   }
 
+  public static <K, V> PMap<K, V> orderedMap() {
+    return OrderedPMap.empty();
+  }
+
   public static <E> PSet<E> orderedSet() {
     return OrderedPSet.empty();
   }

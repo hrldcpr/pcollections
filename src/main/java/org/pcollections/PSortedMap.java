@@ -19,6 +19,9 @@ import java.util.NoSuchElementException;
  * least key greater than some instance of type K, or the sub-map with keys between two instances of
  * type K).
  *
+ * <p>(Note: this is different from {@link OrderedPMap}, which keeps entries in the order that they
+ * were added to the map.)
+ *
  * <p>Every PSortedMap is a {@link java.util.Map} and more specifically a {@link PMap}, but as with
  * any sorted map, a PSortedMap will only obey the general contract of those interfaces if its
  * comparator is consistent with equals. (See {@link java.util.SortedMap} for more information.)
