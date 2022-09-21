@@ -13,6 +13,8 @@ import junit.framework.TestCase;
 import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 
+import static java.util.Arrays.asList;
+
 public class TreePVectorTest extends TestCase {
 
   /** Compares the behavior of java.util.LinkedList to the behavior of TreePVector. */
@@ -108,5 +110,22 @@ public class TreePVectorTest extends TestCase {
 
     PVector<Integer> u = v.subList(9000, 11000);
     assertEquals(u.size(), 11000 - 9000);
+  }
+
+  public void testNullValues() {
+    assertEquals(
+        TreePVector.from(asList(
+            "1",
+            null,
+            "3",
+            null,
+            "5")),
+        TreePVector.empty()
+            .plus("1")
+            .plus(null)
+            .plus("3")
+            .plus(null)
+            .plus("5"));
+
   }
 }

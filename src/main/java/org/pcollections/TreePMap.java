@@ -139,7 +139,6 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
       while (treeIterator.hasNext()) {
         final Map.Entry<K, V> entry = treeIterator.next();
         requireNonNull(entry.getKey(), "map contains null key");
-        requireNonNull(entry.getValue(), "map contains null value");
       }
     }
 
