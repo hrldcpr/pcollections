@@ -53,9 +53,8 @@ import java.util.NoSuchElementException;
  *   <li>comparator() is specified by SortedMap to return "null if this map uses the natural
  *       ordering of its elements". This library's implementations never return null from that
  *       method; instead, when the map uses the natural ordering, the method returns a Comparator
- *       instance that implements the natural ordering. (This is also the behavior of Guava's ImmutableSortedMap, which also rejects
- *       null keys and values.) Other implementations of PSortedMap are encouraged to consider doing the same,
- *       and to document their behavior in this case (whether or not it's to return null).
+ *       instance that implements the natural ordering. (This is also the behavior of Guava's ImmutableSortedMap.) Other implementations of PSortedMap are encouraged to consider doing the same,
+ *       and to document their behavior in this case.
  *   <li>pollFirstEntry() and pollLastEntry() are specified by NavigableMap to mutate this map, and
  *       are not specified to be optional operations. That's obviously not an option for a PMap, so
  *       PSortedMap provides default implementations of these methods that simply throw
