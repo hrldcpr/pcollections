@@ -51,10 +51,8 @@ import java.util.NoSuchElementException;
  *   <li>comparator() is specified by SortedSet to return "null if this set uses the natural
  *       ordering of its elements". This library's implementations never return null from that
  *       method; instead, when the set uses the natural ordering, the method returns a Comparator
- *       instance that implements the natural ordering. (This is because this library avoids null in
- *       general. This is also the behavior of Guava's ImmutableSortedSet, which also rejects null
- *       elements.) Other implementations of PSortedSet are encouraged to consider doing the same,
- *       and to document their behavior in this case (whether or not it's to return null).
+ *       instance that implements the natural ordering. (This is also the behavior of Guava's ImmutableSortedSet.) Other implementations of PSortedSet are encouraged to consider doing the same,
+ *       and to document their behavior in this case.
  *   <li>pollFirst() and pollLast() are specified by NavigableSet to mutate this set, and are not
  *       specified to be optional operations. That's obviously not an option for a PSet, so
  *       PSortedSet provides default implementations of these methods that simply throw
