@@ -12,7 +12,7 @@ import java.util.NavigableSet;
 import java.util.NoSuchElementException;
 
 /**
- * An immutable, persistent set of distinct, elements, with elements arranged in sorted
+ * An immutable, persistent set of distinct elements, with elements arranged in sorted
  * order (according to some {@link java.util.Comparator}), and with various methods to obtain
  * specific elements or ranges of elements based on this ordering (such as the least element greater
  * than some value, or the set of elements between two values).
