@@ -8,20 +8,20 @@ package org.pcollections.tests;
 
 import static java.util.stream.Collectors.toList;
 import static org.pcollections.tests.util.CollectionHelpers.assertSetSemantics;
+import static org.pcollections.tests.util.NullCheckAssertions.assertSetAllowsNullElements;
+import static org.pcollections.tests.util.NullCheckAssertions.assertSetForbidsNullCollections;
 import static org.pcollections.tests.util.UnmodifiableAssertions.assertSetMutatorsThrow;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 import junit.framework.TestCase;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.pcollections.Empty;
 import org.pcollections.OrderedPSet;
 import org.pcollections.PSet;
-import org.pcollections.TreePSet;
 
 public class OrderedPSetTest extends TestCase {
 
@@ -77,6 +77,11 @@ public class OrderedPSetTest extends TestCase {
 
   public void testUnmodifiable() {
     assertSetMutatorsThrow(OrderedPSet.singleton("value1"), "value2");
+  }
+
+  public void testChecksForNull() {
+    assertSetForbidsNullCollections(OrderedPSet.singleton("value1"), "value2");
+    assertSetAllowsNullElements(OrderedPSet.singleton("value1"), "value2");
   }
 
   @ParameterizedTest

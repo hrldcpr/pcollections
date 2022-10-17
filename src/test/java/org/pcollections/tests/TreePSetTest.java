@@ -7,7 +7,9 @@
 package org.pcollections.tests;
 
 import static org.pcollections.tests.util.CollectionHelpers.assertSetSemantics;
-import static org.pcollections.tests.util.CollectionHelpers.collectionElementCases;
+import static org.pcollections.tests.util.NullCheckAssertions.assertSetAllowsNullElements;
+import static org.pcollections.tests.util.NullCheckAssertions.assertSetForbidsNullCollections;
+import static org.pcollections.tests.util.NullCheckAssertions.assertSetForbidsNullElements;
 import static org.pcollections.tests.util.UnmodifiableAssertions.assertSetMutatorsThrow;
 
 import java.io.ByteArrayInputStream;
@@ -27,14 +29,12 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.stream.Stream;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.pcollections.HashTreePSet;
 import org.pcollections.TreePSet;
-import org.pcollections.tests.util.CollectionHelpers;
 import org.pcollections.tests.util.CompareInconsistentWithEquals;
 import org.pcollections.tests.util.StringOrderComparator;
 
@@ -1008,7 +1008,24 @@ public class TreePSetTest extends TestCase {
   }
 
   public void testUnmodifiable() {
+    assertSetMutatorsThrow(TreePSet.empty(), "value");
     assertSetMutatorsThrow(TreePSet.singleton("value1"), "value2");
+    assertSetMutatorsThrow(HashTreePSet.empty(), "value");
+    assertSetMutatorsThrow(HashTreePSet.singleton("value1"), "value2");
+  }
+
+  public void testChecksForNull() {
+    assertSetForbidsNullCollections(TreePSet.empty(), "value");
+    assertSetForbidsNullElements(TreePSet.empty(), "value");
+
+    assertSetForbidsNullCollections(TreePSet.singleton("value1"), "value2");
+    assertSetForbidsNullElements(TreePSet.singleton("value1"), "value2");
+
+    assertSetForbidsNullCollections(HashTreePSet.empty(), "value");
+    assertSetAllowsNullElements(HashTreePSet.empty(), "value");
+
+    assertSetForbidsNullCollections(HashTreePSet.singleton("value1"), "value2");
+    assertSetAllowsNullElements(HashTreePSet.singleton("value1"), "value2");
   }
 
   @ParameterizedTest

@@ -12,6 +12,8 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * A simple persistent stack of non-null values.
  *
@@ -80,8 +82,8 @@ public final class ConsPStack<E> extends AbstractUnmodifiableSequentialList<E>
   }
 
   private ConsPStack(final E first, final ConsPStack<E> rest) {
-    this.first = first;
-    this.rest = rest;
+    this.first = requireNonNull(first, "first is null");
+    this.rest = requireNonNull(rest, "rest is null");
 
     size = 1 + rest.size;
   }

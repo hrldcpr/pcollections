@@ -6,6 +6,10 @@
 
 package org.pcollections.tests;
 
+import static org.pcollections.tests.util.NullCheckAssertions.assertMapAllowsNullKeys;
+import static org.pcollections.tests.util.NullCheckAssertions.assertMapAllowsNullValues;
+import static org.pcollections.tests.util.NullCheckAssertions.assertMapForbidsNullCollections;
+import static org.pcollections.tests.util.NullCheckAssertions.assertMapForbidsNullKeys;
 import static org.pcollections.tests.util.UnmodifiableAssertions.assertMapMutatorsThrow;
 
 import java.util.HashMap;
@@ -95,6 +99,18 @@ public class HashPMapTest extends TestCase {
   }
 
   public void testUnmodifiable() {
+    assertMapMutatorsThrow(HashTreePMap.empty(), "key1", "value1");
     assertMapMutatorsThrow(HashTreePMap.singleton("key1", "value1"), "key2", "value2");
   }
+
+  public void testChecksForNull() {
+    assertMapForbidsNullCollections(HashTreePMap.empty(), "key1", "value1");
+    assertMapAllowsNullKeys(HashTreePMap.empty(), "key1", "value1");
+    assertMapAllowsNullValues(HashTreePMap.empty(), "key1", "value1");
+
+    assertMapForbidsNullCollections(HashTreePMap.singleton("key1", "value1"), "key2", "value2");
+    assertMapAllowsNullKeys(HashTreePMap.singleton("key1", "value1"), "key2", "value2");
+    assertMapAllowsNullValues(HashTreePMap.singleton("key1", "value1"), "key2", "value2");
+  }
+
 }

@@ -13,8 +13,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import static java.util.Objects.requireNonNull;
+
 /**
- * An efficient persistent map from integer keys to non-null values.
+ * An efficient persistent map from integer keys to values.
+ * Null values are supported.
  *
  * <p>Iteration occurs in the integer order of the keys.
  *
@@ -78,7 +81,7 @@ public final class IntTreePMap<V> extends AbstractUnmodifiableMap<Integer, V>
   private final IntTree<V> root;
   // not externally instantiable (or subclassable):
   private IntTreePMap(final IntTree<V> root) {
-    this.root = root;
+    this.root = requireNonNull(root, "root is null");
   }
 
   private IntTreePMap<V> withRoot(final IntTree<V> root) {
@@ -146,8 +149,11 @@ public final class IntTreePMap<V> extends AbstractUnmodifiableMap<Integer, V>
 
   @Override
   public boolean containsKey(final Object key) {
-    if (!(key instanceof Integer)) return false;
-    return root.containsKey((Integer) key);
+    if (requireNonNull(key) instanceof Integer) {
+      return root.containsKey((Integer)key);
+    } else {
+      return false;
+    }
   }
 
   @Override
@@ -162,7 +168,7 @@ public final class IntTreePMap<V> extends AbstractUnmodifiableMap<Integer, V>
   }
 
   public IntTreePMap<V> minus(final Object key) {
-    if (!(key instanceof Integer)) return this;
+    if (!(requireNonNull(key, "key is null") instanceof Integer)) return this;
     return withRoot(root.minus((Integer) key));
   }
 
@@ -175,7 +181,11 @@ public final class IntTreePMap<V> extends AbstractUnmodifiableMap<Integer, V>
 
   public IntTreePMap<V> minusAll(final Collection<?> keys) {
     IntTree<V> root = this.root;
-    for (Object key : keys) if (key instanceof Integer) root = root.minus((Integer) key);
+    for (Object key : keys) {
+      if (requireNonNull(key, "key is null") instanceof Integer) {
+        root = root.minus((Integer) key);
+      }
+    }
     return withRoot(root);
   }
 }

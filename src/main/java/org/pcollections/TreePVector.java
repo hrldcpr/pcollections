@@ -12,13 +12,15 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 /**
- * A persistent vector of non-null elements.
+ * A persistent vector of elements.
  *
  * <p>This implementation is backed by an IntTreePMap and supports logarithmic-time querying,
  * setting, insertion, and removal.
  *
  * <p>This implementation is thread-safe (assuming Java's AbstractList is thread-safe) although its
  * iterators may not be.
+ *
+ * <p>Null values are supported.
  *
  * @author harold
  * @param <E>

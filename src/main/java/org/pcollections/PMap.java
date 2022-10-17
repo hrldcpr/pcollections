@@ -10,7 +10,11 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * An immutable, persistent map from non-null keys of type K to non-null values of type V.
+ * An immutable, persistent map from keys of type K to values of type V.
+ *
+ * <p>Some implementations may not support null keys and/or values, in which case
+ * they will throw {@link NullPointerException} for attempts to add such
+ * keys/values.
  *
  * @author harold
  * @param <K>
@@ -18,8 +22,8 @@ import java.util.Map;
  */
 public interface PMap<K, V> extends Map<K, V> {
   /**
-   * @param key non-null
-   * @param value non-null
+   * @param key
+   * @param value
    * @return a map with the mappings of this but with key mapped to value
    */
   public PMap<K, V> plus(K key, V value);

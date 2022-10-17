@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2008 Harold Cooper. All rights reserved.
  * Licensed under the MIT License.
@@ -17,7 +18,7 @@ import java.util.NoSuchElementException;
  *
  * <p>To allow for efficiently increasing all keys above a certain value or decreasing all keys
  * below a certain value, the keys values are stored relative to their parent. This makes this map a
- * good backing for fast insertion and removal of indices in a vector.
+ * good backing for fast insertion and removal of indices in a vector. Null values are supported.
  *
  * <p>This implementation is thread-safe except for its iterators.
  *
@@ -45,7 +46,7 @@ class IntTree<V> implements Serializable {
   // then its relative key is MAXINT+10 which overflows)
   // there might be some way to deal with this based on left-verse-right logic,
   // but that sounds like a mess.
-  private final V value; // null value means this is empty node
+  private final V value;
   private final IntTree<V> left, right;
   private final int size;
 

@@ -6,6 +6,9 @@
 
 package org.pcollections.tests;
 
+import static org.pcollections.tests.util.NullCheckAssertions.assertMapAllowsNullValues;
+import static org.pcollections.tests.util.NullCheckAssertions.assertMapForbidsNullCollections;
+import static org.pcollections.tests.util.NullCheckAssertions.assertMapForbidsNullKeys;
 import static org.pcollections.tests.util.UnmodifiableAssertions.assertMapMutatorsThrow;
 
 import java.io.ByteArrayInputStream;
@@ -275,8 +278,8 @@ public class TreePMapTest extends TestCase {
 
     assertThrows(
         NullPointerException.class, () -> TreePMap.from(Collections.singletonMap(null, "foo")));
-    assertThrows(
-        NullPointerException.class, () -> TreePMap.from(Collections.singletonMap("foo", null)));
+
+    assertEquals(TreePMap.singleton("foo", null), TreePMap.from(Collections.singletonMap("foo", null)));
 
     // the overload that does take an explicit comparator:
 
@@ -300,9 +303,8 @@ public class TreePMapTest extends TestCase {
         NullPointerException.class,
         () -> TreePMap.from(STRING_ORDER_COMPARATOR, Collections.singletonMap(null, "foo")));
 
-    assertThrows(
-        NullPointerException.class,
-        () -> TreePMap.from(STRING_ORDER_COMPARATOR, Collections.singletonMap("foo", null)));
+    assertEquals(TreePMap.singleton("foo", null),
+        TreePMap.from(STRING_ORDER_COMPARATOR, Collections.singletonMap("foo", null)));
   }
 
   public void testFromSortedMap() {
@@ -348,13 +350,13 @@ public class TreePMapTest extends TestCase {
       assertThrows(NullPointerException.class, () -> TreePMap.fromSortedMap(containsNullKey));
     }
 
-    // if SortedMap contains null value, complain:
+    // if SortedMap contains null value, it should work
     {
       final TreeMap<Integer, String> containsNullValue = new TreeMap<>(STRING_ORDER_COMPARATOR);
       containsNullValue.put(RANDOM.nextInt(), randomString());
       containsNullValue.put(RANDOM.nextInt(), null);
 
-      assertThrows(NullPointerException.class, () -> TreePMap.fromSortedMap(containsNullValue));
+      assertEquals(containsNullValue, TreePMap.fromSortedMap(containsNullValue));
     }
   }
 
@@ -636,10 +638,6 @@ public class TreePMapTest extends TestCase {
           expected.put(key, originalValue);
         }
       }
-
-      assertThrows(NullPointerException.class, () -> actual.plus(null, "foo"));
-      assertThrows(NullPointerException.class, () -> actual.plus(0, null));
-      assertThrows(NullPointerException.class, () -> actual.minus(null));
     }
   }
 
@@ -682,8 +680,8 @@ public class TreePMapTest extends TestCase {
     assertThrows(NullPointerException.class, () -> EMPTY.plusAll(null));
     assertThrows(
         NullPointerException.class, () -> EMPTY.plusAll(Collections.singletonMap(null, "foo")));
-    assertThrows(
-        NullPointerException.class, () -> EMPTY.plusAll(Collections.singletonMap(3, null)));
+    assertEquals(TreePMap.singleton(3, null),
+        EMPTY.plusAll(Collections.singletonMap(3, null)));
   }
 
   /**
@@ -847,7 +845,7 @@ public class TreePMapTest extends TestCase {
         new TreeMap<>(Collections.singletonMap(3, "foo")), TreePMap.singleton(3, "foo"));
 
     assertThrows(NullPointerException.class, () -> TreePMap.singleton(null, "foo"));
-    assertThrows(NullPointerException.class, () -> TreePMap.singleton(3, null));
+    assertEquals(EMPTY.plus(3, null), TreePMap.singleton(3, null));
 
     // the overload that does take an explicit comparator:
 
@@ -862,8 +860,8 @@ public class TreePMapTest extends TestCase {
 
     assertThrows(
         NullPointerException.class, () -> TreePMap.singleton(STRING_ORDER_COMPARATOR, null, "foo"));
-    assertThrows(
-        NullPointerException.class, () -> TreePMap.singleton(STRING_ORDER_COMPARATOR, "foo", null));
+    assertEquals(TreePMap.<String,String>empty().plus("foo", null),
+        TreePMap.singleton(STRING_ORDER_COMPARATOR, "foo", null));
   }
 
   public void testSize() {
@@ -1284,6 +1282,17 @@ public class TreePMapTest extends TestCase {
   }
 
   public void testUnmodifiable() {
+    assertMapMutatorsThrow(TreePMap.empty(), "key", "value");
     assertMapMutatorsThrow(TreePMap.singleton("key1", "value1"), "key2", "value2");
+  }
+
+  public void testChecksForNull() {
+    assertMapForbidsNullCollections(TreePMap.empty(), "key", "value");
+    assertMapForbidsNullKeys(TreePMap.empty(), "key", "value");
+    assertMapAllowsNullValues(TreePMap.empty(), "key", "value");
+
+    assertMapForbidsNullCollections(TreePMap.singleton("key1", "value1"), "key2", "value2");
+    assertMapForbidsNullKeys(TreePMap.singleton("key1", "value1"), "key2", "value2");
+    assertMapAllowsNullValues(TreePMap.singleton("key1", "value1"), "key2", "value2");
   }
 }

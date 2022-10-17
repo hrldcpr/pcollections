@@ -21,6 +21,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * An implementation of {@link PSortedMap} based on a self-balancing binary search tree.
  *
@@ -51,11 +53,9 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
       final KVTree<K, V> tree,
       final Comparator<? super K> ltrComparator,
       final boolean isLeftToRight) {
-    complainIfNull(tree, "tree is null");
-    complainIfNull(ltrComparator, "comparator is null");
 
-    this.tree = tree;
-    this.ltrComparator = ltrComparator;
+    this.tree = requireNonNull(tree, "tree is null");
+    this.ltrComparator = requireNonNull(ltrComparator, "comparator is null");
     this.isLeftToRight = isLeftToRight;
   }
 
@@ -90,7 +90,7 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
    * @param <V> the type of mapped values
    * @param map the mappings to include
    * @return a TreePMap containing the specified mappings and using the natural ordering of the keys
-   * @throws NullPointerException if the map is null or contains a null key or value
+   * @throws NullPointerException if the map is null or contains a null key
    */
   public static <K extends Comparable<? super K>, V> TreePMap<K, V> from(
       final Map<? extends K, ? extends V> map) {
@@ -105,8 +105,7 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
    * @param comparator the comparator to use
    * @param map the mappings to include
    * @return a TreePMap with the specified comparator and mappings
-   * @throws NullPointerException if the comparator or map is null or the map contains a null key or
-   *     value
+   * @throws NullPointerException if the comparator or map is null or the map contains a null key
    */
   public static <K, V> TreePMap<K, V> from(
       final Comparator<? super K> comparator, final Map<? extends K, ? extends V> map) {
@@ -122,10 +121,10 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
    * @param <V> the type of mapped values
    * @param map the map whose mappings and ordering to use
    * @return a TreePMap with the same mappings and ordering as the specified set
-   * @throws NullPointerException if the specified map is null or contains a null key or value
+   * @throws NullPointerException if the specified map is null or contains a null key
    */
   public static <K, V> TreePMap<K, V> fromSortedMap(final SortedMap<K, ? extends V> map) {
-    complainIfNull(map, "map is null");
+    requireNonNull(map, "map is null");
 
     if (map instanceof TreePMap<?, ?>) {
       return sneakilyDowncast(map);
@@ -133,13 +132,12 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
 
     final KVTree<K, V> tree = KVTree.fromEntryIterator(map.entrySet().iterator());
 
-    // check for null keys and values:
+    // check for null keys
     {
       final Iterator<? extends Map.Entry<K, V>> treeIterator = tree.entryIterator(true);
       while (treeIterator.hasNext()) {
         final Map.Entry<K, V> entry = treeIterator.next();
-        complainIfNull(entry.getKey(), "map contains null key");
-        complainIfNull(entry.getValue(), "map contains null value");
+        requireNonNull(entry.getKey(), "map contains null key");
       }
     }
 
@@ -174,7 +172,7 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
    * @param key the key
    * @param value the value
    * @return a TreePMap containing the specified mapping and using the specified comparator
-   * @throws NullPointerException if the specified comparator, key, or value is null
+   * @throws NullPointerException if the specified comparator or key is null
    */
   public static <K, V> TreePMap<K, V> singleton(
       final Comparator<? super K> comparator, final K key, final V value) {
@@ -267,22 +265,17 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
       final Function<? super T, ? extends K> keyMapper,
       final Function<? super T, ? extends V> valueMapper,
       final BinaryOperator<V> mergeFunction) {
-    complainIfNull(comparator, "comparator is null");
-    complainIfNull(keyMapper, "keyMapper is null");
-    complainIfNull(valueMapper, "valueMapper is null");
-    complainIfNull(mergeFunction, "mergeFunction is null");
+    requireNonNull(comparator, "comparator is null");
+    requireNonNull(keyMapper, "keyMapper is null");
+    requireNonNull(valueMapper, "valueMapper is null");
+    requireNonNull(mergeFunction, "mergeFunction is null");
 
     final Supplier<TreeMap<K, V>> treeMapSupplier = () -> new TreeMap<K, V>(comparator);
 
     final BiConsumer<TreeMap<K, V>, T> accumulator =
         (treeMap, element) -> {
-          complainIfNull(element, "stream element is null");
-
-          final K key = keyMapper.apply(element);
-          final V value = valueMapper.apply(element);
-
-          complainIfNull(key, "key is null");
-          complainIfNull(value, "value is null");
+          final K key = requireNonNull(keyMapper.apply(element), "key is null");
+          final V value = requireNonNull(valueMapper.apply(element), "value is null");
 
           final V oldValue = treeMap.putIfAbsent(key, value);
 
@@ -329,7 +322,8 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
 
   @Override
   public boolean containsKey(final Object key) {
-    return this.get(key) != null;
+    return this.search(sneakilyDowncast(key), KVTree.SearchType.EQ, KVTree.SearchType.EQ)
+        != KVTree.empty();
   }
 
   @Override
@@ -401,7 +395,7 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
 
   @Override
   public TreePMap<K, V> headMap(final K toKey, final boolean inclusive) {
-    complainIfNull(toKey, "toKey is null");
+    requireNonNull(toKey, "toKey is null");
 
     if (this.isLeftToRight) {
       return this.withTree(this.tree.rangeToLeft(toKey, inclusive, this.ltrComparator));
@@ -453,20 +447,18 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
 
   @Override
   public TreePMap<K, V> minus(final Object key) {
-    complainIfNull(key, "key is null");
-
-    return this.withTree(this.tree.minus(sneakilyDowncast(key), this.ltrComparator));
+    return this.withTree(this.tree.minus(
+        sneakilyDowncast(requireNonNull(key, "key is null")),
+        this.ltrComparator));
   }
 
   @Override
   public TreePMap<K, V> minusAll(final Collection<?> keys) {
-    complainIfNull(keys, "keys is null");
-
     KVTree<K, V> updatedTree = this.tree;
-    for (final Object key : keys) {
-      complainIfNull(key, "keys contains null element");
-
-      updatedTree = updatedTree.minus(sneakilyDowncast(key), this.ltrComparator);
+    for (final Object key : requireNonNull(keys, "keys is null")) {
+      updatedTree = updatedTree.minus(
+          sneakilyDowncast(requireNonNull(key, "keys contains null element")),
+          this.ltrComparator);
     }
     return this.withTree(updatedTree);
   }
@@ -490,26 +482,20 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
 
   @Override
   public TreePMap<K, V> plus(final K key, final V value) {
-    complainIfNull(key, "key is null");
-    complainIfNull(value, "value is null");
-
-    return this.withTree(this.tree.plus(key, value, this.ltrComparator));
+    return this.withTree(this.tree.plus(requireNonNull(key), value, this.ltrComparator));
   }
 
   @Override
   public TreePMap<K, V> plusAll(final Map<? extends K, ? extends V> map) {
-    complainIfNull(map, "map is null");
+    requireNonNull(map, "map is null");
 
     KVTree<K, V> updatedTree = this.tree;
 
     for (final Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
-      final K key = entry.getKey();
-      final V value = entry.getValue();
-
-      complainIfNull(key, "map contains null key");
-      complainIfNull(value, "map contains null value");
-
-      updatedTree = updatedTree.plus(key, value, this.ltrComparator);
+      updatedTree = updatedTree.plus(
+          requireNonNull(entry.getKey(), "map contains null key"),
+          entry.getValue(),
+          this.ltrComparator);
     }
 
     return this.withTree(updatedTree);
@@ -528,8 +514,8 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
   @Override
   public TreePMap<K, V> subMap(
       final K fromKey, final boolean fromInclusive, final K toKey, final boolean toInclusive) {
-    complainIfNull(fromKey, "fromKey is null");
-    complainIfNull(toKey, "toKey is null");
+    requireNonNull(fromKey, "fromKey is null");
+    requireNonNull(toKey, "toKey is null");
 
     if (this.comparator().compare(fromKey, toKey) > 0) {
       throw new IllegalArgumentException("fromKey > toKey");
@@ -551,7 +537,7 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
 
   @Override
   public TreePMap<K, V> tailMap(final K fromKey, final boolean inclusive) {
-    complainIfNull(fromKey, "fromKey is null");
+    requireNonNull(fromKey, "fromKey is null");
 
     if (this.isLeftToRight) {
       return this.withTree(this.tree.rangeToRight(fromKey, inclusive, this.ltrComparator));
@@ -564,10 +550,9 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
       final K key,
       final KVTree.SearchType searchTypeIfLeftToRight,
       final KVTree.SearchType searchTypeIfRightToLeft) {
-    complainIfNull(key, "key is null");
 
     return this.tree.search(
-        key,
+        requireNonNull(key, "key is null"),
         this.ltrComparator,
         this.isLeftToRight ? searchTypeIfLeftToRight : searchTypeIfRightToLeft);
   }
@@ -576,12 +561,6 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
     return updatedTree == this.tree
         ? this
         : new TreePMap<K, V>(updatedTree, this.ltrComparator, this.isLeftToRight);
-  }
-
-  private static void complainIfNull(final Object o, final String msg) {
-    if (o == null) {
-      throw new NullPointerException(msg);
-    }
   }
 
   // we put this in its own method, to limit the scope of the @SuppressWarnings:

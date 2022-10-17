@@ -9,7 +9,7 @@ package org.pcollections;
 import java.util.Collection;
 
 /**
- * An immutable, persistent collection of non-null elements of type E.
+ * An immutable, persistent collection of elements of type E.
  *
  * @author harold
  * @param <E>
@@ -17,13 +17,13 @@ import java.util.Collection;
 public interface PCollection<E> extends Collection<E> {
 
   /**
-   * @param e non-null
+   * @param e
    * @return a collection which contains e and all of the elements of this
    */
   public PCollection<E> plus(E e);
 
   /**
-   * @param list contains no null elements
+   * @param list
    * @return a collection which contains all of the elements of list and this
    */
   public PCollection<E> plusAll(Collection<? extends E> list);
