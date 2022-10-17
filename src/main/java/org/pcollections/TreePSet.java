@@ -6,6 +6,8 @@
 
 package org.pcollections;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,8 +18,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * An implementation of {@link PSortedSet} based on a self-balancing binary search tree.
@@ -312,9 +312,9 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
 
   @Override
   public TreePSet<E> minus(final Object e) {
-    return this.withTree(this.tree.minus(
-        sneakilyDowncast(requireNonNull(e, "element is null")),
-        this.ltrComparator));
+    return this.withTree(
+        this.tree.minus(
+            sneakilyDowncast(requireNonNull(e, "element is null")), this.ltrComparator));
   }
 
   @Override
@@ -345,10 +345,8 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
 
   @Override
   public TreePSet<E> plus(final E e) {
-    return this.withTree(this.tree.plus(
-        requireNonNull(e, "element is null"),
-      null,
-      this.ltrComparator));
+    return this.withTree(
+        this.tree.plus(requireNonNull(e, "element is null"), null, this.ltrComparator));
   }
 
   @Override
@@ -356,10 +354,7 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
     KVTree<E, ?> tree = this.tree;
 
     for (final E e : requireNonNull(list, "list is null")) {
-      tree = tree.plus(
-          requireNonNull(e, "list contains null element"),
-        null,
-        this.ltrComparator);
+      tree = tree.plus(requireNonNull(e, "list contains null element"), null, this.ltrComparator);
     }
 
     return this.withTree(tree);

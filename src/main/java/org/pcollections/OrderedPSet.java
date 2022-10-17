@@ -6,12 +6,12 @@
 
 package org.pcollections;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Like {@link PSet} but preserves insertion order. Persistent equivalent of {@link LinkedHashSet}.

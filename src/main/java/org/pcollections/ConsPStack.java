@@ -6,13 +6,13 @@
 
 package org.pcollections;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * A simple persistent stack of non-null values.

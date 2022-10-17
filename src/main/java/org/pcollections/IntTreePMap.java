@@ -6,6 +6,8 @@
 
 package org.pcollections;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.Collection;
@@ -13,11 +15,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import static java.util.Objects.requireNonNull;
-
 /**
- * An efficient persistent map from integer keys to values.
- * Null values are supported.
+ * An efficient persistent map from integer keys to values. Null values are supported.
  *
  * <p>Iteration occurs in the integer order of the keys.
  *
@@ -150,7 +149,7 @@ public final class IntTreePMap<V> extends AbstractUnmodifiableMap<Integer, V>
   @Override
   public boolean containsKey(final Object key) {
     if (requireNonNull(key) instanceof Integer) {
-      return root.containsKey((Integer)key);
+      return root.containsKey((Integer) key);
     } else {
       return false;
     }

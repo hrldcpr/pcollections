@@ -12,9 +12,8 @@ import java.util.Map;
 /**
  * An immutable, persistent map from keys of type K to values of type V.
  *
- * <p>Some implementations may not support null keys and/or values, in which case
- * they will throw {@link NullPointerException} for attempts to add such
- * keys/values.
+ * <p>Some implementations may not support null keys and/or values, in which case they will throw
+ * {@link NullPointerException} for attempts to add such keys/values.
  *
  * @author harold
  * @param <K>

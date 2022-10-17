@@ -6,14 +6,14 @@
 
 package org.pcollections.tests;
 
+import static java.util.Arrays.asList;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import junit.framework.TestCase;
 import org.pcollections.PVector;
 import org.pcollections.TreePVector;
-
-import static java.util.Arrays.asList;
 
 public class TreePVectorTest extends TestCase {
 
@@ -114,18 +114,7 @@ public class TreePVectorTest extends TestCase {
 
   public void testNullValues() {
     assertEquals(
-        TreePVector.from(asList(
-            "1",
-            null,
-            "3",
-            null,
-            "5")),
-        TreePVector.empty()
-            .plus("1")
-            .plus(null)
-            .plus("3")
-            .plus(null)
-            .plus("5"));
-
+        TreePVector.from(asList("1", null, "3", null, "5")),
+        TreePVector.empty().plus("1").plus(null).plus("3").plus(null).plus("5"));
   }
 }

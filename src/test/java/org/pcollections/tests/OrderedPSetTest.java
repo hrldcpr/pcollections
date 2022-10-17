@@ -93,10 +93,7 @@ public class OrderedPSetTest extends TestCase {
   @ParameterizedTest
   @MethodSource("org.pcollections.tests.util.CollectionHelpers#collectionElementPairCases")
   public void intersect_correctOrder(List<String> left, List<String> right) {
-    List<String> expected = left.stream()
-        .distinct()
-        .filter(right::contains)
-        .collect(toList());
+    List<String> expected = left.stream().distinct().filter(right::contains).collect(toList());
     List<String> actual = new ArrayList<>(OrderedPSet.from(left).intersect(right));
     assertEquals(expected, actual);
   }

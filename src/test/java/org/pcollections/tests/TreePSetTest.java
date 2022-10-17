@@ -1033,5 +1033,4 @@ public class TreePSetTest extends TestCase {
   public void treePSet_hasSetSemantics(List<String> left, List<String> right) {
     assertSetSemantics(TreePSet.from(left), right);
   }
-
 }

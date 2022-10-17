@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2008 Harold Cooper. All rights reserved.
  * Licensed under the MIT License.

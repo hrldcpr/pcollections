@@ -6,6 +6,8 @@
 
 package org.pcollections;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Comparator;
@@ -20,8 +22,6 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * An implementation of {@link PSortedMap} based on a self-balancing binary search tree.
@@ -447,18 +447,18 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
 
   @Override
   public TreePMap<K, V> minus(final Object key) {
-    return this.withTree(this.tree.minus(
-        sneakilyDowncast(requireNonNull(key, "key is null")),
-        this.ltrComparator));
+    return this.withTree(
+        this.tree.minus(sneakilyDowncast(requireNonNull(key, "key is null")), this.ltrComparator));
   }
 
   @Override
   public TreePMap<K, V> minusAll(final Collection<?> keys) {
     KVTree<K, V> updatedTree = this.tree;
     for (final Object key : requireNonNull(keys, "keys is null")) {
-      updatedTree = updatedTree.minus(
-          sneakilyDowncast(requireNonNull(key, "keys contains null element")),
-          this.ltrComparator);
+      updatedTree =
+          updatedTree.minus(
+              sneakilyDowncast(requireNonNull(key, "keys contains null element")),
+              this.ltrComparator);
     }
     return this.withTree(updatedTree);
   }
@@ -492,10 +492,11 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
     KVTree<K, V> updatedTree = this.tree;
 
     for (final Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
-      updatedTree = updatedTree.plus(
-          requireNonNull(entry.getKey(), "map contains null key"),
-          entry.getValue(),
-          this.ltrComparator);
+      updatedTree =
+          updatedTree.plus(
+              requireNonNull(entry.getKey(), "map contains null key"),
+              entry.getValue(),
+              this.ltrComparator);
     }
 
     return this.withTree(updatedTree);

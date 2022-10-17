@@ -279,7 +279,8 @@ public class TreePMapTest extends TestCase {
     assertThrows(
         NullPointerException.class, () -> TreePMap.from(Collections.singletonMap(null, "foo")));
 
-    assertEquals(TreePMap.singleton("foo", null), TreePMap.from(Collections.singletonMap("foo", null)));
+    assertEquals(
+        TreePMap.singleton("foo", null), TreePMap.from(Collections.singletonMap("foo", null)));
 
     // the overload that does take an explicit comparator:
 
@@ -303,7 +304,8 @@ public class TreePMapTest extends TestCase {
         NullPointerException.class,
         () -> TreePMap.from(STRING_ORDER_COMPARATOR, Collections.singletonMap(null, "foo")));
 
-    assertEquals(TreePMap.singleton("foo", null),
+    assertEquals(
+        TreePMap.singleton("foo", null),
         TreePMap.from(STRING_ORDER_COMPARATOR, Collections.singletonMap("foo", null)));
   }
 
@@ -680,8 +682,7 @@ public class TreePMapTest extends TestCase {
     assertThrows(NullPointerException.class, () -> EMPTY.plusAll(null));
     assertThrows(
         NullPointerException.class, () -> EMPTY.plusAll(Collections.singletonMap(null, "foo")));
-    assertEquals(TreePMap.singleton(3, null),
-        EMPTY.plusAll(Collections.singletonMap(3, null)));
+    assertEquals(TreePMap.singleton(3, null), EMPTY.plusAll(Collections.singletonMap(3, null)));
   }
 
   /**
@@ -860,7 +861,8 @@ public class TreePMapTest extends TestCase {
 
     assertThrows(
         NullPointerException.class, () -> TreePMap.singleton(STRING_ORDER_COMPARATOR, null, "foo"));
-    assertEquals(TreePMap.<String,String>empty().plus("foo", null),
+    assertEquals(
+        TreePMap.<String, String>empty().plus("foo", null),
         TreePMap.singleton(STRING_ORDER_COMPARATOR, "foo", null));
   }
 

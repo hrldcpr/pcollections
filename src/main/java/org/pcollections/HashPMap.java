@@ -98,7 +98,8 @@ public final class HashPMap<K, V> extends AbstractUnmodifiableMap<K, V>
   @Override
   public V get(final Object key) {
     PSequence<Entry<K, V>> entries = getEntries(Objects.hashCode(key));
-    for (Entry<K, V> entry : entries) if (Objects.equals(entry.getKey(), key)) return entry.getValue();
+    for (Entry<K, V> entry : entries)
+      if (Objects.equals(entry.getKey(), key)) return entry.getValue();
     return null;
   }
 
@@ -121,7 +122,8 @@ public final class HashPMap<K, V> extends AbstractUnmodifiableMap<K, V>
     int size0 = entries.size(), i = keyIndexIn(entries, key);
     if (i != -1) entries = entries.minus(i);
     entries = entries.plus(new SimpleImmutableEntry<K, V>(key, value));
-    return new HashPMap<K, V>(intMap.plus(Objects.hashCode(key), entries), size - size0 + entries.size());
+    return new HashPMap<K, V>(
+        intMap.plus(Objects.hashCode(key), entries), size - size0 + entries.size());
   }
 
   public HashPMap<K, V> minus(final Object key) {
