@@ -75,7 +75,7 @@ public class TreePVectorTest extends TestCase {
 
       // and try out a non-Integer:
       String s = Integer.toString(v);
-      assertFalse(pvec.contains(v));
+      assertFalse(pvec.contains(s));
       pvec = pvec.minus(s);
 
       assertEquals(list.size(), pvec.size());

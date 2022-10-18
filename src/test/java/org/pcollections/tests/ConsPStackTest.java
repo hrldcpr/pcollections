@@ -76,7 +76,7 @@ public class ConsPStackTest extends TestCase {
 
       // and try out a non-Integer:
       String s = Integer.toString(v);
-      assertFalse(pstack.contains(v));
+      assertFalse(pstack.contains(s));
       pstack = pstack.minus(s);
 
       assertEquals(list.size(), pstack.size());
