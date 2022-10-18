@@ -75,10 +75,12 @@ public final class HashPMap<K, V> extends AbstractUnmodifiableMap<K, V>
             }
             // OVERRIDDEN METHODS OF AbstractSet //
             @Override
-            public boolean contains(final Object e) {
-              if (!(e instanceof Entry)) return false;
-              V value = get(((Entry<?, ?>) e).getKey());
-              return value != null && Objects.equals(value, ((Entry<?, ?>) e).getValue());
+            public boolean contains(final Object o) {
+              if (!(o instanceof Entry)) return false;
+              final Entry e = (Entry) o;
+              final Object k = e.getKey();
+              if (!containsKey(k)) return false;
+              return Objects.equals(get(k), e.getValue());
             }
           };
     return entrySet;

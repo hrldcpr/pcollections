@@ -13,6 +13,7 @@ import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -131,10 +132,12 @@ public final class IntTreePMap<V> extends AbstractUnmodifiableMap<Integer, V>
             }
             // OVERRIDDEN METHODS OF AbstractSet //
             @Override
-            public boolean contains(final Object e) {
-              if (!(e instanceof Entry)) return false;
-              V value = get(((Entry<?, ?>) e).getKey());
-              return value != null && value.equals(((Entry<?, ?>) e).getValue());
+            public boolean contains(final Object o) {
+              if (!(o instanceof Entry)) return false;
+              final Entry e = (Entry) o;
+              final Object k = e.getKey();
+              if (!containsKey(k)) return false;
+              return Objects.equals(get(k), e.getValue());
             }
           };
     return entrySet;

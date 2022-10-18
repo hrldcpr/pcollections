@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 /**
  * A persistent vector of elements.
@@ -114,7 +115,7 @@ public class TreePVector<E> extends AbstractUnmodifiableList<E>
 
   public TreePVector<E> minus(final Object e) {
     for (Entry<Integer, E> entry : map.entrySet())
-      if (entry.getValue().equals(e)) return minus((int) entry.getKey());
+      if (Objects.equals(entry.getValue(), e)) return minus((int) entry.getKey());
     return this;
   }
 

@@ -28,7 +28,8 @@ public class IntTreePMapTest extends TestCase {
     Random r = new Random(123);
     for (int i = 0; i < 10000; i++) {
       if (pmap.size() == 0 || r.nextBoolean()) { // add
-        int k = r.nextInt(), v = r.nextInt();
+        int k = r.nextInt();
+        Integer v = r.nextInt(10) > 0 ? r.nextInt() : null;
 
         assertEquals(map.containsKey(k), pmap.containsKey(k));
         assertEquals(map.get(k), pmap.get(k));
@@ -63,7 +64,7 @@ public class IntTreePMapTest extends TestCase {
       pmap = pmap.minus(k);
 
       // and try out a non-Integer:
-      String s = Integer.toString(k);
+      String s = Integer.toString(r.nextInt());
       assertFalse(pmap.containsKey(s));
       assertEquals(null, pmap.get(s));
       assertFalse(pmap.entrySet().contains(s));

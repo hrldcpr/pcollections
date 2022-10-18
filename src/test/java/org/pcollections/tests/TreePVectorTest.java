@@ -25,7 +25,7 @@ public class TreePVectorTest extends TestCase {
     for (int i = 0; i < 1000; i++) {
       if (pvec.size() == 0 || r.nextBoolean()) { // add
         if (r.nextBoolean()) { // append
-          Integer v = r.nextInt();
+          Integer v = r.nextInt(10) > 0 ? r.nextInt() : null;
 
           assertEquals(list.contains(v), pvec.contains(v));
 
@@ -33,7 +33,7 @@ public class TreePVectorTest extends TestCase {
           pvec = pvec.plus(v);
         } else { // insert
           int k = r.nextInt(pvec.size() + 1);
-          Integer v = r.nextInt();
+          Integer v = r.nextInt(10) > 0 ? r.nextInt() : null;
 
           assertEquals(list.contains(v), pvec.contains(v));
           if (k < pvec.size()) assertEquals(list.get(k), pvec.get(k));
@@ -43,7 +43,7 @@ public class TreePVectorTest extends TestCase {
         }
       } else if (r.nextBoolean()) { // replace
         int k = r.nextInt(pvec.size());
-        Integer v = r.nextInt();
+        Integer v = r.nextInt(10) > 0 ? r.nextInt() : null;
         list.set(k, v);
         pvec = pvec.with(k, v);
       } else { // remove a random element
@@ -68,13 +68,13 @@ public class TreePVectorTest extends TestCase {
       }
 
       // also try to remove a _totally_ random value:
-      Integer v = r.nextInt();
+      Integer v = r.nextInt(10) > 0 ? r.nextInt() : null;
       assertEquals(list.contains(v), pvec.contains(v));
       list.remove(v);
       pvec = pvec.minus(v);
 
       // and try out a non-Integer:
-      String s = Integer.toString(v);
+      String s = Integer.toString(r.nextInt());
       assertFalse(pvec.contains(s));
       pvec = pvec.minus(s);
 

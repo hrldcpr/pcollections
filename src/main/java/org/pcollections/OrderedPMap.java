@@ -108,7 +108,9 @@ public class OrderedPMap<K, V> extends AbstractUnmodifiableMap<K, V>
       public boolean contains(final Object o) {
         if (!(o instanceof Entry)) return false;
         final Entry e = (Entry) o;
-        return Objects.equals(get(e.getKey()), e.getValue());
+        final Object k = e.getKey();
+        if (!containsKey(k)) return false;
+        return Objects.equals(get(k), e.getValue());
       }
 
       @Override
