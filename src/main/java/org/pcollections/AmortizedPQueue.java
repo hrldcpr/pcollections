@@ -64,10 +64,8 @@ public class AmortizedPQueue<E> extends AbstractUnmodifiableQueue<E>
       }
 
       public E next() {
-        E e = queue.peek();
-        if (e == null && !hasNext()) {
-          throw new NoSuchElementException();
-        }
+        if (!hasNext()) throw new NoSuchElementException();
+        final E e = queue.peek();
         queue = queue.minus();
         return e;
       }
