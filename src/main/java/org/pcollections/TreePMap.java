@@ -275,12 +275,12 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
     final BiConsumer<TreeMap<K, V>, T> accumulator =
         (treeMap, element) -> {
           final K key = requireNonNull(keyMapper.apply(element), "key is null");
-          final V value = requireNonNull(valueMapper.apply(element), "value is null");
+          final V value = valueMapper.apply(element);
 
-          final V oldValue = treeMap.putIfAbsent(key, value);
-
-          if (oldValue != null) {
-            treeMap.put(key, mergeFunction.apply(oldValue, value));
+          if (treeMap.containsKey(key)) {
+            treeMap.put(key, mergeFunction.apply(treeMap.get(key), value));
+          } else {
+            treeMap.put(key, value);
           }
         };
 
@@ -290,10 +290,10 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
             final K key = entry.getKey();
             final V value = entry.getValue();
 
-            final V oldValue = treeMap1.putIfAbsent(entry.getKey(), entry.getValue());
-
-            if (oldValue != null) {
-              treeMap1.put(key, mergeFunction.apply(oldValue, value));
+            if (treeMap1.containsKey(key)) {
+              treeMap1.put(key, mergeFunction.apply(treeMap1.get(key), value));
+            } else {
+              treeMap1.put(key, value);
             }
           }
           return treeMap1;

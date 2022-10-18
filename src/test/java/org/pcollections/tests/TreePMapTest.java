@@ -905,16 +905,20 @@ public class TreePMapTest extends TestCase {
           map.entrySet().parallelStream()
               .collect(TreePMap.toTreePMap(Map.Entry::getKey, Map.Entry::getValue)));
 
+      final SortedMap<Integer, String> nullValues = new TreeMap<>(map);
+      for (Integer k : nullValues.keySet()) { // Collectors.toMap doesn't support null values
+        nullValues.put(k, null);
+      }
+      final TreePMap<Integer, String> pNullValues =
+          map.entrySet().parallelStream()
+              .collect(TreePMap.toTreePMap(Map.Entry::getKey, entry -> null));
+      assertEquivalentState(nullValues, pNullValues);
+
       assertThrows(
           NullPointerException.class,
           () ->
               map.entrySet().parallelStream()
                   .collect(TreePMap.toTreePMap(entry -> null, Map.Entry::getValue)));
-      assertThrows(
-          NullPointerException.class,
-          () ->
-              map.entrySet().parallelStream()
-                  .collect(TreePMap.toTreePMap(Map.Entry::getKey, entry -> null)));
       assertThrows(
           IllegalStateException.class,
           () ->
@@ -944,6 +948,17 @@ public class TreePMapTest extends TestCase {
                   TreePMap.toTreePMap(
                       STRING_ORDER_COMPARATOR, Map.Entry::getKey, Map.Entry::getValue)));
 
+      final SortedMap<Integer, String> nullValues = new TreeMap<>(STRING_ORDER_COMPARATOR);
+      nullValues.putAll(map);
+      for (Integer k : nullValues.keySet()) { // Collectors.toMap doesn't support null values
+        nullValues.put(k, null);
+      }
+      final TreePMap<Integer, String> pNullValues =
+          map.entrySet().parallelStream()
+              .collect(
+                  TreePMap.toTreePMap(STRING_ORDER_COMPARATOR, Map.Entry::getKey, entry -> null));
+      assertEquivalentState(nullValues, pNullValues);
+
       assertThrows(
           NullPointerException.class,
           () ->
@@ -951,13 +966,6 @@ public class TreePMapTest extends TestCase {
                   .collect(
                       TreePMap.toTreePMap(
                           STRING_ORDER_COMPARATOR, entry -> null, Map.Entry::getValue)));
-      assertThrows(
-          NullPointerException.class,
-          () ->
-              map.entrySet().parallelStream()
-                  .collect(
-                      TreePMap.toTreePMap(
-                          STRING_ORDER_COMPARATOR, Map.Entry::getKey, entry -> null)));
       assertThrows(
           IllegalStateException.class,
           () ->
@@ -1013,11 +1021,6 @@ public class TreePMapTest extends TestCase {
           () ->
               map.entrySet().parallelStream()
                   .collect(TreePMap.toTreePMap(entry -> null, Map.Entry::getValue, mergeFunction)));
-      assertThrows(
-          NullPointerException.class,
-          () ->
-              map.entrySet().parallelStream()
-                  .collect(TreePMap.toTreePMap(Map.Entry::getKey, entry -> null, mergeFunction)));
     }
 
     assertThrows(
@@ -1073,16 +1076,6 @@ public class TreePMapTest extends TestCase {
                           STRING_ORDER_COMPARATOR,
                           entry -> null,
                           Map.Entry::getValue,
-                          mergeFunction)));
-      assertThrows(
-          NullPointerException.class,
-          () ->
-              map.entrySet().parallelStream()
-                  .collect(
-                      TreePMap.toTreePMap(
-                          STRING_ORDER_COMPARATOR,
-                          Map.Entry::getKey,
-                          entry -> null,
                           mergeFunction)));
     }
 
