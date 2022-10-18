@@ -1297,4 +1297,12 @@ public class TreePMapTest extends TestCase {
     assertMapForbidsNullKeys(TreePMap.singleton("key1", "value1"), "key2", "value2");
     assertMapAllowsNullValues(TreePMap.singleton("key1", "value1"), "key2", "value2");
   }
+
+  public void testNullEntrySet() {
+    final Map<String, Integer> m = TreePMap.singleton("x", 1).plus("y", null).plus("z", null);
+    for (final Map.Entry<String, Integer> e : m.entrySet()) {
+      assertEquals(m.get(e.getKey()), e.getValue());
+      assertTrue(m.entrySet().contains(e));
+    }
+  }
 }

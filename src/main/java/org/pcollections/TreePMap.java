@@ -341,12 +341,11 @@ public final class TreePMap<K, V> extends AbstractUnmodifiableMap<K, V>
     return new AbstractUnmodifiableSet<Map.Entry<K, V>>() {
       @Override
       public boolean contains(final Object o) {
-        if (!(o instanceof Map.Entry<?, ?>)) {
-          return false;
-        }
-        final Map.Entry<?, ?> entry = (Map.Entry<?, ?>) o;
-        return entry.getValue() != null
-            && Objects.equals(TreePMap.this.get(entry.getKey()), entry.getValue());
+        if (!(o instanceof Entry)) return false;
+        final Entry e = (Entry) o;
+        final Object k = e.getKey();
+        if (!containsKey(k)) return false;
+        return Objects.equals(get(k), e.getValue());
       }
 
       @Override
