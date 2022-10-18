@@ -15,7 +15,7 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 /**
- * A simple persistent stack of non-null values.
+ * A simple persistent stack.
  *
  * <p>This implementation is thread-safe (assuming Java's AbstractSequentialList is thread-safe),
  * although its iterators may not be.
@@ -82,7 +82,7 @@ public final class ConsPStack<E> extends AbstractUnmodifiableSequentialList<E>
   }
 
   private ConsPStack(final E first, final ConsPStack<E> rest) {
-    this.first = requireNonNull(first, "first is null");
+    this.first = first;
     this.rest = requireNonNull(rest, "rest is null");
 
     size = 1 + rest.size;
@@ -119,19 +119,15 @@ public final class ConsPStack<E> extends AbstractUnmodifiableSequentialList<E>
       }
 
       public E next() {
-        E e = next.first;
-        if (e == null && !hasNext()) {
-          throw new NoSuchElementException();
-        }
+        if (!hasNext()) throw new NoSuchElementException();
+        final E e = next.first;
         next = next.rest;
         i++;
         return e;
       }
 
       public E previous() {
-        if (!hasPrevious()) {
-          throw new NoSuchElementException();
-        }
+        if (!hasPrevious()) throw new NoSuchElementException();
         next = subList(--i); // go from beginning...
         return next.first;
       }

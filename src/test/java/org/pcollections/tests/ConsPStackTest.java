@@ -26,7 +26,7 @@ public class ConsPStackTest extends TestCase {
     for (int i = 0; i < 1000; i++) {
       if (pstack.size() == 0 || r.nextBoolean()) { // add
         if (r.nextBoolean()) { // append
-          Integer v = r.nextInt();
+          Integer v = r.nextInt(10) > 0 ? r.nextInt() : null;
 
           assertEquals(list.contains(v), pstack.contains(v));
 
@@ -34,7 +34,7 @@ public class ConsPStackTest extends TestCase {
           pstack = pstack.plus(v);
         } else { // insert
           int k = r.nextInt(pstack.size() + 1);
-          Integer v = r.nextInt();
+          Integer v = r.nextInt(10) > 0 ? r.nextInt() : null;
 
           assertEquals(list.contains(v), pstack.contains(v));
           if (k < pstack.size()) assertEquals(list.get(k), pstack.get(k));
@@ -44,7 +44,7 @@ public class ConsPStackTest extends TestCase {
         }
       } else if (r.nextBoolean()) { // replace
         int k = r.nextInt(pstack.size());
-        Integer v = r.nextInt();
+        Integer v = r.nextInt(10) > 0 ? r.nextInt() : null;
         list.set(k, v);
         pstack = pstack.with(k, v);
       } else { // remove a random element
@@ -69,13 +69,13 @@ public class ConsPStackTest extends TestCase {
       }
 
       // also try to remove a _totally_ random value:
-      Integer v = r.nextInt();
+      Integer v = r.nextInt(10) > 0 ? r.nextInt() : null;
       assertEquals(list.contains(v), pstack.contains(v));
       list.remove(v);
       pstack = pstack.minus(v);
 
       // and try out a non-Integer:
-      String s = Integer.toString(v);
+      String s = Integer.toString(r.nextInt());
       assertFalse(pstack.contains(s));
       pstack = pstack.minus(s);
 
