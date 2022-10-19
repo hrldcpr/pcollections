@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- …
+
+## [4.0.0] - 2022-10-18
 ### Added
 - `OrderedPMap` [[#102](https://github.com/hrldcpr/pcollections/pull/102)]
 - `PSet.intersect()` [[#99](https://github.com/hrldcpr/pcollections/pull/99) by [@prdoyle](https://github.com/prdoyle)]
