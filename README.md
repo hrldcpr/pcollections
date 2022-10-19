@@ -35,14 +35,14 @@ PCollections are created using producers and static factory methods. Some exampl
 
 The same `empty()`, `singleton()`, and `from()` factory methods are found in each of the PCollections implementations, which currently include one concrete implementation for each abstract type:
 * [HashTreePMap](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/HashTreePMap.html) provides a [PMap](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/PMap.html) implementation, analogous to Java's HashMap.
-* [TreePMap](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/TreePMap.html) provides a 
-[PSortedMap](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/PSortedMap.html) implementation, 
+* [TreePMap](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/TreePMap.html) provides a
+[PSortedMap](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/PSortedMap.html) implementation,
 analogous to Java's TreeMap.
 * [ConsPStack](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/ConsPStack.html) provides a [PStack](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/PStack.html) implementation, analogous to Java's LinkedList.
 * [TreePVector](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/TreePVector.html) provides a [PVector](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/PVector.html) implementation, analogous to Java's ArrayList.
 * [HashTreePSet](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/HashTreePSet.html) provides a [PSet](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/PSet.html) implementation, analogous to Java's HashSet.
-* [TreePSet](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/TreePSet.html) provides a 
-[PSortedSet](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/PSortedSet.html) implementation, 
+* [TreePSet](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/TreePSet.html) provides a
+[PSortedSet](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/PSortedSet.html) implementation,
 analogous to Java's TreeSet.
 * [HashTreePBag](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/HashTreePBag.html) provides a [PBag](https://javadoc.io/page/org.pcollections/pcollections/latest/org/pcollections/PBag.html) implementation, which is unordered like a set but can contain duplicate elements.
 
