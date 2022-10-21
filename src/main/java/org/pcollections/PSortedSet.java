@@ -112,6 +112,11 @@ public interface PSortedSet<E> extends PSet<E>, NavigableSet<E> {
   @Override
   public PSortedSet<E> minusAll(Collection<?> list);
 
+  @Override
+  default PSortedSet<E> intersect(Collection<? extends E> list) {
+    return this.minusAll(this.minusAll(list));
+  }
+
   /**
    * @return This set, except with its first (least) element removed.
    * @throws NoSuchElementException if this set is empty
