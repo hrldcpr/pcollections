@@ -332,6 +332,11 @@ public final class TreePSet<E> extends AbstractUnmodifiableSet<E>
   }
 
   @Override
+  public TreePSet<E> intersect(Collection<? extends E> list) {
+    return this.minusAll(this.minusAll(list));
+  }
+
+  @Override
   public TreePSet<E> minusFirst() {
     return this.withTree(
         this.isLeftToRight ? this.tree.minusLeftmost() : this.tree.minusRightmost());

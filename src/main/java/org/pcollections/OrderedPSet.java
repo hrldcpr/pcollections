@@ -85,6 +85,11 @@ public class OrderedPSet<E> extends AbstractUnmodifiableSet<E> implements PSet<E
   }
 
   @Override
+  public OrderedPSet<E> intersect(Collection<? extends E> list) {
+    return this.minusAll(this.minusAll(list));
+  }
+
+  @Override
   public Iterator<E> iterator() {
     return elements.values().iterator();
   }

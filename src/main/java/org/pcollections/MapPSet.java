@@ -103,4 +103,9 @@ public final class MapPSet<E> extends AbstractUnmodifiableSet<E> implements PSet
     PMap<E, Object> map = this.map.minusAll(list);
     return from(map);
   }
+
+  @Override
+  public MapPSet<E> intersect(Collection<? extends E> list) {
+    return this.minusAll(this.minusAll(list));
+  }
 }
