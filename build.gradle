@@ -1,61 +1,38 @@
-
-buildscript {
-   repositories {
-      jcenter()
-   }
-}
-
 plugins {
-    id 'me.champeau.gradle.jmh' version '0.4.5'
+    id 'me.champeau.gradle.jmh' version '0.5.3'
+    id 'org.javamodularity.moduleplugin' version '1.8.12'
+    id 'java'
+    id 'maven-publish'
+    id 'signing'
 }
-
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'signing'
 
 defaultTasks 'build'
 
 group = 'org.pcollections'
 version = '4.0.1-SNAPSHOT'
 
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
-
 description = """PCollections"""
 
 repositories {
-     jcenter()
+    mavenCentral()
 }
 
 dependencies {
     // Use JUnit 5: JUnit Jupiter + JUnit Vintage [for running JUnit 3/4 tests as well]
-    testCompile 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
     testImplementation "org.junit.jupiter:junit-jupiter-params:5.9.0"
-    testCompile 'org.junit.vintage:junit-vintage-engine:5.9.0'
-    testCompile 'org.assertj:assertj-core:3.23.1'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.9.0'
+    testImplementation 'org.assertj:assertj-core:3.23.1'
 }
 
 test {
     useJUnitPlatform() // Use JUnit 5
 }
 
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
-}
-
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-artifacts {
-    archives javadocJar, sourcesJar
-}
-
-signing {
-    sign configurations.archives
+java {
+    withSourcesJar()
+    withJavadocJar()
 }
 
 task copyJavadocDocFiles(type: Copy) {
@@ -69,47 +46,57 @@ javadoc {
     options.addBooleanOption('Xdoclint:none', true) // https://github.com/hrldcpr/pcollections/issues/62
 }
 
-uploadArchives {
+publishing {
   repositories {
-    mavenDeployer {
-      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+    maven {
+      def releasesRepoUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+      def snapshotsRepoUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
+      url version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
 
-      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
+      credentials {
+        username ossrhUsername
+        password ossrhPassword
       }
+    }
+  }
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+      artifactId = 'pcollections'
 
-      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
-      }
-
-      pom.project {
-        name 'PCollections'
-        packaging 'jar'
-        artifactId 'pcollections'
-        description 'A Persistent Java Collections Library'
-        url 'https://github.com/hrldcpr/pcollections'
+      pom {
+        name = 'PCollections'
+        packaging = 'jar'
+        description = 'A Persistent Java Collections Library'
+        url = 'https://github.com/hrldcpr/pcollections'
 
         scm {
-          connection 'scm:git:git://github.com/hrldcpr/pcollections.git'
-          developerConnection 'scm:git:ssh://github.com:hrldcpr/pcollections.git'
-          url 'https://github.com/hrldcpr/pcollections'
+          connection = 'scm:git:git://github.com/hrldcpr/pcollections.git'
+          developerConnection = 'scm:git:ssh://github.com:hrldcpr/pcollections.git'
+          url = 'https://github.com/hrldcpr/pcollections'
         }
 
         licenses {
           license {
-            name 'The MIT License'
-            url 'https://opensource.org/licenses/mit-license.php'
+            name = 'The MIT License'
+            url = 'https://opensource.org/licenses/mit-license.php'
           }
         }
 
         developers {
           developer {
-            id 'hrldcpr'
-            name 'Harold Cooper'
-            email 'hrldcpr@gmail.com'
+            id = 'hrldcpr'
+            name = 'Harold Cooper'
+            email = 'hrldcpr@gmail.com'
           }
         }
       }
     }
   }
 }
+
+signing {
+    sign(publishing.publications.mavenJava)
+}
+
+modularity.mixedJavaRelease 8
