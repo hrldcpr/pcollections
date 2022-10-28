@@ -5,7 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- …
+### Added
+- Java 9+ Module support [[#109](https://github.com/hrldcpr/pcollections/pull/109) by [@BomBardyGamer](https://github.com/BomBardyGamer)]
+### Changed
+- More specific return types for each `PSet.intersect()` implementation [[#107](https://github.com/hrldcpr/pcollections/pull/107) by [@prdoyle](https://github.com/prdoyle)]
 
 ## [4.0.0] - 2022-10-18
 ### Added
