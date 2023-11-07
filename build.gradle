@@ -54,8 +54,8 @@ publishing {
       url version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
 
       credentials {
-        username ossrhUsername
-        password ossrhPassword
+        username providers.gradleProperty('ossrhUsername').getOrElse('dummy')
+        password providers.gradleProperty('ossrhPassword').getOrElse('dummy')
       }
     }
   }
