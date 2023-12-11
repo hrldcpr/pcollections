@@ -97,8 +97,8 @@ Running this program gives the following output:
 [something]
 ```
 
-### Building form source
-To build the project from source [clone the repository](https://github.com/pcollections/pcollections.git) and then run `./gradlew`
+### Building from source
+To build the project from source [clone the repository](https://github.com/hrldcpr/pcollections) and then run `./gradlew`
 
 ### Related Work
 
