@@ -4,7 +4,7 @@ PCollections
 A Persistent Java Collections Library
 
 [![Maven Central](https://img.shields.io/maven-central/v/org.pcollections/pcollections.svg)](https://mvnrepository.com/artifact/org.pcollections/pcollections/latest)
-[![Javadoc](https://www.javadoc.io/badge/org.pcollections/pcollections.svg)](https://www.javadoc.io/doc/org.pcollections/pcollections)
+[![Javadoc](https://www.javadoc.io/badge/org.pcollections/pcollections.svg)](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/package-summary.html)
 
 ### Overview
 
