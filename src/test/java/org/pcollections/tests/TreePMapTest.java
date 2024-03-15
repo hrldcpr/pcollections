@@ -839,6 +839,10 @@ public class TreePMapTest extends TestCase {
             treePMapOf(STRING_ORDER_COMPARATOR, STRINGIFY, 1, 2, 3, 4).descendingMap()));
   }
 
+  public void testSerializationAndDeserializationOfEmpty() throws Exception {
+    assertTrue(serializeAndDeserialize(TreePMap.empty()).isEmpty());
+  }
+
   public void testSingleton() {
     // the overload that doesn't take an explicit comparator (uses natural ordering):
 
