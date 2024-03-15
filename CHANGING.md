@@ -3,7 +3,7 @@ First time setup:
 - download `google-java-format-1.21.0-all-deps.jar` from https://github.com/google/google-java-format/releases
 
 To release:
-- run `java -jar google-java-format-1.21.0-all-deps.jar --replace src/**.java`
+- run `java -jar google-java-format-1.21.0-all-deps.jar --replace src/**.java` (note this uses Fish Shell syntax, you'll need to do something else in other shells)
 - remove -SNAPSHOT from the version in build.gradle
 - commit with a tag
 - run `./gradlew test publish`
