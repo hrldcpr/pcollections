@@ -38,6 +38,7 @@ public final class MapPBag<E> extends AbstractUnmodifiableCollection<E>
   //// PRIVATE CONSTRUCTORS ////
   private final PMap<E, Integer> map;
   private final int size;
+
   // not instantiable (or subclassable):
   private MapPBag(final PMap<E, Integer> map, final int size) {
     this.map = map;

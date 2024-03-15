@@ -200,6 +200,7 @@ class IntTree<V> implements Serializable {
 
   private static final int OMEGA = 5;
   private static final int ALPHA = 2;
+
   // rebalance a tree that is off-balance by at most 1:
   private static <V> IntTree<V> rebalanced(
       final long key, final V value, final IntTree<V> left, final IntTree<V> right) {

@@ -79,6 +79,7 @@ public final class IntTreePMap<V> extends AbstractUnmodifiableMap<Integer, V>
 
   //// PRIVATE CONSTRUCTORS ////
   private final IntTree<V> root;
+
   // not externally instantiable (or subclassable):
   private IntTreePMap(final IntTree<V> root) {
     this.root = requireNonNull(root, "root is null");
@@ -130,6 +131,7 @@ public final class IntTreePMap<V> extends AbstractUnmodifiableMap<Integer, V>
             public Iterator<Entry<Integer, V>> iterator() {
               return root.iterator();
             }
+
             // OVERRIDDEN METHODS OF AbstractSet //
             @Override
             public boolean contains(final Object o) {

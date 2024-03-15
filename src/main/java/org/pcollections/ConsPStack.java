@@ -73,6 +73,7 @@ public final class ConsPStack<E> extends AbstractUnmodifiableSequentialList<E>
   private final E first;
   private final ConsPStack<E> rest;
   private final int size;
+
   // not externally instantiable (or subclassable):
   private ConsPStack() { // EMPTY constructor
     if (EMPTY != null) throw new RuntimeException("empty constructor should only be used once");

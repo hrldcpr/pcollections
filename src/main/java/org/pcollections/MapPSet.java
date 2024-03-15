@@ -56,6 +56,7 @@ public final class MapPSet<E> extends AbstractUnmodifiableSet<E> implements PSet
 
   //// PRIVATE CONSTRUCTORS ////
   private final PMap<E, Object> map;
+
   // not instantiable (or subclassable):
   private MapPSet(final PMap<E, Object> map) {
     this.map = map;

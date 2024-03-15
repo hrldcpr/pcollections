@@ -1,9 +1,9 @@
 First time setup:
 - create a `gradle.properties` a la https://central.sonatype.org/pages/gradle.html#credentials
-- download `google-java-format-1.15.0-all-deps.jar` from https://github.com/google/google-java-format/releases
+- download `google-java-format-1.21.0-all-deps.jar` from https://github.com/google/google-java-format/releases
 
 To release:
-- run `java -jar google-java-format-1.15.0-all-deps.jar -i src/**.java`
+- run `java -jar google-java-format-1.21.0-all-deps.jar -i src/**.java`
 - remove -SNAPSHOT from the version in build.gradle
 - commit with a tag
 - run `./gradlew test publish`

@@ -48,6 +48,7 @@ public final class HashPMap<K, V> extends AbstractUnmodifiableMap<K, V>
   //// PRIVATE CONSTRUCTORS ////
   private final PMap<Integer, PSequence<Entry<K, V>>> intMap;
   private final int size;
+
   // not externally instantiable (or subclassable):
   private HashPMap(final PMap<Integer, PSequence<Entry<K, V>>> intMap, final int size) {
     this.intMap = intMap;
@@ -73,6 +74,7 @@ public final class HashPMap<K, V> extends AbstractUnmodifiableMap<K, V>
             public Iterator<Entry<K, V>> iterator() {
               return new SequenceIterator<Entry<K, V>>(intMap.values().iterator());
             }
+
             // OVERRIDDEN METHODS OF AbstractSet //
             @Override
             public boolean contains(final Object o) {
