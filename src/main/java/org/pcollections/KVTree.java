@@ -543,6 +543,13 @@ final class KVTree<K, V> implements Map.Entry<K, V>, Serializable {
     return this.key + "=" + this.value;
   }
 
+  private Object readResolve() {
+    if (size == 0) {
+      return EMPTY;
+    }
+    return this;
+  }
+
   private void checkNotEmpty() {
     if (this.isEmpty()) {
       throw new NoSuchElementException();
