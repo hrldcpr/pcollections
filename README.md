@@ -1,5 +1,4 @@
-PCollections
-============
+# PCollections
 
 A Persistent Java Collections Library
 
@@ -14,47 +13,52 @@ Persistent and immutable datatypes are increasingly appreciated as a **simple**,
 
 ### Persistent versus Unmodifiable
 
-Note that these immutable collections are very different from the immutable collections returned by Java's [Collections.unmodifiableCollection()](https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/Collections.html#unmodifiableCollection(java.util.Collection)) and similar methods. The difference is that Java's unmodifiable collections have no producers, whereas PCollections have very efficient producers.
+Note that these immutable collections are very different from the immutable collections returned by Java's [Collections.unmodifiableCollection()](<https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/Collections.html#unmodifiableCollection(java.util.Collection)>) and similar methods. The difference is that Java's unmodifiable collections have no producers, whereas PCollections have very efficient producers.
 
 Thus if you have an unmodifiable Collection `x` and you want a new Collection `x2` consisting of the elements of `x` in addition to some element `e`, you would have to do something like:
+
 ```Java
 Collection x2 = new HashSet(x);
 x2.add(e);
 ```
+
 which involves copying all of `x`, using linear time and space.
 
 If, on the other hand, you have a PCollection `y` you can simply say:
+
 ```Java
 PCollection y2 = y.plus(e);
 ```
+
 which still leaves `y` untouched but generally requires little or no copying, using time and space much more efficiently.
 
 ### Usage
 
-PCollections are created using producers and static factory methods. Some example static factory methods are [`HashTreePSet.empty()`](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/HashTreePSet.html#empty()) which returns an empty [PSet](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/PSet.html), while `HashTreePSet.singleton(e)` returns a PSet containing just the element `e`, and `HashTreePSet.from(collection)` returns a PSet containing the same elements as `collection`. See [Example Code](#example-code) below for an example of using producers.
+PCollections are created using producers and static factory methods. Some example static factory methods are [`HashTreePSet.empty()`](<https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/HashTreePSet.html#empty()>) which returns an empty [PSet](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/PSet.html), while `HashTreePSet.singleton(e)` returns a PSet containing just the element `e`, and `HashTreePSet.from(collection)` returns a PSet containing the same elements as `collection`. See [Example Code](#example-code) below for an example of using producers.
 
 The same `empty()`, `singleton()`, and `from()` factory methods are found in each of the PCollections implementations, which currently include one concrete implementation for each abstract type:
-* [HashTreePMap](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/HashTreePMap.html) provides a [PMap](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/PMap.html) implementation, analogous to Java's HashMap.
-* [TreePMap](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/TreePMap.html) provides a
-[PSortedMap](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/PSortedMap.html) implementation,
-analogous to Java's TreeMap.
-* [ConsPStack](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/ConsPStack.html) provides a [PStack](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/PStack.html) implementation, analogous to Java's LinkedList.
-* [TreePVector](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/TreePVector.html) provides a [PVector](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/PVector.html) implementation, analogous to Java's ArrayList.
-* [HashTreePSet](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/HashTreePSet.html) provides a [PSet](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/PSet.html) implementation, analogous to Java's HashSet.
-* [TreePSet](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/TreePSet.html) provides a
-[PSortedSet](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/PSortedSet.html) implementation,
-analogous to Java's TreeSet.
-* [HashTreePBag](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/HashTreePBag.html) provides a [PBag](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/PBag.html) implementation, which is unordered like a set but can contain duplicate elements.
+
+- [HashTreePMap](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/HashTreePMap.html) provides a [PMap](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/PMap.html) implementation, analogous to Java's HashMap.
+- [TreePMap](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/TreePMap.html) provides a
+  [PSortedMap](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/PSortedMap.html) implementation,
+  analogous to Java's TreeMap.
+- [ConsPStack](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/ConsPStack.html) provides a [PStack](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/PStack.html) implementation, analogous to Java's LinkedList.
+- [TreePVector](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/TreePVector.html) provides a [PVector](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/PVector.html) implementation, analogous to Java's ArrayList.
+- [HashTreePSet](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/HashTreePSet.html) provides a [PSet](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/PSet.html) implementation, analogous to Java's HashSet.
+- [TreePSet](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/TreePSet.html) provides a
+  [PSortedSet](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/PSortedSet.html) implementation,
+  analogous to Java's TreeSet.
+- [HashTreePBag](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/HashTreePBag.html) provides a [PBag](https://javadoc.io/doc/org.pcollections/pcollections/latest/org.pcollections/org/pcollections/PBag.html) implementation, which is unordered like a set but can contain duplicate elements.
 
 PCollections are highly interoperable with Java Collections:
 
-* Every PCollection is a java.util.Collection.
-* Every PMap is a java.util.Map.
-* Every PSequence is a java.util.List.
-    * This includes every PStack and every PVector.
-* Every PSet is a java.util.Set.
-* Every PSortedMap is a java.util.SortedMap and java.util.NavigableMap.
-* Every PSortedSet is a java.util.SortedSet and java.util.NavigableSet.
+- Every PCollection is a java.util.Collection.
+- Every PMap is a java.util.Map.
+- Every PSequence is a java.util.List.
+  - This includes every PStack and every PVector.
+- Every PSet is a java.util.Set.
+- Every PSortedMap is a java.util.SortedMap and java.util.NavigableMap.
+- Every PSortedSet is a java.util.SortedSet and java.util.NavigableSet.
 
 PCollections uses [Semantic Versioning](https://semver.org/), which establishes a strong correspondence between API changes and version numbering.
 
@@ -69,6 +73,7 @@ PCollections is in the [Maven Central repository](https://search.maven.org/searc
 ```
 
 or Gradle:
+
 ```groovy
 compile 'org.pcollections:pcollections:4.0.2'
 ```
@@ -76,6 +81,7 @@ compile 'org.pcollections:pcollections:4.0.2'
 ### Example Code
 
 The following gives a very simple example of using PCollections, including the static factory method HashTreePSet.empty() and the producer plus(e):
+
 ```Java
 import org.pcollections.*;
 
@@ -90,7 +96,9 @@ public class Example {
   }
 }
 ```
+
 Running this program gives the following output:
+
 ```
 [something]
 [something else, something]
@@ -98,8 +106,9 @@ Running this program gives the following output:
 ```
 
 ### Building from source
+
 To build the project from source [clone the repository](https://github.com/hrldcpr/pcollections) and then run `./gradlew`
 
 ### Related Work
 
-[Clojure](https://clojure.org/reference/data_structures), [Scala](https://docs.scala-lang.org/overviews/collections-2.13/introduction.html), and [kotlinx.collections.immutable](https://github.com/Kotlin/kotlinx.collections.immutable) also provide persistent collections on the JVM, but they are less interoperable with Java. Both [Guava](https://guava.dev/releases/19.0/api/docs/com/google/common/collect/ImmutableCollection.html) and [java.util.Collections](https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/Collections.html#unmodifiableCollection(java.util.Collection)) provide immutable collections but they are not persistent—that is, they do not provide efficient producers—so they are not nearly as useful. See [Persistent versus Unmodifiable](#persistent-versus-unmodifiable) above.
+[Clojure](https://clojure.org/reference/data_structures), [Scala](https://docs.scala-lang.org/overviews/collections-2.13/introduction.html), and [kotlinx.collections.immutable](https://github.com/Kotlin/kotlinx.collections.immutable) also provide persistent collections on the JVM, but they are less interoperable with Java. Both [Guava](https://guava.dev/releases/19.0/api/docs/com/google/common/collect/ImmutableCollection.html) and [java.util.Collections](<https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/Collections.html#unmodifiableCollection(java.util.Collection)>) provide immutable collections but they are not persistent—that is, they do not provide efficient producers—so they are not nearly as useful. See [Persistent versus Unmodifiable](#persistent-versus-unmodifiable) above.
