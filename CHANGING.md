@@ -1,6 +1,6 @@
 First time setup:
 
-- create a `gradle.properties` a la https://central.sonatype.org/pages/gradle.html#credentials
+- **TODO** do we need to generate signing keys for Sonatype?
 - download `google-java-format-1.21.0-all-deps.jar` from https://github.com/google/google-java-format/releases
 
 To release:
@@ -10,7 +10,7 @@ To release:
 - commit with a tag
 - run `./gradlew test publish`
 
-Then follow the instructions at https://central.sonatype.org/pages/releasing-the-deployment.html
+Then follow the instructions at https://central.sonatype.org/publish/publish-portal-upload/
 
 Finally, increment the version in build.gradle and add back -SNAPSHOT, and commit.
 
