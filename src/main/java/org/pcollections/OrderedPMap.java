@@ -66,6 +66,11 @@ public class OrderedPMap<K, V> extends AbstractUnmodifiableMap<K, V>
   }
 
   @Override
+  public boolean containsKey(Object key) {
+    return ids.containsKey(key);
+  }
+
+  @Override
   public OrderedPMap<K, V> plus(final K k, final V v) {
     Long id = ids.get(k);
     final PMap<K, Long> newIds;
