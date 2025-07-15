@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Faster `OrderedPMap.containsKey()` and `OrderedPSet.contains()` [[#122](https://github.com/hrldcpr/pcollections/pull/122) [#123](https://github.com/hrldcpr/pcollections/pull/123) by [@oxbowlakes](https://github.com/oxbowlakes)]
 - …
 
 ## [4.0.2] - 2024-03-17
