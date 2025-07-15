@@ -53,6 +53,11 @@ public class OrderedPSet<E> extends AbstractUnmodifiableSet<E> implements PSet<E
   }
 
   @Override
+  public boolean contains(Object o) {
+    return ids.containsKey(o);
+  }
+
+  @Override
   public OrderedPSet<E> plus(final E e) {
     if (ids.containsKey(e)) return this;
     final Long id = elements.isEmpty() ? Long.MIN_VALUE : (elements.lastKey() + 1);
