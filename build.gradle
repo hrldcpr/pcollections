@@ -1,6 +1,5 @@
 plugins {
     id 'me.champeau.jmh' version '0.7.3'
-    id 'org.javamodularity.moduleplugin' version '1.8.15'
     id 'java'
     id 'maven-publish'
     id 'signing'
@@ -9,7 +8,7 @@ plugins {
 defaultTasks 'build'
 
 group = 'org.pcollections'
-version = '4.0.3'
+version = '5.0.0-SNAPSHOT'
 
 description = """PCollections"""
 
@@ -32,6 +31,12 @@ test {
 }
 
 java {
+    toolchain {
+        // our code works with Java 8, but module-info.java only works with Java 9+
+        // we used to use `modularity.mixedJavaRelease 8` to deal with this,
+        // but Java 8 is old enough now that simpler build process wins
+        languageVersion = JavaLanguageVersion.of(9)
+    }
     withSourcesJar()
     withJavadocJar()
 }
@@ -99,5 +104,3 @@ publishing {
 signing {
     sign(publishing.publications.mavenJava)
 }
-
-modularity.mixedJavaRelease 8
