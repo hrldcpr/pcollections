@@ -8,9 +8,11 @@ To release:
 - run `java -jar google-java-format-1.21.0-all-deps.jar --replace src/**.java` (note this uses Fish Shell syntax, you'll need to do something else in other shells)
 - remove -SNAPSHOT from the version in build.gradle
 - commit with a tag
-- run `./gradlew test publish`
-
-Then follow the instructions at https://central.sonatype.org/publish/publish-portal-upload/
+- `./gradlew test publish`
+- `cd build/repo && tar cvzf archive.tgz org/`
+- go to https://central.sonatype.com/ and log in and click Publish
+- for Deployment Name use "org.pcollections:pcollections:4.3.2" (replace with actual version)
+- upload archive.tgz, and publish it once it's verified
 
 Finally, increment the version in build.gradle and add back -SNAPSHOT, and commit.
 
