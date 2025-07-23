@@ -8,7 +8,7 @@ plugins {
 defaultTasks 'build'
 
 group = 'org.pcollections'
-version = '5.0.0'
+version = '5.0.0-SNAPSHOT'
 
 description = """PCollections"""
 
