@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 /**
  * A map-backed persistent bag.
@@ -87,7 +88,7 @@ public final class MapPBag<E> extends AbstractUnmodifiableCollection<E>
   @Override
   public int hashCode() {
     int hashCode = 0;
-    for (E e : this) hashCode += e.hashCode();
+    for (E e : this) hashCode += Objects.hashCode(e);
     return hashCode;
   }
 

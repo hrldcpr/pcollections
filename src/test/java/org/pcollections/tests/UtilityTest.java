@@ -184,4 +184,15 @@ public class UtilityTest extends TestCase {
     for (E e : list) rev = rev.plus(e);
     return rev;
   }
+
+  public void testBagHashCodeWithNullElements() {
+    PBag<String> bag = HashTreePBag.<String>empty().plus(null).plus("value").plus(null);
+    PBag<String> same = HashTreePBag.<String>empty().plus("value").plus(null).plus(null);
+    assertEquals(bag, same);
+    assertEquals("value".hashCode(), bag.hashCode());
+    assertEquals(bag.hashCode(), same.hashCode());
+    assertEquals(0, HashTreePBag.empty().plus(null).hashCode());
+    assertEquals(0, HashTreePBag.empty().hashCode());
+  }
+
 }
