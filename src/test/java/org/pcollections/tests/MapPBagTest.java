@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -106,14 +107,18 @@ public class MapPBagTest extends TestCase {
 
   public void testMutators() {
     final MapPBag<Integer> bag = MapPBag.<Integer>empty(HashTreePMap.empty()).plus(1).plus(2);
+    final Collection<Integer> collection = bag;
 
-    assertThrows(UnsupportedOperationException.class, () -> bag.add(10));
-    assertThrows(UnsupportedOperationException.class, () -> bag.addAll(Collections.emptyList()));
-    assertThrows(UnsupportedOperationException.class, bag::clear);
-    assertThrows(UnsupportedOperationException.class, () -> bag.remove(10));
-    assertThrows(UnsupportedOperationException.class, () -> bag.removeAll(Collections.emptyList()));
-    assertThrows(UnsupportedOperationException.class, () -> bag.removeIf(o -> false));
-    assertThrows(UnsupportedOperationException.class, () -> bag.retainAll(Collections.emptyList()));
+    assertThrows(UnsupportedOperationException.class, () -> collection.add(10));
+    assertThrows(
+        UnsupportedOperationException.class, () -> collection.addAll(Collections.emptyList()));
+    assertThrows(UnsupportedOperationException.class, collection::clear);
+    assertThrows(UnsupportedOperationException.class, () -> collection.remove(10));
+    assertThrows(
+        UnsupportedOperationException.class, () -> collection.removeAll(Collections.emptyList()));
+    assertThrows(UnsupportedOperationException.class, () -> collection.removeIf(o -> false));
+    assertThrows(
+        UnsupportedOperationException.class, () -> collection.retainAll(Collections.emptyList()));
 
     final Iterator<Integer> iterator = bag.iterator();
     while (iterator.hasNext()) {
