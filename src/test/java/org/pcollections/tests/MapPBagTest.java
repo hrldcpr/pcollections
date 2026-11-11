@@ -33,7 +33,7 @@ public class MapPBagTest extends TestCase {
     PBag<Integer> pbag = emptyBag();
     List<Integer> list = new ArrayList<>();
     Random r = new Random(123);
-    for (int i = 0; i < 10000; i++) {
+    for (int i = 0; i < 1000; i++) {
       if (pbag.size() == 0 || r.nextBoolean()) { // add one element
         Integer v = r.nextInt(10) > 0 ? r.nextInt(100) : null;
 

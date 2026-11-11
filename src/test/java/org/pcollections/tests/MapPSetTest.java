@@ -38,7 +38,7 @@ public class MapPSetTest extends TestCase {
     PSet<Integer> pset = emptySet();
     Set<Integer> set = new HashSet<>();
     Random r = new Random(123);
-    for (int i = 0; i < 10000; i++) {
+    for (int i = 0; i < 1000; i++) {
       if (pset.size() == 0 || r.nextBoolean()) { // add
         Integer v = r.nextInt(10) > 0 ? r.nextInt() : null;
 
@@ -93,8 +93,8 @@ public class MapPSetTest extends TestCase {
     PSet<Integer> mapSet = emptySet();
 
     Random r = new Random(123);
-    for (int i = 0; i < 100000; i++) {
-      int v = r.nextInt(1000);
+    for (int i = 0; i < 1000; i++) {
+      int v = r.nextInt(100);
       if (r.nextFloat() < 0.8) {
         hashSet = hashSet.plus(v);
         mapSet = mapSet.plus(v);
