@@ -88,6 +88,13 @@ public class AmortizedPQueue<E> extends AbstractUnmodifiableQueue<E>
     return front.get(0);
   }
 
+  /* Worst-case O(1) */
+  @Override
+  public E element() {
+    if (size() == 0) throw new NoSuchElementException();
+    return front.get(0);
+  }
+
   /* Amortized O(1), worst-case O(n) */
   public AmortizedPQueue<E> minus() {
     if (size() == 0) {
